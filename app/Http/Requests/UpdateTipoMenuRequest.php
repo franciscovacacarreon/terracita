@@ -11,7 +11,7 @@ class UpdateTipoMenuRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +21,19 @@ class UpdateTipoMenuRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
-        ];
+        //PUT = Le tenemos que darle todos los datos
+        //PATCH = Le podemos dar algunos valores, no oblitario todos
+        $method = $this->method();
+        if ($method == 'PUT') {
+            return [
+                'nombre' => ['required'],
+                // En caso que haya mas campos ponerlos aquí
+            ];
+        } else {
+            return [
+                'nombre' => ['sometimes', 'required'], //Sometime = a veces, en caso que no lo manden el campo
+                // En caso que haya mas campos ponerlos aquí
+            ];
+        }
     }
 }

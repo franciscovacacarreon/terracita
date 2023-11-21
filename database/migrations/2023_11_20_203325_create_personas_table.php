@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('telefono', 15);
             $table->string('direccion', 250)->nullable();
             $table->string('correo', 50);
-            $table->string('img_persona', 250)->nullable();
+            $table->string('imagen', 250)->nullable();
             $table->tinyInteger('estado')->default(1);
             $table->timestamps();
         });

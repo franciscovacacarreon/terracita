@@ -11,7 +11,7 @@ class StoreMenuItemMenuRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +21,11 @@ class StoreMenuItemMenuRequest extends FormRequest
      */
     public function rules(): array
     {
+        //reglas de validación
         return [
-            //
+            'id_item_menu' => ['required'],
+            'id_menu' => ['required'],
+            'cantidad' => ['required'],
         ];
     }
 }

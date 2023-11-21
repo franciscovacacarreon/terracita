@@ -11,7 +11,7 @@ class UpdateItemMenuRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +21,19 @@ class UpdateItemMenuRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
-        ];
+        $method = $this->method();
+        if ($method == 'PUT') {
+            return [
+                'nombre' => ['required'],
+                'precio' => ['required'],
+                'id_tipo_menu' => ['required'],
+            ];
+        } else {
+            return [
+                'nombre' => ['sometimes', 'required'], 
+                'precio' => ['sometimes', 'required'], 
+                'id_tipo_menu' => ['sometimes', 'required'], 
+            ];
+        }
     }
 }

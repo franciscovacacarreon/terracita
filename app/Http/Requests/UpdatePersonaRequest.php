@@ -11,7 +11,7 @@ class UpdatePersonaRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +21,21 @@ class UpdatePersonaRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
-        ];
+        $method = $this->method();
+        if ($method == 'PUT') {
+            return [
+                'nombre' => ['required'],
+                'paterno' => ['required'],
+                'telefono' => ['required'],
+                'correo' => ['required'],
+            ];
+        } else {
+            return [
+                'nombre' => ['sometimes', 'required'],
+                'paterno' => ['sometimes', 'required'],
+                'telefono' => ['sometimes', 'required'],
+                'correo' => ['sometimes', 'required'],
+            ];
+        }
     }
 }

@@ -21,8 +21,15 @@ class UpdateMenuItemMenuRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
-        ];
+        $method = $this->method();
+        if ($method == 'PUT') {
+            return [
+                'cantidad' => ['required'],
+            ];
+        } else {
+            return [
+                'cantidad' => ['sometimes', 'required'],
+            ];
+        }
     }
 }

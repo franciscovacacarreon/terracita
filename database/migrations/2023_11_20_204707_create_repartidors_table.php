@@ -15,7 +15,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_repartidor')->primary();
             $table->string('ci', 15);
             $table->string('licencia_conducir', 20);
-            $table->string('img_licencia', 250)->nullable();
+            $table->string('imagen', 250)->nullable();
             $table->tinyInteger('estado')->default(1);
             
             $table->foreign('id_repartidor')->references('id_persona')->on('persona');

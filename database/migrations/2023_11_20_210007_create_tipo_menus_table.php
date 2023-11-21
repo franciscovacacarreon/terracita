@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tipo_menu', function (Blueprint $table) {
-            $table->id('id_tipo');
+            $table->id('id_tipo_menu');
             $table->string('nombre', 50);
             $table->tinyInteger('estado')->default(1);
 

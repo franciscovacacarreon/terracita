@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Menu;
 use App\Http\Requests\StoreMenuRequest;
 use App\Http\Requests\UpdateMenuRequest;
+use App\Http\Resources\MenuCollection;
+use App\Http\Resources\MenuResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 
 class MenuController extends Controller
 {
@@ -13,7 +18,8 @@ class MenuController extends Controller
      */
     public function index()
     {
-        //
+        $data = Menu::where('estado', 1);
+        return new MenuCollection($data->get());
     }
 
     /**
@@ -29,7 +35,33 @@ class MenuController extends Controller
      */
     public function store(StoreMenuRequest $request)
     {
-        //
+        {
+            $response = [];
+            try {
+                //crear nuevo tipo menu
+                $data = Menu::create($request->all());
+                $newData = new MenuResource($data);
+                $response = [
+                    'message' => 'Registro insertado correctamente.',
+                    'status' => 200,
+                    'msg' => $newData
+                ];
+    
+            } catch (QueryException | ModelNotFoundException $e) {
+                $response = [
+                    'message' => 'Error al insertar el registro.',
+                    'status' => 500,
+                    'error' => $e
+                ];
+            } catch (\Exception $e) {
+                $response = [
+                    'message' => 'Error general al insertar el registro.',
+                    'status' => 500,
+                    'error' => $e
+                ];
+            }
+            return json_encode($response);
+        }
     }
 
     /**
@@ -37,7 +69,7 @@ class MenuController extends Controller
      */
     public function show(Menu $menu)
     {
-        //
+        return new MenuResource($menu);
     }
 
     /**
@@ -53,7 +85,31 @@ class MenuController extends Controller
      */
     public function update(UpdateMenuRequest $request, Menu $menu)
     {
-        //
+        $response = [];
+        try {
+
+            $menu->update($request->all());
+            
+            $response = [
+                'message' => 'Registro actualizado correctamente.',
+                'status' => 200,
+                'msg' => $menu
+            ];
+
+        } catch (QueryException | ModelNotFoundException $e) {
+            $response = [
+                'message' => 'Error en la BD al actualizar el registro.',
+                'status' => 500,
+                'error' => $e
+            ];
+        } catch (\Exception $e) {
+            $response = [
+                'message' => 'Error general al actualizar el registro.',
+                'status' => 500,
+                'error' => $e
+            ];
+        }
+        return json_encode($response);
     }
 
     /**
@@ -61,6 +117,30 @@ class MenuController extends Controller
      */
     public function destroy(Menu $menu)
     {
-        //
-    }
+        $response = [];
+        try {
+
+            $menu->estado = 0;
+            $menu->update();
+            $response = [
+                'message' => 'Registro eliminado correctamente.',
+                'status' => 200,
+                'msg' => $menu
+            ];
+
+        } catch (QueryException | ModelNotFoundException $e) {
+            $response = [
+                'message' => 'Error en la BD al eliminar el registro.',
+                'status' => 500,
+                'error' => $e
+            ];
+        } catch (\Exception $e) {
+            $response = [
+                'message' => 'Error general al eliminar el registro.',
+                'status' => 500,
+                'error' => $e
+            ];
+        }
+        return json_encode($response);
+        }
 }

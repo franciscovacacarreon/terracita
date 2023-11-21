@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Persona;
 use App\Http\Requests\StorePersonaRequest;
 use App\Http\Requests\UpdatePersonaRequest;
+use App\Http\Resources\PersonaCollection;
+use App\Http\Resources\PersonaResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 
 class PersonaController extends Controller
 {
@@ -13,7 +17,8 @@ class PersonaController extends Controller
      */
     public function index()
     {
-        //
+        $personas = Persona::where('estado', 1);
+        return new PersonaCollection($personas->get());
     }
 
     /**
@@ -29,7 +34,53 @@ class PersonaController extends Controller
      */
     public function store(StorePersonaRequest $request)
     {
-        //
+        {
+            $response = [];
+            try {
+                //crear nuevo tipo menu
+                $data = Persona::create($request->all());
+                $newData = new PersonaResource($data);
+
+                // Subir la imagen
+                $destinationPath = 'images/persona/cliente/';
+                $nombre_campo = 'imagen';
+                $this->uploadImage($request, $data, $nombre_campo, $destinationPath);
+
+                $response = [
+                    'message' => 'Registro insertado correctamente.',
+                    'status' => 200,
+                    'msg' => $newData
+                ];
+    
+            } catch (QueryException | ModelNotFoundException $e) {
+                $response = [
+                    'message' => 'Error al insertar el registro.',
+                    'status' => 500,
+                    'error' => $e
+                ];
+            } catch (\Exception $e) {
+                $response = [
+                    'message' => 'Error general al insertar el registro.',
+                    'status' => 500,
+                    'error' => $e
+                ];
+            }
+            return json_encode($response);
+        }
+    }
+
+    public function uploadImage($request, $data, $imagen, $destinationPath) 
+    {
+        if ($request->hasFile($imagen)) {
+            $file = $request->file($imagen);
+            $filename = time() . '-' . $data->getKey() . '.' . $file->getClientOriginalExtension();
+            $uploadSuccess = $file->move($destinationPath, $filename);
+
+            if ($uploadSuccess) {
+                $data->imagen = $destinationPath . $filename;
+                $data->save(); // Guardar los cambios en el modelo
+            }
+        }
     }
 
     /**
@@ -37,7 +88,7 @@ class PersonaController extends Controller
      */
     public function show(Persona $persona)
     {
-        //
+        return new PersonaResource($persona);
     }
 
     /**
@@ -45,7 +96,7 @@ class PersonaController extends Controller
      */
     public function edit(Persona $persona)
     {
-        //
+        
     }
 
     /**
@@ -53,7 +104,37 @@ class PersonaController extends Controller
      */
     public function update(UpdatePersonaRequest $request, Persona $persona)
     {
-        //
+        $response = [];
+        try {
+            $persona->update($request->all());
+            
+
+            // Subir la imagen, falta eliminar la imagen anterior
+            $destinationPath = 'images/persona/cliente/';
+            $nombre_campo = 'imagen';
+            $this->uploadImage($request, $persona, $nombre_campo, $destinationPath);
+
+            
+            $response = [
+                'message' => 'Registro actualizado correctamente.',
+                'status' => 200,
+                'msg' => $persona
+            ];
+
+        } catch (QueryException | ModelNotFoundException $e) {
+            $response = [
+                'message' => 'Error en la BD al actualizar el registro.',
+                'status' => 500,
+                'error' => $e
+            ];
+        } catch (\Exception $e) {
+            $response = [
+                'message' => 'Error general al actualizar el registro.',
+                'status' => 500,
+                'error' => $e
+            ];
+        }
+        return json_encode($response);
     }
 
     /**
@@ -61,6 +142,29 @@ class PersonaController extends Controller
      */
     public function destroy(Persona $persona)
     {
-        //
+        $response = [];
+        try {
+
+            $persona->update(['estado' => 0]);
+            $response = [
+                'message' => 'Registro eliminado correctamente.',
+                'status' => 200,
+                'msg' => $persona
+            ];
+
+        } catch (QueryException | ModelNotFoundException $e) {
+            $response = [
+                'message' => 'Error en la BD al eliminar el registro.',
+                'status' => 500,
+                'error' => $e
+            ];
+        } catch (\Exception $e) {
+            $response = [
+                'message' => 'Error general al eliminar el registro.',
+                'status' => 500,
+                'error' => $e
+            ];
+        }
+        return json_encode($response);
     }
 }

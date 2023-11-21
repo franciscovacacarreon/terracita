@@ -11,7 +11,7 @@ class UpdateMenuRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +21,15 @@ class UpdateMenuRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
-        ];
+        $method = $this->method();
+        if ($method == 'PUT') {
+            return [
+                'dia' => ['required'],
+            ];
+        } else {
+            return [
+                'dia' => ['sometimes', 'required'],
+            ];
+        }
     }
 }
