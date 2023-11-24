@@ -26,12 +26,14 @@ class UpdateItemMenuRequest extends FormRequest
             return [
                 'nombre' => ['required'],
                 'precio' => ['required'],
+                'descripcion' => ['required'],
                 'id_tipo_menu' => ['required'],
             ];
         } else {
             return [
                 'nombre' => ['sometimes', 'required'], 
                 'precio' => ['sometimes', 'required'], 
+                'descripcion' => ['required'],
                 'id_tipo_menu' => ['sometimes', 'required'], 
             ];
         }

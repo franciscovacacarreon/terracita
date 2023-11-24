@@ -15,6 +15,12 @@ use PhpParser\Node\Stmt\Return_;
 class ItemMenuController extends Controller
 {
 
+    #NORMAL
+    public function getIndex() {
+        return view('terracita.item_menu.index');
+    }
+
+
     #API REST
 
     public function index()

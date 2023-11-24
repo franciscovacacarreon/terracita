@@ -24,6 +24,7 @@ class StoreItemMenuRequest extends FormRequest
         return [
             'nombre' => ['required'],
             'precio' => ['required'],
+            'descripcion' => ['required'],
             'id_tipo_menu' => ['required'],
         ];
     }

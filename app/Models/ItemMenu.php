@@ -13,6 +13,7 @@ class ItemMenu extends Model
     protected $fillable = [
         'nombre',
         'precio',
+        'descripcion',
         'id_tipo_menu',
         'estado'
     ];

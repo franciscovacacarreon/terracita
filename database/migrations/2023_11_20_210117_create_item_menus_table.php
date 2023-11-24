@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('id_item_menu');
             $table->string('nombre', 30);
             $table->decimal('precio', 10, 2);
+            $table->string('descripcion', 250);
             $table->string('imagen', 250)->nullable();
             $table->tinyInteger('estado')->default(1);
             
