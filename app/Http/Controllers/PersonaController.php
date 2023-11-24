@@ -37,7 +37,7 @@ class PersonaController extends Controller
         {
             $response = [];
             try {
-                //crear nuevo tipo menu
+
                 $data = Persona::create($request->all());
                 $newData = new PersonaResource($data);
 
@@ -107,13 +107,11 @@ class PersonaController extends Controller
         $response = [];
         try {
             $persona->update($request->all());
-            
 
             // Subir la imagen, falta eliminar la imagen anterior
             $destinationPath = 'images/persona/cliente/';
             $nombre_campo = 'imagen';
             $this->uploadImage($request, $persona, $nombre_campo, $destinationPath);
-
             
             $response = [
                 'message' => 'Registro actualizado correctamente.',

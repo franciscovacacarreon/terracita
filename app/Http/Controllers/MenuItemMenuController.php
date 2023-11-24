@@ -68,7 +68,7 @@ class MenuItemMenuController extends Controller
         {
             $response = [];
             try {
-                //crear nuevo tipo menu
+
                 $array = [];
                 $i = 0;
                 foreach ($items as $item) {

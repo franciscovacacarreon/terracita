@@ -15,9 +15,14 @@ use PhpParser\Node\Stmt\TryCatch;
 
 class TipoMenuController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    
+    #NORMAL
+    public function getIndex() {
+        return view('terracita.tipo_menu.index');
+    }
+
+
+    #API REST
     public function index(Request $request)
     {
         $filter = new TipoMenuFilter();
@@ -27,17 +32,11 @@ class TipoMenuController extends Controller
         // return new TipoMenuCollection($tipoMenu->paginate()->appends($request->query()));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreTipoMenuRequest $request)
     {
         $response = [];
@@ -67,25 +66,16 @@ class TipoMenuController extends Controller
         return json_encode($response);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(TipoMenu $tipoMenu)
     {
         return new TipoMenuResource($tipoMenu);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(TipoMenu $tipoMenu)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateTipoMenuRequest $request, TipoMenu $tipoMenu)
     {
         $success = $tipoMenu->update($request->all());
@@ -105,9 +95,6 @@ class TipoMenuController extends Controller
         return json_encode($response);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(TipoMenu $tipoMenu)
     {
         $response = [];

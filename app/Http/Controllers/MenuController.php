@@ -38,7 +38,7 @@ class MenuController extends Controller
         {
             $response = [];
             try {
-                //crear nuevo tipo menu
+
                 $data = Menu::create($request->all());
                 $newData = new MenuResource($data);
                 $response = [

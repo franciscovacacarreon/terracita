@@ -14,31 +14,25 @@ use PhpParser\Node\Stmt\Return_;
 
 class ItemMenuController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
+    #API REST
+
     public function index()
     {
         $itemMenu = ItemMenu::where('estado', 1);
         return new ItemMenuCollection($itemMenu->get());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreItemMenuRequest $request)
     {
         $response = [];
         try {
-            //crear nuevo tipo menu
+            
             $data = ItemMenu::create($request->all());
             $newData = new ItemMenuResource($data);
 
@@ -84,25 +78,16 @@ class ItemMenuController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(ItemMenu $itemMenu)
     {
         return new ItemMenuResource($itemMenu);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(ItemMenu $itemMenu)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateItemMenuRequest $request, ItemMenu $itemMenu)
     {
         $response = [];
@@ -138,9 +123,6 @@ class ItemMenuController extends Controller
         return json_encode($response);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(ItemMenu $itemMenu)
     {
         $response = [];

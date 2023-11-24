@@ -1,7 +1,3 @@
-@php
-    $rutaAbsoluta = url()->to('/');
-@endphp
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -32,18 +28,23 @@
     <!-- Custom Theme Style -->
     <link href="{{asset('/gentella/build/css/custom.min.css')}}" rel="stylesheet">
 
+    {{-- agregado --}}
+    {{-- <link rel="stylesheet" href="{{asset('/bootstrap_table/css/font-awesome.all.min.css')}}" integrity="sha512-..." crossorigin="anonymous" /> --}}
+    {{-- <link href="{{asset('/bootstrap_table/css/bootstrap.min.css')}}" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"> --}}
+    {{-- <link rel="stylesheet" href="{{asset('/bootstrap_table/css/bootstrap-icons.css')}}"> --}}
+    {{-- <link rel="stylesheet" href="{{asset('/bootstrap_table/css/bootstrap-table.min.css')}}"> --}}
+
     @yield('css')
 
   </head>
 
   <body class="nav-md">
-    {{$rutaAbsoluta}}
     <div class="container body">
       <div class="main_container">
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>Mi Terracita!</span></a>
+              <a href="index.html" class="site_title"><i class="fa fa-show"></i> <span>Mi Terracita!</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -67,11 +68,12 @@
               <div class="menu_section">
                 <h3>General</h3>
                 <ul class="nav side-menu">
-                  <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
+                  <li>
+                    <a>
+                      <i class="fas fa-utensils"></i> Items Menu <span class="fa fa-chevron-down"></span>
+                    </a>
                     <ul class="nav child_menu">
-                      <li><a href="index.html">Dashboard</a></li>
-                      <li><a href="index2.html">Dashboard2</a></li>
-                      <li><a href="index3.html">Dashboard3</a></li>
+                      <li><a href="">Tipo item menu</a></li>
                     </ul>
                 </ul>
               </div>
@@ -256,6 +258,17 @@
 
 <!-- Custom Theme Scripts -->
 <script src="{{asset('/gentella/build/js/custom.min.js')}}"></script>
+
+{{-- bootstrap table --}}
+{{-- <script src="{{asset('/bootstrap_table/js/bootstrap.bundle.min.js')}}" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="{{asset('/bootstrap_table/js/bootstrap-table.min.js')}}"></script> --}}
+{{-- para imprimir --}}
+{{-- <script src="{{asset('/bootstrap_table/js/bootstrap-table-print.min.js')}}"></script> --}}
+{{-- para exportar --}}
+{{-- <script src="{{asset('/bootstrap_table/js/tableExport.min.js')}}"></script> --}}
+ {{-- <script src="{{asset('/bootstrap_table/js/jspdf.min.js')}}"></script> --}}
+{{-- <script src="{{asset('/bootstrap_table/js/jspdf.plugin.autotable.js')}}"></script>  --}}
+{{-- <script src="{{asset('/bootstrap_table/js/bootstrap-table-export.min.js')}}"></script>  --}}
 
 @yield('js')
 

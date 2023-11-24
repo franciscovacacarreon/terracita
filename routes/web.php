@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminGentella;
 use App\Http\Controllers\ClienteWeb;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\TipoMenuController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,5 +32,10 @@ Route::middleware([
 });
 
 
-Route::get('admin-gentella', [AdminGentella::class, 'index']);
-Route::get('admin/cliente-web', [ClienteWeb::class, 'index']);
+// Route::get('admin', [AdminGentella::class, 'index']);
+
+Route::get('cliente-web', [ClienteWeb::class, 'index']);
+
+Route::controller(TipoMenuController::class)->group(function(){
+    Route::get('/tipo-menu', 'getIndex');
+});
