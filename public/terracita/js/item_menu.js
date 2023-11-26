@@ -1,9 +1,10 @@
 let iteMenu = [];
 let tipoMenu = [];
-let table = $("#tabla-tipo-menu");
+let table = $("#tabla-item-menu");
 
 $(document).ready( () => {
     cargarItemMenu();
+    cargarTipoMenu();
 });
 
 $("#btn-nuevo-item-menu").click(() => {
@@ -16,6 +17,19 @@ $("#guardar-item-menu").click(() => {
         validar($("#descripcion"))) {
         saveItemMenu();
     } 
+});
+
+$(document).on("click", ".edit", function() {
+    const id_tipo_menu = $(this).attr("data-edit");
+
+    tipoMenu.forEach(element => {
+      if(element.id_tipo_menu == id_tipo_menu ) {
+        $("#nombre-edit").val(element.nombre);
+      }
+    });
+
+    $("#actualizar-item-menu").attr("name", id_tipo_menu);
+    $("#modal-editar-item-menu").modal('show');
 });
 
 function saveItemMenu() {
@@ -42,8 +56,21 @@ function saveItemMenu() {
         contentType: false,
         processData: false,
         dataType: "json",
-        success: function (data) {
-            console.log(data); 
+        success: function (response) {
+            console.log(response);
+            const status = response.status;
+            if (status == 200) {
+                alertify.alert(
+                    "Correcto",
+                    "¡Súper, se inserto correctamente!"
+                );
+                limpiarInput();
+            } else {
+                alertify.alert(
+                    "Correcto",
+                    "Error, ocurrio un problema!"
+                );
+            }
         },
         error: function (error) {
             console.error('Error al enviar la solicitud:', error);
@@ -52,14 +79,16 @@ function saveItemMenu() {
 }
 
 function cargarItemMenu() {
-    const url = rutaApiRest + "tipo-menu";
+    const url = rutaApiRest + "item-menu";
     $.ajax({
         url: url,
         type: "GET",
         dataType: "json",
         success: function (response) {
-            tipoMenu = response.data;
-            cargarSelect(tipoMenu);
+            console.log(response);
+            iteMenu = response.data;
+            cargarAcciones(iteMenu);
+            table.bootstrapTable('load', iteMenu);
 
         },
         error: function (data, textStatus, jqXHR, error) {
@@ -72,8 +101,20 @@ function cargarItemMenu() {
     });
 }
 
+function cargarAcciones(data) {
+    data.forEach(element => {
+        element.imagen_td = `<img src="${ rutaLocal + element.imagen}" class="imagen">`;
+        element.acciones = 
+                `
+                <a data-edit="${element.id_tipo_menu}" class="btn btn-warning btn-sm edit" title="Editar"><i class="bi bi-pencil"></i></a>
+                <a data-delete="${element.id_tipo_menu}" class="btn btn-danger btn-sm delete" title="Borrar"><i class="fa fa-trash"></i></a>
+                `;
+    });
+}
+
 function cargarSelect(array, id = 0) {
     const select = $("#id_tipo_menu");
+    select.empty();
     array.forEach(element => {
         let selected = "";
         if (id == element.id_tipo_menu) {
@@ -85,33 +126,15 @@ function cargarSelect(array, id = 0) {
     });
 }
 
-
-function saveItemTipoMenu() {
-    const data = {};
-    data.nombre = $("#nombre").val();
+function cargarTipoMenu() {
     const url = rutaApiRest + "tipo-menu";
     $.ajax({
         url: url,
-        type: "POST",
+        type: "GET",
         dataType: "json",
-        data: data,
         success: function (response) {
-            console.log(response);
-            const status = response.status;
-            if (status == 200) {
-                alertify.alert(
-                    "Correcto",
-                    "¡Súper, se inserto correctamente!"
-                );
-                $("#nombre").val("");
-                $("#modal-nuevo-tipo-menu").modal('hide');
-                cargarItemMenu();
-            } else {
-                alertify.alert(
-                    "Correcto",
-                    "Error, ocurrio un problema!"
-                );
-            }
+            tipoMenu = response.data;
+            cargarSelect(tipoMenu);
         },
         error: function (data, textStatus, jqXHR, error) {
             console.log(data);
@@ -138,5 +161,18 @@ function mostrarVistaPrevia() {
         };
 
         lector.readAsDataURL(archivo);
+    } else {
+        vistaPrevia.style.display = 'none';
+        vistaPrevia.src = '';  
     }
+}
+
+function limpiarInput() {
+    $("#nombre").val("");
+    $("#precio").val("");
+    $("#descripcion").val("");
+    $("#id_tipo_menu").val("0");
+    $("#imagen").val("");
+    $("#modal-nuevo-tipo-menu").modal('hide');
+    mostrarVistaPrevia();
 }

@@ -2,7 +2,7 @@ let tipoMenu = [];
 let table = $("#tabla-tipo-menu");
 
 $(document).ready( () => {
-    cargarItemMenu();
+    cargarTipoMenu();
 });
 
 $("#btn-nuevo-tipo-menu").click(() => {
@@ -36,7 +36,7 @@ $(document).on("click", ".edit", function() {
 
 $(document).on("click", ".delete", function() {
     const id_tipo_menu = $(this).attr("data-delete");
-    alertify.confirm("¿Está seguro de eliminar este registro?", "Se borrará el precio por kilómetro",
+    alertify.confirm("¿Está seguro de eliminar este registro?", "Se borrará el registro",
     function() {
         deleteItemTipoMenu(id_tipo_menu);
     },
@@ -45,7 +45,7 @@ $(document).on("click", ".delete", function() {
     });
 });
 
-function cargarItemMenu() {
+function cargarTipoMenu() {
     const url = rutaApiRest + "tipo-menu";
     $.ajax({
         url: url,
@@ -93,7 +93,7 @@ function saveItemTipoMenu() {
                 );
                 $("#nombre").val("");
                 $("#modal-nuevo-tipo-menu").modal('hide');
-                cargarItemMenu();
+                cargarTipoMenu();
             } else {
                 alertify.alert(
                     "Correcto",
@@ -131,7 +131,7 @@ function updateItemTipoMenu(id) {
                 );
                 $("#nombre-edit").val("");
                 $("#modal-editar-tipo-menu").modal('hide');
-                cargarItemMenu();
+                cargarTipoMenu();
             } else {
                 alertify.alert(
                     "Correcto",
@@ -163,7 +163,7 @@ function deleteItemTipoMenu(id) {
                     "Correcto",
                     "¡Súper, se eliminó correctamente!"
                 );
-                cargarItemMenu();
+                cargarTipoMenu();
             } else {
                 alertify.alert(
                     "Correcto",
