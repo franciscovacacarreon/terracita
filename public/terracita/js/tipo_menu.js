@@ -23,12 +23,11 @@ $(document).on("click", "#actualizar-tipo-menu", function(e) {
 $(document).on("click", ".edit", function() {
     const id_tipo_menu = $(this).attr("data-edit");
 
-    tipoMenu.forEach(element => {
-      if(element.id_tipo_menu == id_tipo_menu ) {
-        $("#nombre-edit").val(element.nombre);
-      }
+    const tipoMenuEdit = tipoMenu.find((element) => {
+        return element.id_tipo_menu == id_tipo_menu;
     });
 
+    $("#nombre-edit").val(tipoMenuEdit.nombre);
     $("#actualizar-tipo-menu").attr("name", id_tipo_menu);
     $("#modal-editar-tipo-menu").modal('show');
 });
