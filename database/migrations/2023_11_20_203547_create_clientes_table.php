@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('cliente', function (Blueprint $table) {
             $table->unsignedBigInteger('id_cliente')->primary();
             $table->decimal('descuento', 10, 2);
-            $table->decimal('compras_realizadas', 10, 2);
+            $table->decimal('compras_realizadas', 10, 2)->default(0);
             $table->tinyInteger('estado')->default(1);
 
             $table->foreign('id_cliente')

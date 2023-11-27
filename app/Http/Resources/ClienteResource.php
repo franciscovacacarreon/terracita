@@ -14,6 +14,14 @@ class ClienteResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+
+        $allAttributes = $this->resource->toArray();
+
+        $additionalFields = [
+            
+        ];
+
+        $mergedFields = array_merge($allAttributes, $additionalFields);
+        return $mergedFields;
     }
 }

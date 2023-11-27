@@ -11,6 +11,7 @@ class Persona extends Model
     protected $table = 'persona';
     protected $primaryKey = 'id_persona';
     protected $fillable = [
+        'ci',
         'nombre',
         'paterno',
         'materno',
@@ -19,6 +20,7 @@ class Persona extends Model
         'correo',
         'imagen',
         'estado',
+        'id_persona',
     ];
     public $timestamps = true;
 }

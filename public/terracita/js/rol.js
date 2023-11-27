@@ -1,44 +1,44 @@
 let tipoMenu = [];
-let table = $("#tabla-tipo-menu");
-let tableEliminados = $("#tabla-tipo-menu-eliminados");
+let table = $("#tabla-rol");
+let tableEliminados = $("#tabla-rol-eliminados");
 
 $(document).ready( () => {
-    cargarTipoMenu();
+    cargarRol();
 });
 
-$("#btn-nuevo-tipo-menu").click(() => {
-    $("#modal-nuevo-tipo-menu").modal('show');
+$("#btn-nuevo-rol").click(() => {
+    $("#modal-nuevo-rol").modal('show');
 });
 
-$("#guardar-tipo-menu").click(() => {
+$("#guardar-rol").click(() => {
     if (validar($("#nombre"))) {
-        saveItemTipoMenu();
+        saveRol();
     } 
 });
 
-$(document).on("click", "#actualizar-tipo-menu", function(e) {
-    const id_tipo_menu = this.name;
-    updateItemTipoMenu(id_tipo_menu);
+$(document).on("click", "#actualizar-rol", function(e) {
+    const id_rol = this.name;
+    updateRol(id_rol);
 });
 
 $(document).on("click", ".edit", function() {
-    const id_tipo_menu = $(this).attr("data-edit");
+    const id_rol = $(this).attr("data-edit");
 
-    const tipoMenuEdit = tipoMenu.find((element) => {
-        return element.id_tipo_menu == id_tipo_menu;
+    const rolEdit = tipoMenu.find((element) => {
+        return element.id_rol == id_rol;
     });
 
-    $("#nombre-edit").val(tipoMenuEdit.nombre);
-    $("#actualizar-tipo-menu").attr("name", id_tipo_menu);
-    $("#modal-editar-tipo-menu").modal('show');
+    $("#nombre-edit").val(rolEdit.nombre);
+    $("#actualizar-rol").attr("name", id_rol);
+    $("#modal-editar-rol").modal('show');
 });
 
 
 $(document).on("click", ".delete", function() {
-    const id_tipo_menu = $(this).attr("data-delete");
+    const id_rol = $(this).attr("data-delete");
     alertify.confirm("¿Está seguro de eliminar este registro?", "Se borrará el registro",
     function() {
-        deleteItemTipoMenu(id_tipo_menu);
+        deleteRol(id_rol);
     },
     function() {
         alertify.error('Cancelado');
@@ -46,18 +46,18 @@ $(document).on("click", ".delete", function() {
 });
 
 $(document).on("click", ".restore", function() {
-    const id_tipo_menu = $(this).attr("data-restore");
+    const id_rol = $(this).attr("data-restore");
     alertify.confirm("¿Está seguro de restaurar este registro?", "Se restaurará el registro",
     function() {
-        restoreItemTipoMenu(id_tipo_menu);
+        restoreRol(id_rol);
     },
     function() {
         alertify.error('Cancelado');
     });
 });
 
-function cargarTipoMenu() {
-    const url = rutaApiRest + "tipo-menu";
+function cargarRol() {
+    const url = rutaApiRest + "rol";
     $.ajax({
         url: url,
         type: "GET",
@@ -67,8 +67,8 @@ function cargarTipoMenu() {
             tipoMenu.forEach(element => {
                 element.acciones = 
                         `
-                        <a data-edit="${element.id_tipo_menu}" class="btn btn-warning btn-sm edit" title="Editar"><i class="bi bi-pencil"></i></a>
-                        <a data-delete="${element.id_tipo_menu}" class="btn btn-danger btn-sm delete" title="Borrar"><i class="fa fa-trash"></i></a>
+                        <a data-edit="${element.id_rol}" class="btn btn-warning btn-sm edit" title="Editar"><i class="bi bi-pencil"></i></a>
+                        <a data-delete="${element.id_rol}" class="btn btn-danger btn-sm delete" title="Borrar"><i class="fa fa-trash"></i></a>
                         `;
             });
 
@@ -83,13 +83,13 @@ function cargarTipoMenu() {
         }
 
     });
-    cargarTipoMenuEliminados();
+    cargarRolEliminados();
 }
 
-function saveItemTipoMenu() {
+function saveRol() {
     const data = {};
     data.nombre = $("#nombre").val();
-    const url = rutaApiRest + "tipo-menu";
+    const url = rutaApiRest + "rol";
     $.ajax({
         url: url,
         type: "POST",
@@ -105,8 +105,8 @@ function saveItemTipoMenu() {
                 }, 1000);
 
                 $("#nombre").val("");
-                $("#modal-nuevo-tipo-menu").modal('hide');
-                cargarTipoMenu();
+                $("#modal-nuevo-rol").modal('hide');
+                cargarRol();
             } else {
                 alertify.alert(
                     "Correcto",
@@ -125,10 +125,10 @@ function saveItemTipoMenu() {
 }
 
 
-function updateItemTipoMenu(id) {
+function updateRol(id) {
     const data = {};
     data.nombre = $("#nombre-edit").val();
-    const url = rutaApiRest + "tipo-menu/" + id;
+    const url = rutaApiRest + "rol/" + id;
     $.ajax({
         url: url,
         type: "PUT",
@@ -147,8 +147,8 @@ function updateItemTipoMenu(id) {
                 }, 1000);
 
                 $("#nombre-edit").val("");
-                $("#modal-editar-tipo-menu").modal('hide');
-                cargarTipoMenu();
+                $("#modal-editar-rol").modal('hide');
+                cargarRol();
             } else {
                 alertify.alert(
                     "Correcto",
@@ -166,8 +166,8 @@ function updateItemTipoMenu(id) {
     });
 }
 
-function deleteItemTipoMenu(id) {
-    const url = rutaApiRest + "tipo-menu/" + id;
+function deleteRol(id) {
+    const url = rutaApiRest + "rol/" + id;
     $.ajax({
         url: url,
         type: "DELETE",
@@ -184,7 +184,7 @@ function deleteItemTipoMenu(id) {
                     alerta.close();
                 }, 1000);
 
-                cargarTipoMenu();
+                cargarRol();
             } else {
                 alertify.alert(
                     "Correcto",
@@ -202,8 +202,8 @@ function deleteItemTipoMenu(id) {
     });
 }
 
-function cargarTipoMenuEliminados() {
-    const url = rutaApiRest + "tipo-menu-eliminados";
+function cargarRolEliminados() {
+    const url = rutaApiRest + "rol-eliminados";
     $.ajax({
         url: url,
         type: "GET",
@@ -213,7 +213,7 @@ function cargarTipoMenuEliminados() {
             console.log(response);
             data.forEach(element => {
                 element.acciones = 
-                        `<a data-restore="${element.id_tipo_menu}" class="btn btn-info btn-sm restore" title="Resturar"><i class="bi bi-arrow-bar-up"></i></a>`;
+                        `<a data-restore="${element.id_rol}" class="btn btn-info btn-sm restore" title="Resturar"><i class="bi bi-arrow-bar-up"></i></a>`;
             });
 
             tableEliminados.bootstrapTable('load', data);
@@ -229,8 +229,8 @@ function cargarTipoMenuEliminados() {
     });
 }
 
-function restoreItemTipoMenu(id) {
-    const url = rutaApiRest + "tipo-menu-restaurar/" + id;
+function restoreRol(id) {
+    const url = rutaApiRest + "rol-restaurar/" + id;
     $.ajax({
         url: url,
         type: "GET",
@@ -247,8 +247,8 @@ function restoreItemTipoMenu(id) {
                     alerta.close();
                 }, 1000);
 
-                cargarTipoMenu();
-                cargarTipoMenuEliminados();
+                cargarRol();
+                cargarRolEliminados();
             } else {
                 alertify.alert(
                     "Correcto",

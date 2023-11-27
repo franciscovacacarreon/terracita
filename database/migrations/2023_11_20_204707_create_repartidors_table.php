@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('repartidor', function (Blueprint $table) {
             $table->unsignedBigInteger('id_repartidor')->primary();
-            $table->string('ci', 15);
             $table->string('licencia_conducir', 20);
             $table->string('imagen', 250)->nullable();
             $table->tinyInteger('estado')->default(1);

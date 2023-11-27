@@ -104,35 +104,10 @@ class PersonaController extends Controller
      */
     public function update(UpdatePersonaRequest $request, Persona $persona)
     {
-        $response = [];
-        try {
-            $persona->update($request->all());
-
-            // Subir la imagen, falta eliminar la imagen anterior
-            $destinationPath = 'images/persona/cliente/';
-            $nombre_campo = 'imagen';
-            $this->uploadImage($request, $persona, $nombre_campo, $destinationPath);
-            
-            $response = [
-                'message' => 'Registro actualizado correctamente.',
-                'status' => 200,
-                'msg' => $persona
-            ];
-
-        } catch (QueryException | ModelNotFoundException $e) {
-            $response = [
-                'message' => 'Error en la BD al actualizar el registro.',
-                'status' => 500,
-                'error' => $e
-            ];
-        } catch (\Exception $e) {
-            $response = [
-                'message' => 'Error general al actualizar el registro.',
-                'status' => 500,
-                'error' => $e
-            ];
-        }
-        return json_encode($response);
+        // $response = [];
+        return $request->all();
+        
+        // return json_encode($response);
     }
 
     /**

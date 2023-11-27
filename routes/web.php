@@ -1,9 +1,13 @@
 <?php
 
 use App\Http\Controllers\AdminGentella;
+use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ClienteWeb;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\ItemMenuController;
+use App\Http\Controllers\RepartidorController;
+use App\Http\Controllers\RolController;
 use App\Http\Controllers\TipoMenuController;
 use Illuminate\Support\Facades\Route;
 
@@ -42,3 +46,7 @@ Route::controller(TipoMenuController::class)->group(function(){
 });
 
 Route::get('item-menu', [ItemMenuController::class, 'getIndex']);
+Route::get('cliente', [ClienteController::class, 'getIndex']);
+Route::get('empleado', [EmpleadoController::class, 'getIndex']);
+Route::get('repartidor', [RepartidorController::class, 'getIndex']);
+Route::get('rol', [RolController::class, 'getIndex']);

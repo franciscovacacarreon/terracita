@@ -21,7 +21,6 @@ class TipoMenuController extends Controller
         return view('terracita.tipo_menu.index');
     }
 
-
     #API REST
     public function index(Request $request)
     {
@@ -30,11 +29,6 @@ class TipoMenuController extends Controller
         $tipoMenu = TipoMenu::where($queryItems)->where('estado', 1);
         return new TipoMenuCollection($tipoMenu->get());
         // return new TipoMenuCollection($tipoMenu->paginate()->appends($request->query()));
-    }
-
-    public function create()
-    {
-        
     }
 
     public function store(StoreTipoMenuRequest $request)
@@ -71,11 +65,6 @@ class TipoMenuController extends Controller
         return new TipoMenuResource($tipoMenu);
     }
 
-    public function edit(TipoMenu $tipoMenu)
-    {
-        //
-    }
-
     public function update(UpdateTipoMenuRequest $request, TipoMenu $tipoMenu)
     {
         $success = $tipoMenu->update($request->all());
@@ -109,6 +98,32 @@ class TipoMenuController extends Controller
         } catch (\Exception $e) {
             $response = [
                 'message' => 'La error al eliminar',
+                'status' => 500,
+                'error' => $e
+            ];
+        }
+        return json_encode($response);
+    }
+
+    public function eliminados()
+    {
+        $tipoMenuEliminados = TipoMenu::where('estado', 0);
+        return new TipoMenuCollection($tipoMenuEliminados->get()); 
+    }
+
+    public function restaurar(TipoMenu $tipoMenu) {
+        $response = [];
+        try {
+            $tipoMenu->update(['estado' => 1]);
+
+            $response = [
+                'message' => 'Se restauró correctamente.',
+                'status' => 200,
+                'msg' => $tipoMenu
+            ];
+        } catch (\Exception $e) {
+            $response = [
+                'message' => 'La error al resturar.',
                 'status' => 500,
                 'error' => $e
             ];

@@ -24,10 +24,10 @@ class UpdatePersonaRequest extends FormRequest
         $method = $this->method();
         if ($method == 'PUT') {
             return [
-                'nombre' => ['required'],
-                'paterno' => ['required'],
-                'telefono' => ['required'],
-                'correo' => ['required'],
+                // 'nombre' => ['required'],
+                // 'paterno' => ['required'],
+                // 'telefono' => ['required'],
+                // 'correo' => ['required'],
             ];
         } else {
             return [

@@ -320,6 +320,38 @@ return [
                 ],
             ],
         ],
+        [
+            'text'    => 'Personas',
+            'icon'    => 'fas fa-fw fa-share',
+            'submenu' => [
+                [
+                    'text' => 'Clientes',
+                    'url'  => 'cliente',
+                ],
+                [
+                    'text' => 'Empleados',
+                    'url'  => 'empleado',
+                ],
+                [
+                    'text' => 'Repartidores',
+                    'url'  => 'repartidor',
+                ],
+            ],
+        ],
+        [
+            'text'    => 'Usuarios',
+            'icon'    => 'fas fa-fw fa-share',
+            'submenu' => [
+                [
+                    'text' => 'Usuarios',
+                    'url'  => 'usuario',
+                ],
+                [
+                    'text' => 'Roles',
+                    'url'  => 'rol',
+                ],
+            ],
+        ],
     ],
 
     /*
