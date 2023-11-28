@@ -9,6 +9,7 @@ use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\RepartidorController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\TipoMenuController;
+use App\Http\Controllers\TipoVehiculoController;
 use App\Models\TipoMenu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -67,5 +68,10 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers'], function
     #Roles
     Route::apiResource('rol', RolController::class);
     Route::get('rol-eliminados', [RolController::class, 'eliminados']);
-    Route::get('rol-restaurar/{tipoMenu}', [RolController::class, 'restaurar']);
+    Route::get('rol-restaurar/{rol}', [RolController::class, 'restaurar']);
+
+    #Tipo Vehiculo
+    Route::apiResource('tipo-vehiculo', TipoVehiculoController::class);
+    Route::get('tipo-vehiculo-eliminados', [TipoVehiculoController::class, 'eliminados']);
+    Route::get('tipo-vehiculo-restaurar/{tipoVehiculo}', [TipoVehiculoController::class, 'restaurar']);
 });

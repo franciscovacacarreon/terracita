@@ -5,62 +5,123 @@ namespace App\Http\Controllers;
 use App\Models\TipoVehiculo;
 use App\Http\Requests\StoreTipoVehiculoRequest;
 use App\Http\Requests\UpdateTipoVehiculoRequest;
+use App\Http\Resources\TipoVehiculoCollection;
+use App\Http\Resources\TipoVehiculoResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 
 class TipoVehiculoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    #NORMAL
+    public function getIndex()
+    {
+        return view('terracita.tipo_vehiculo.index');
+    }
+
+    #API REST
     public function index()
     {
-        //
+        $roles = TipoVehiculo::where('estado', 1);
+        return new TipoVehiculoCollection($roles->get());    
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreTipoVehiculoRequest $request)
     {
-        //
+        $response = [];
+        try {
+
+            $tipoVehiculo = TipoVehiculo::create($request->all());
+            $newTipoVehiculo = new TipoVehiculoResource($tipoVehiculo);
+            $response = [
+                'message' => 'Registro insertado correctamente.',
+                'status' => 200,
+                'msg' => $newTipoVehiculo
+            ];
+        } catch (QueryException | ModelNotFoundException $e) {
+            $response = [
+                'message' => 'Error al insertar el registro.',
+                'status' => 500,
+                'error' => $e
+            ];
+        } catch (\Exception $e) {
+            $response = [
+                'message' => 'Error general al insertar el registro.',
+                'status' => 500,
+                'error' => $e
+            ];
+        }
+        return response()->json($response);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(TipoVehiculo $tipoVehiculo)
     {
-        //
+        return new TipoVehiculoResource($tipoVehiculo);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(TipoVehiculo $tipoVehiculo)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateTipoVehiculoRequest $request, TipoVehiculo $tipoVehiculo)
     {
-        //
+        $success = $tipoVehiculo->update($request->all());
+        $response = [];
+        if ($success) {
+            $response = [
+                'message' => 'La actualización fue exitosa',
+                'status' => 200,
+                'msg' => $tipoVehiculo
+            ];
+        } else {
+            $response = [
+                'message' => 'La actualización falló',
+                'status' => 500
+            ];
+        }
+        return response()->json($response);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(TipoVehiculo $tipoVehiculo)
     {
-        //
+        $response = [];
+        try {
+            $tipoVehiculo->update(['estado' => 0]);
+
+            $response = [
+                'message' => 'Se eliminó correctamente.',
+                'status' => 200,
+                'msg' => $tipoVehiculo
+            ];
+        } catch (\Exception $e) {
+            $response = [
+                'message' => 'La error al eliminar',
+                'status' => 500,
+                'error' => $e
+            ];
+        }
+        return response()->json($response);
+    }
+
+    public function eliminados()
+    {
+        $rolEliminados = TipoVehiculo::where('estado', 0);
+        return new TipoVehiculoCollection($rolEliminados->get());
+    }
+
+    public function restaurar(TipoVehiculo $tipoVehiculo)
+    {
+        $response = [];
+        try {
+            $tipoVehiculo->update(['estado' => 1]);
+
+            $response = [
+                'message' => 'Se restauró correctamente.',
+                'status' => 200,
+                'msg' => $tipoVehiculo
+            ];
+        } catch (\Exception $e) {
+            $response = [
+                'message' => 'La error al resturar.',
+                'status' => 500,
+                'error' => $e
+            ];
+        }
+        return response()->json($response);
     }
 }

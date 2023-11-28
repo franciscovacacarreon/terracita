@@ -352,6 +352,20 @@ return [
                 ],
             ],
         ],
+        [
+            'text'    => 'vehiculos',
+            'icon'    => 'fas fa-fw fa-share',
+            'submenu' => [
+                [
+                    'text' => 'Vehiculos',
+                    'url'  => 'vehiculo',
+                ],
+                [
+                    'text' => 'Tipo Vehiculos',
+                    'url'  => 'tipo-vehiculo',
+                ],
+            ],
+        ],
     ],
 
     /*

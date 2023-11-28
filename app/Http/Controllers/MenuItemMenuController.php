@@ -37,7 +37,7 @@ class MenuItemMenuController extends Controller
         {
             $response = [];
             try {
-                //crear nuevo tipo menu
+
                 $data = MenuItemMenu::create($request->all());
                 $newData = new MenuItemMenuResource($data);
                 $response = [

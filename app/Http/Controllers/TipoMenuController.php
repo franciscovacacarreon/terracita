@@ -35,7 +35,7 @@ class TipoMenuController extends Controller
     {
         $response = [];
         try {
-            //crear nuevo tipo menu
+
             $tipoMenu = TipoMenu::create($request->all());
             $newTipoMenu = new TipoMenuResource($tipoMenu);
             $response = [

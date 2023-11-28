@@ -9,6 +9,7 @@ use App\Http\Controllers\ItemMenuController;
 use App\Http\Controllers\RepartidorController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\TipoMenuController;
+use App\Http\Controllers\TipoVehiculoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,12 +42,10 @@ Route::middleware([
 
 Route::get('cliente-web', [ClienteWeb::class, 'index']);
 
-Route::controller(TipoMenuController::class)->group(function(){
-    Route::get('/tipo-menu', 'getIndex');
-});
-
+Route::get('tipo-menu', [TipoMenuController::class, 'getIndex']);
 Route::get('item-menu', [ItemMenuController::class, 'getIndex']);
 Route::get('cliente', [ClienteController::class, 'getIndex']);
 Route::get('empleado', [EmpleadoController::class, 'getIndex']);
 Route::get('repartidor', [RepartidorController::class, 'getIndex']);
 Route::get('rol', [RolController::class, 'getIndex']);
+Route::get('tipo-vehiculo', [TipoVehiculoController::class, 'getIndex']);

@@ -29,7 +29,7 @@ class RolController extends Controller
     {
         $response = [];
         try {
-            //crear nuevo tipo menu
+
             $rol = Rol::create($request->all());
             $newRol = new RolResource($rol);
             $response = [
