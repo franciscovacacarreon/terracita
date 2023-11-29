@@ -80,7 +80,7 @@
 </div>
 
 
-<!-- modal nuevo tipo menu-->
+<!-- modal nuevo rol-->
 
 <div class="modal fade" id="modal-nuevo-rol" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm">
@@ -95,7 +95,7 @@
                     <div class="form-group row d-flex" >
                         <label for="nombre" class="col-sm-2 col-form-label">Nombre:</label>
                         <div class="col-sm-12">
-                            <input name="nombre" id="nombre" type="text" class="form-control" placeholder="Sopa">
+                            <input name="nombre" id="nombre" type="text" class="form-control" placeholder="Administrador">
                         </div>
                     </div>
                 </div>
@@ -115,13 +115,13 @@
   </div>
 
 
-  <!-- modal editar tipo menu-->
+  <!-- modal editar rol-->
 
 <div class="modal fade" id="modal-editar-rol" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="staticBackdropLabel">Editar tipo item menú</h5>
+          <h5 class="modal-title" id="staticBackdropLabel">Editar rol</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
