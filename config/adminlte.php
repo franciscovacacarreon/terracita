@@ -14,8 +14,8 @@ return [
     |
     */
 
-    'title' => 'Mi Terracita',
-    'title_prefix' => '',
+    'title' => '',
+    'title_prefix' => 'Mi Terracita | ',
     'title_postfix' => '',
 
     /*
@@ -63,7 +63,7 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
+    'logo' => '<b>Mi</b>Terracita',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
@@ -129,12 +129,12 @@ return [
     |
     */
 
-    'usermenu_enabled' => true,
-    'usermenu_header' => false,
-    'usermenu_header_class' => 'bg-primary',
-    'usermenu_image' => false,
-    'usermenu_desc' => false,
-    'usermenu_profile_url' => false,
+    'usermenu_enabled' => true, //Etiqueta de usuario activa
+    'usermenu_header' => true, //Aparezca en el header
+    'usermenu_header_class' => 'bg-primary', //Color de los submenu
+    'usermenu_image' => false, //Imagen, metodo en el modelo user adminlte_image
+    'usermenu_desc' => false,  //Rol del usuario, metodo en el modelo adminlte_desc
+    'usermenu_profile_url' => false, //Perfil del usuario, metodo adminlte_profile_url
 
     /*
     |--------------------------------------------------------------------------
@@ -148,10 +148,10 @@ return [
     |
     */
 
-    'layout_topnav' => null,
-    'layout_boxed' => null,
-    'layout_fixed_sidebar' => null,
-    'layout_fixed_navbar' => null,
+    'layout_topnav' => null, //cambiar sidebar
+    'layout_boxed' => null, //genera solo con un ancho de 1250
+    'layout_fixed_sidebar' => true, // Solo baja el sidebar
+    'layout_fixed_navbar' => true, //menu header fijo
     'layout_fixed_footer' => null,
     'layout_dark_mode' => null,
 
@@ -167,6 +167,7 @@ return [
     |
     */
 
+    //Personalizar el login
     'classes_auth_card' => 'card-outline card-primary',
     'classes_auth_header' => '',
     'classes_auth_body' => '',
@@ -186,15 +187,16 @@ return [
     |
     */
 
+    //Cuerpo de la plantilla (sidebar)
     'classes_body' => '',
-    'classes_brand' => '',
-    'classes_brand_text' => '',
-    'classes_content_wrapper' => '',
-    'classes_content_header' => '',
-    'classes_content' => '',
-    'classes_sidebar' => 'sidebar-dark-primary elevation-4',
-    'classes_sidebar_nav' => '',
-    'classes_topnav' => 'navbar-white navbar-light',
+    'classes_brand' => '', //cabecera e imagen del sidebar
+    'classes_brand_text' => '', //Texto principal del sidebar
+    'classes_content_wrapper' => '', //contenido de la pagina
+    'classes_content_header' => '', //Header del contenidos
+    'classes_content' => '', //content de la pagina
+    'classes_sidebar' => 'sidebar-dark-primary elevation-4', //link activos primary
+    'classes_sidebar_nav' => '', //Clase para personalizar el sidebar
+    'classes_topnav' => 'navbar-ligth navbar-light',
     'classes_topnav_nav' => 'navbar-expand',
     'classes_topnav_container' => 'container',
 
@@ -210,15 +212,15 @@ return [
     |
     */
 
-    'sidebar_mini' => 'lg',
-    'sidebar_collapse' => false,
+    'sidebar_mini' => 'lg', //Para que desaparezca el sidebar por completo
+    'sidebar_collapse' => false, //Para que en un inicio el sidebar este cerrado
     'sidebar_collapse_auto_size' => false,
     'sidebar_collapse_remember' => false,
     'sidebar_collapse_remember_no_transition' => true,
     'sidebar_scrollbar_theme' => 'os-theme-light',
     'sidebar_scrollbar_auto_hide' => 'l',
     'sidebar_nav_accordion' => true,
-    'sidebar_nav_animation_speed' => 300,
+    'sidebar_nav_animation_speed' => 300, //Tiempo de espera para desplazarce
 
     /*
     |--------------------------------------------------------------------------
@@ -232,11 +234,11 @@ return [
     |
     */
 
-    'right_sidebar' => false,
+    'right_sidebar' => true,
     'right_sidebar_icon' => 'fas fa-cogs',
     'right_sidebar_theme' => 'dark',
     'right_sidebar_slide' => true,
-    'right_sidebar_push' => true,
+    'right_sidebar_push' => false,
     'right_sidebar_scrollbar_theme' => 'os-theme-light',
     'right_sidebar_scrollbar_auto_hide' => 'l',
 
@@ -298,17 +300,17 @@ return [
         ],
         [
             'type'         => 'fullscreen-widget',
-            'topnav_right' => true,
+            'topnav_right' => true, //topnav_user para que se coloque en el menu de usuario
         ],
         [
             'text' => 'blog',
             'url'  => 'admin/blog',
-            'can'  => 'manage-blog',
+            'can'  => 'manage-blog', //directiva can para verificar si tiene permisos
         ],
         ['header' => 'Menú'],
         [
             'text'    => 'Menú e item',
-            'icon'    => 'fas fa-fw fa-share',
+            'icon'    => 'fas fa-fw fa-utensils', //fas fa-fw por defecto en la plantilla
             'submenu' => [
                 [
                     'text' => 'Tipo item menú',
@@ -322,7 +324,7 @@ return [
         ],
         [
             'text'    => 'Personas',
-            'icon'    => 'fas fa-fw fa-share',
+            'icon'    => 'fas fa-fw fa-users',
             'submenu' => [
                 [
                     'text' => 'Clientes',
@@ -340,7 +342,7 @@ return [
         ],
         [
             'text'    => 'Usuarios',
-            'icon'    => 'fas fa-fw fa-share',
+            'icon'    => 'fas fa-fw fa-user',
             'submenu' => [
                 [
                     'text' => 'Usuarios',
@@ -354,7 +356,7 @@ return [
         ],
         [
             'text'    => 'vehiculos',
-            'icon'    => 'fas fa-fw fa-share',
+            'icon'    => 'fas fa-fw fa-car',
             'submenu' => [
                 [
                     'text' => 'Vehiculos',

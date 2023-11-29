@@ -184,7 +184,7 @@
     {{-- stilos personalizados --}}
     <link rel="stylesheet" href="{{asset('/terracita/css/style.css')}}"/>
 
-    <link rel="stylesheet" href="{{asset('/bootstrap/css/font-awesome.all.min.css')}}"/>
+    {{-- <link rel="stylesheet" href="{{asset('/bootstrap/css/font-awesome.all.min.css')}}"/> --}}
     <link rel="stylesheet" href="{{asset('/bootstrap/css/bootstrap-table.min.css')}}">
     {{-- <link rel="stylesheet" href="{{asset('/bootstrap/css/bootstrap-icons.css')}}"> --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
