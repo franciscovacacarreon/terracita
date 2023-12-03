@@ -167,16 +167,20 @@
     <link rel="stylesheet" href="{{asset('/bootstrap/css/alertify.min.css')}}"/>
     <!-- Default theme -->
     <link rel="stylesheet" href="{{asset('/bootstrap/css/default.min.css')}}"/>
+    
 
 
 @stop
 
 @section('js')
+
     {{-- bootstrap table --}}
     <script src="{{asset('/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
     <script src="{{asset('/bootstrap/js/bootstrap-table.min.js')}}"></script>
+    
     {{-- para imprimir --}}
     <script src="{{asset('/bootstrap/js/bootstrap-table-print.min.js')}}"></script>
+    
     {{-- para exportar --}}
     <script src="{{asset('/bootstrap/js/tableExport.min.js')}}"></script>
     <script src="{{asset('/bootstrap/js/jspdf.min.js')}}"></script>
@@ -185,7 +189,8 @@
 
     {{-- alert --}}
     <script src="{{asset('/bootstrap/js/alertify.min.js')}}"></script>
-    
+
+    {{-- perzonalizado --}}
     <script src="{{asset('/terracita/js/parametros.js')}}"></script>
     <script src="{{asset('/terracita/js/rol.js')}}"></script>
 @stop

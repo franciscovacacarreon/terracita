@@ -14,15 +14,15 @@ return new class extends Migration
         Schema::create('vehiculo', function (Blueprint $table) {
             $table->id('id_vehiculo');
             $table->string('placa', 10);
+            $table->string('marca', 250);
+            $table->string('modelo', 250);
             $table->string('color', 15);
-            $table->string('img_vehiculo', 250)->nullable();
+            $table->integer('anio')->nullable();
+            $table->string('imagen', 250)->nullable();
             $table->tinyInteger('estado')->default(1);
-            
             $table->unsignedBigInteger('id_tipo_vehiculo');
-            $table->unsignedBigInteger('id_repartidor')->nullable();
-            
+
             $table->foreign('id_tipo_vehiculo')->references('id_tipo_vehiculo')->on('tipo_vehiculo');
-            $table->foreign('id_repartidor')->references('id_repartidor')->on('repartidor');
 
             $table->timestamps();
         });

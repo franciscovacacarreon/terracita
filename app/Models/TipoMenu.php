@@ -15,4 +15,10 @@ class TipoMenu extends Model
         'estado'
     ];
     public $timestamps = true;
+
+    //Relación de uno a muchos con tipo menú (un item menu pertenece a un tipo y un tipo puede estar en muchos items menu)
+    public function itemMenu()
+    {
+        return $this->hasMany(ItemMenu::class, 'id_tipo_menu');
+    }
 }

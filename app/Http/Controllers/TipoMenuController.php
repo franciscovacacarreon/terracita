@@ -11,13 +11,15 @@ use App\Http\Resources\TipoMenuResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use PhpParser\Node\Stmt\TryCatch;
 
 class TipoMenuController extends Controller
 {
     
-    #NORMAL
+    #WEB
     public function getIndex() {
+        
         return view('terracita.tipo_menu.index');
     }
 

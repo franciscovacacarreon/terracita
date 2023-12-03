@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Storage;
 class EmpleadoController extends Controller
 {
     
-    #NORMAL
+    #WEB
     public function getIndex()
     {
         return view('terracita.empleado.index');

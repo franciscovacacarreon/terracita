@@ -12,7 +12,7 @@ use Illuminate\Database\QueryException;
 
 class RolController extends Controller
 {
-    #NORMAL
+    #WEB
     public function getIndex()
     {
         return view('terracita.rol.index');

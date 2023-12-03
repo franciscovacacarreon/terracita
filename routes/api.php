@@ -9,7 +9,10 @@ use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\RepartidorController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\TipoMenuController;
+use App\Http\Controllers\TipoPagoController;
 use App\Http\Controllers\TipoVehiculoController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\VehiculoController;
 use App\Models\TipoMenu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -38,6 +41,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers'], function
 
     #Item menú
     Route::apiResource('item-menu', ItemMenuController::class);
+    Route::post('item-menu/{itemMenu}', [ItemMenuController::class, 'update']); //Porque ocurrio un error al mandar datos por el formulario, por eso de tipo post
+    Route::get('item-menu-eliminados', [ItemMenuController::class, 'eliminados']);
+    Route::get('item-menu-restaurar/{itemMenu}', [ItemMenuController::class, 'restaurar']);
 
     #Menú
     Route::apiResource('menu', MenuController::class);
@@ -74,4 +80,21 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers'], function
     Route::apiResource('tipo-vehiculo', TipoVehiculoController::class);
     Route::get('tipo-vehiculo-eliminados', [TipoVehiculoController::class, 'eliminados']);
     Route::get('tipo-vehiculo-restaurar/{tipoVehiculo}', [TipoVehiculoController::class, 'restaurar']);
+
+    #Tipo pago
+    Route::apiResource('tipo-pago', TipoPagoController::class);
+    Route::get('tipo-pago-eliminados', [TipoPagoController::class, 'eliminados']);
+    Route::get('tipo-pago-restaurar/{tipoPago}', [TipoPagoController::class, 'restaurar']);
+
+    #vehiculo
+    Route::apiResource('vehiculo', VehiculoController::class);
+    Route::post('vehiculo/{vehiculo}', [VehiculoController::class, 'update']); //Porque ocurrio un error al mandar datos por el formulario, por eso de tipo post
+    Route::get('vehiculo-eliminados', [VehiculoController::class, 'eliminados']);
+    Route::get('vehiculo-restaurar/{vehiculo}', [VehiculoController::class, 'restaurar']);
+
+    #user
+    Route::apiResource('user', UserController::class);
+    Route::post('user/{user}', [UserController::class, 'update']); //Porque ocurrio un error al mandar datos por el formulario, por eso de tipo post
+    Route::get('user-eliminados', [UserController::class, 'eliminados']);
+    Route::get('user-restaurar/{user}', [UserController::class, 'restaurar']);
 });

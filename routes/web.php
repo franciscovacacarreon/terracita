@@ -10,7 +10,10 @@ use App\Http\Controllers\RepartidorController;
 use App\Http\Controllers\RestauranteController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\TipoMenuController;
+use App\Http\Controllers\TipoPagoController;
 use App\Http\Controllers\TipoVehiculoController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\VehiculoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,7 +28,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Route::middleware([
@@ -38,16 +41,19 @@ Route::middleware([
     })->name('dashboard');
 });
 
-
-// Route::get('admin', [AdminGentella::class, 'index']);
-
 Route::get('cliente-web', [ClienteWeb::class, 'index']);
 
-Route::get('tipo-menu', [TipoMenuController::class, 'getIndex']);
-Route::get('item-menu', [ItemMenuController::class, 'getIndex']);
-Route::get('cliente', [ClienteController::class, 'getIndex']);
-Route::get('empleado', [EmpleadoController::class, 'getIndex']);
-Route::get('repartidor', [RepartidorController::class, 'getIndex']);
-Route::get('rol', [RolController::class, 'getIndex']);
-Route::get('tipo-vehiculo', [TipoVehiculoController::class, 'getIndex']);
-Route::get('restaurante-setting', [RestauranteController::class, 'getIndex']);
+// Rutas protegidas por middleware 'auth'
+Route::middleware(['auth'])->group(function () {
+    Route::get('tipo-menu', [TipoMenuController::class, 'getIndex']);
+    Route::get('item-menu', [ItemMenuController::class, 'getIndex']);
+    Route::get('cliente', [ClienteController::class, 'getIndex']);
+    Route::get('empleado', [EmpleadoController::class, 'getIndex']);
+    Route::get('repartidor', [RepartidorController::class, 'getIndex']);
+    Route::get('rol', [RolController::class, 'getIndex']);
+    Route::get('tipo-vehiculo', [TipoVehiculoController::class, 'getIndex']);
+    Route::get('tipo-pago', [TipoPagoController::class, 'getIndex']);
+    Route::get('vehiculo', [VehiculoController::class, 'getIndex']);
+    Route::get('user', [UserController::class, 'getIndex']);
+    Route::get('restaurante-setting', [RestauranteController::class, 'getIndex']);
+});

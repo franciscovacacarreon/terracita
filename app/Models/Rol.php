@@ -15,4 +15,9 @@ class Rol extends Model
         'estado'
     ];
     public $timestamps = true;
+
+    public function user() 
+    {
+        $this->hasMany(User::class, 'id_rol');
+    }
 }

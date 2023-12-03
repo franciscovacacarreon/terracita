@@ -130,7 +130,7 @@ return [
     */
 
     'usermenu_enabled' => true, //Etiqueta de usuario activa
-    'usermenu_header' => true, //Aparezca en el header
+    'usermenu_header' => false, //Aparezca en el header
     'usermenu_header_class' => 'bg-primary', //Color de los submenu
     'usermenu_image' => false, //Imagen, metodo en el modelo user adminlte_image
     'usermenu_desc' => false,  //Rol del usuario, metodo en el modelo adminlte_desc
@@ -295,7 +295,7 @@ return [
         // Navbar items:
         [
             'text' => 'profile',
-            'url'  => 'admin/settings',
+            'url'  => 'user/profile', //ruta de jetstream
             'icon' => 'fas fa-fw fa-user',
         ],
         [
@@ -309,65 +309,101 @@ return [
         ],
         ['header' => 'Menú'],
         [
+            'text'    => 'Ventas',
+            'icon'    => 'fas fa-fw fa-tag',
+            'submenu' => [
+                [
+                    'text' => 'Nueva venta',
+                    'url'  => 'nueva-venta',
+                    'icon'  => 'fas fa-fw fa-dollar-sign',
+                ],
+                [
+                    'text' => 'Ventas',
+                    'url'  => 'venta',
+                    'icon'    => 'fas fa-fw fa-list-ul',
+                ],
+                [
+                    'text' => 'Tipos de pago',
+                    'url'  => 'tipo-pago',
+                    'icon'    => 'fas fa-fw fa-credit-card',
+                ],
+            ],
+        ],
+        [
             'text'    => 'Menú e item',
             'icon'    => 'fas fa-fw fa-utensils', //fas fa-fw por defecto en la plantilla
             'submenu' => [
                 [
-                    'text' => 'Tipo item menú',
-                    'url'  => 'tipo-menu',
-                ],
-                [
                     'text' => 'Item menú',
                     'url'  => 'item-menu',
+                    'icon'    => 'fas fa-fw fa-utensil-spoon',
+                ],
+                [
+                    'text' => 'Catalogo menú',
+                    'url'  => 'menu',
+                    'icon'    => 'fas fa-fw fa-book',
+                ],
+                [
+                    'text' => 'Tipo item menú',
+                    'url'  => 'tipo-menu',
+                    'icon'    => 'fas fa-fw fa-hamburger',
                 ],
             ],
         ],
         [
             'text'    => 'Personas',
-            'icon'    => 'fas fa-fw fa-users',
+            'icon'    => 'fas fa-fw fa-user-friends',
             'submenu' => [
                 [
                     'text' => 'Clientes',
+                    'icon' => 'fas fa-fw fa-user',
                     'url'  => 'cliente',
                 ],
                 [
                     'text' => 'Empleados',
+                    'icon' => 'fas fa-fw fa-briefcase',
                     'url'  => 'empleado',
                 ],
                 [
                     'text' => 'Repartidores',
+                    'icon' => 'fas fa-fw fa-motorcycle',
                     'url'  => 'repartidor',
                 ],
             ],
-        ],
+        ],        
         [
             'text'    => 'Usuarios',
-            'icon'    => 'fas fa-fw fa-user',
+            'icon'    => 'fas fa-fw fa-users',
             'submenu' => [
                 [
                     'text' => 'Usuarios',
+                    'icon' => 'fas fa-fw fa-user',
                     'url'  => 'usuario',
                 ],
                 [
                     'text' => 'Roles',
+                    'icon' => 'fas fa-fw fa-lock',
                     'url'  => 'rol',
                 ],
             ],
         ],
         [
-            'text'    => 'vehiculos',
+            'text'    => 'Vehículos',
             'icon'    => 'fas fa-fw fa-car',
             'submenu' => [
                 [
-                    'text' => 'Vehiculos',
+                    'text' => 'Vehículos',
+                    'icon' => 'fas fa-fw fa-car',
                     'url'  => 'vehiculo',
                 ],
                 [
-                    'text' => 'Tipo Vehiculos',
+                    'text' => 'Tipo Vehículos',
+                    'icon' => 'fas fa-fw fa-car-side',
                     'url'  => 'tipo-vehiculo',
                 ],
             ],
         ],
+        
     ],
 
     /*

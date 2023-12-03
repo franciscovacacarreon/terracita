@@ -1,4 +1,4 @@
-let tipoMenu = [];
+let roles = [];
 let table = $("#tabla-rol");
 let tableEliminados = $("#tabla-rol-eliminados");
 
@@ -24,7 +24,7 @@ $(document).on("click", "#actualizar-rol", function(e) {
 $(document).on("click", ".edit", function() {
     const id_rol = $(this).attr("data-edit");
 
-    const rolEdit = tipoMenu.find((element) => {
+    const rolEdit = roles.find((element) => {
         return element.id_rol == id_rol;
     });
 
@@ -63,8 +63,8 @@ function cargarRol() {
         type: "GET",
         dataType: "json",
         success: function (response) {
-            tipoMenu = response.data;
-            tipoMenu.forEach(element => {
+            roles = response.data;
+            roles.forEach(element => {
                 element.acciones = 
                         `
                         <a data-edit="${element.id_rol}" class="btn btn-warning btn-sm edit" title="Editar"><i class="bi bi-pencil"></i></a>
@@ -72,7 +72,7 @@ function cargarRol() {
                         `;
             });
 
-            table.bootstrapTable('load', tipoMenu);
+            table.bootstrapTable('load', roles);
 
         },
         error: function (data, textStatus, jqXHR, error) {

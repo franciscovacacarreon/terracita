@@ -22,8 +22,8 @@ return new class extends Migration
             $table->string('profile_photo_path', 2048)->nullable();
             $table->tinyInteger('estado')->default(1);
             
-            $table->unsignedBigInteger('id_rol');
-            $table->unsignedBigInteger('id_persona');
+            $table->unsignedBigInteger('id_rol')->nullable();
+            $table->unsignedBigInteger('id_persona')->nullable();
 
             $table->foreign('id_rol')->references('id_rol')->on('rol');
             $table->foreign('id_persona')->references('id_persona')->on('persona');

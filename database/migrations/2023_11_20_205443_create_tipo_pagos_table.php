@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('tipo_pago', function (Blueprint $table) {
             $table->id('id_tipo_pago');
             $table->string('nombre', 30);
+            $table->string('descripcion', 250);
             $table->tinyInteger('estado')->default(1);
 
             $table->timestamps();

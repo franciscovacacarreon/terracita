@@ -7,81 +7,73 @@ use App\Http\Requests\StoreItemMenuRequest;
 use App\Http\Requests\UpdateItemMenuRequest;
 use App\Http\Resources\ItemMenuCollection;
 use App\Http\Resources\ItemMenuResource;
-use App\Http\Resources\TipoMenuResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
-use PhpParser\Node\Stmt\Return_;
+use Illuminate\Support\Facades\DB;
 
 class ItemMenuController extends Controller
 {
 
-    #NORMAL
-    public function getIndex() {
+    #WEB
+    public function getIndex()
+    {
         return view('terracita.item_menu.index');
     }
 
-
     #API REST
-
     public function index()
     {
-        $itemMenu = ItemMenu::where('estado', 1);
-        return new ItemMenuCollection($itemMenu->get());
-    }
-
-    public function create()
-    {
-        //
+        $data = ItemMenu::where('estado', 1)->with('tipoMenu'); //Acceder a la relación de uno a muchos con tipo menu
+        return new ItemMenuCollection($data->get());
     }
 
     public function store(StoreItemMenuRequest $request)
     {
         $response = [];
-        try {
-            
-            $data = ItemMenu::create($request->all());
-            $newData = new ItemMenuResource($data);
 
-            // Subir la imagen
+        try {
+            // Inicia una transacción
+            DB::beginTransaction();
+            $itemMenu = ItemMenu::create([
+                'nombre' => $request->get('nombre'),
+                'precio' => $request->get('precio'),
+                'descripcion' => $request->get('descripcion'),
+                'id_tipo_menu' => (int)($request->get('id_tipo_menu')),
+            ]);
+
+
             $destinationPath = 'images/item_menu/';
             $nombre_campo = 'imagen';
-            $this->uploadImage($request, $data, $nombre_campo, $destinationPath);
+            $this->uploadImage($request, $itemMenu, $nombre_campo, $destinationPath);
 
+            DB::commit();
 
             $response = [
                 'message' => 'Registro insertado correctamente.',
                 'status' => 200,
-                'msg' => $newData
+                'data' => $itemMenu,
             ];
-
         } catch (QueryException | ModelNotFoundException $e) {
+
+            // Deshace la transacción en caso de error
+            DB::rollBack();
             $response = [
-                'message' => 'Error en la BD al insertar el registro.',
+                'message' => 'Error al insertar el registro.',
                 'status' => 500,
-                'error' => $e
+                'error' => $e->getMessage(),
             ];
         } catch (\Exception $e) {
+
+            // Deshace la transacción en caso de error
+            DB::rollBack();
             $response = [
                 'message' => 'Error general al insertar el registro.',
                 'status' => 500,
-                'error' => $e
+                'error' => $e->getMessage(),
             ];
         }
-        return json_encode($response);
-    }
 
-    public function uploadImage($request, ItemMenu $data, $imagen, $destinationPath) 
-    {
-        if ($request->hasFile($imagen)) {
-            $file = $request->file($imagen);
-            $filename = time() . '-' . $data->getKey() . '.' . $file->getClientOriginalExtension();
-            $uploadSuccess = $file->move($destinationPath, $filename);
-
-            if ($uploadSuccess) {
-                $data->imagen = $destinationPath . $filename;
-                $data->save(); // Guardar los cambios en el modelo
-            }
-        }
+        return response()->json($response);
     }
 
     public function show(ItemMenu $itemMenu)
@@ -89,44 +81,60 @@ class ItemMenuController extends Controller
         return new ItemMenuResource($itemMenu);
     }
 
-    public function edit(ItemMenu $itemMenu)
-    {
-        //
-    }
 
     public function update(UpdateItemMenuRequest $request, ItemMenu $itemMenu)
     {
         $response = [];
+
         try {
 
-            $itemMenu->update($request->all());
+            if (!$itemMenu) {
+                $response = [
+                    'message' => 'ItemMenu no encontrado.',
+                    'status' => 404,
+                ];
+            } else {
 
-            // Subir la imagen
-            $destinationPath = 'images/item_menu/';
-            $nombre_campo = 'imagen';
-            $this->uploadImage($request, $itemMenu, $nombre_campo, $destinationPath);
+                DB::beginTransaction();
 
-            
-            $response = [
-                'message' => 'Registro actualizado correctamente.',
-                'status' => 200,
-                'msg' => $itemMenu
-            ];
+                $itemMenu->update([
+                    'nombre' => $request->get('nombre'),
+                    'precio' => $request->get('precio'),
+                    'descripcion' => $request->get('descripcion'),
+                    'id_tipo_menu' => $request->get('id_tipo_menu'),
+                ]);
 
+
+                //Falta eliminar la imagen anterior
+                $destinationPath = 'images/item_menu/';
+                $nombre_campo = 'imagen';
+                $this->uploadImage($request, $itemMenu, $nombre_campo, $destinationPath);
+
+                DB::commit();
+
+                $response = [
+                    'message' => 'Registro actualizado correctamente.',
+                    'status' => 200,
+                    'data' => $itemMenu,
+                ];
+            }
         } catch (QueryException | ModelNotFoundException $e) {
+            DB::rollBack();
             $response = [
-                'message' => 'Error en la BD al actualizar el registro.',
+                'message' => 'Error al actualizar el registro.',
                 'status' => 500,
-                'error' => $e
+                'error' => $e->getMessage(),
             ];
         } catch (\Exception $e) {
+            DB::rollBack();
             $response = [
                 'message' => 'Error general al actualizar el registro.',
                 'status' => 500,
-                'error' => $e
+                'error' => $e->getMessage(),
             ];
         }
-        return json_encode($response);
+
+        return response()->json($response);
     }
 
     public function destroy(ItemMenu $itemMenu)
@@ -140,7 +148,6 @@ class ItemMenuController extends Controller
                 'status' => 200,
                 'msg' => $itemMenu
             ];
-
         } catch (QueryException | ModelNotFoundException $e) {
             $response = [
                 'message' => 'Error en la BD al eliminar el registro.',
@@ -155,5 +162,46 @@ class ItemMenuController extends Controller
             ];
         }
         return json_encode($response);
+    }
+
+    public function eliminados()
+    {
+        $data = ItemMenu::where('estado', 0)->with('tipoMenu'); //Acceder a la relación de uno a muchos con tipo menu
+        return new ItemMenuCollection($data->get());
+    }
+
+    public function restaurar(ItemMenu $itemMenu)
+    {
+        $response = [];
+        try {
+            $itemMenu->update(['estado' => 1]);
+
+            $response = [
+                'message' => 'Se restauró correctamente.',
+                'status' => 200,
+                'msg' => $itemMenu
+            ];
+        } catch (\Exception $e) {
+            $response = [
+                'message' => 'La error al resturar.',
+                'status' => 500,
+                'error' => $e
+            ];
+        }
+        return response()->json($response);
+    }
+
+    public function uploadImage($request, $data, $imagen, $destinationPath) 
+    {
+        if ($request->hasFile($imagen)) {
+            $file = $request->file($imagen);
+            $filename = time() . '-' . $data->getKey() . '.' . $file->getClientOriginalExtension();
+            $uploadSuccess = $file->move($destinationPath, $filename);
+
+            if ($uploadSuccess) {
+                $data->imagen = $destinationPath . $filename;
+                $data->save(); // Guardar los cambios en el modelo
+            }
+        }
     }
 }

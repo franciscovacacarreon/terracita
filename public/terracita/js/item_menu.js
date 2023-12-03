@@ -1,8 +1,10 @@
-let iteMenu = [];
+let itemMenu = [];
 let tipoMenu = [];
+let itemMenuEliminados = [];
 let table = $("#tabla-item-menu");
+let tableEliminados = $("#tabla-item-menu-eliminados");
 
-$(document).ready( () => {
+$(document).ready(() => {
     cargarItemMenu();
     cargarTipoMenu();
 });
@@ -12,71 +14,62 @@ $("#btn-nuevo-item-menu").click(() => {
 });
 
 $("#guardar-item-menu").click(() => {
-    if (validar($("#nombre")) &&
-        validar($("#precio")) &&
+    if (validar($("#nombre")) && 
+        validar($("#precio")) && 
         validar($("#descripcion"))) {
         saveItemMenu();
     } 
 });
 
-$(document).on("click", ".edit", function() {
-    const id_tipo_menu = $(this).attr("data-edit");
-
-    tipoMenu.forEach(element => {
-      if(element.id_tipo_menu == id_tipo_menu ) {
-        $("#nombre-edit").val(element.nombre);
-      }
-    });
-
-    $("#actualizar-item-menu").attr("name", id_tipo_menu);
-    $("#modal-editar-item-menu").modal('show');
+$("#actualizar-item-menu").click(() => {
+    if (validar($("#nombre-edit")) && 
+        validar($("#precio-edit")) && 
+        validar($("#descripcion-edit"))) {
+        const id_item_menu = $("#actualizar-item-menu").attr('name');
+        updateItemMenu(id_item_menu);
+    }  
 });
 
-function saveItemMenu() {
-    // Obtener datos del formulario
-    const nombre = document.getElementById('nombre').value;
-    const precio = document.getElementById('precio').value;
-    const descripcion = document.getElementById('descripcion').value;
-    const id_tipo_menu = document.getElementById('id_tipo_menu').value;
-    const imagen = document.getElementById('imagen').files[0]; // Obtener el archivo de imagen
+$(document).on("click", ".edit", function() {
+    const id_item_menu = $(this).attr("data-edit");
 
-    // Crear un objeto FormData para enviar datos binarios (como archivos)
-    const formData = new FormData();
-    formData.append('nombre', nombre);
-    formData.append('precio', precio);
-    formData.append('descripcion', descripcion);
-    formData.append('id_tipo_menu', id_tipo_menu);
-    formData.append('imagen', imagen);
-
-    const url = rutaApiRest + "item-menu";
-    $.ajax({
-        url: url,
-        type: 'POST',
-        data: formData,
-        contentType: false,
-        processData: false,
-        dataType: "json",
-        success: function (response) {
-            console.log(response);
-            const status = response.status;
-            if (status == 200) {
-                alertify.alert(
-                    "Correcto",
-                    "¡Súper, se inserto correctamente!"
-                );
-                limpiarInput();
-            } else {
-                alertify.alert(
-                    "Correcto",
-                    "Error, ocurrio un problema!"
-                );
-            }
-        },
-        error: function (error) {
-            console.error('Error al enviar la solicitud:', error);
-        }
+    const itemMenuEdit = itemMenu.find((element) => {
+        return element.id_item_menu == id_item_menu;
     });
-}
+    
+    $("#nombre-edit").val(itemMenuEdit.nombre);
+    $("#precio-edit").val(itemMenuEdit.precio);
+    $("#descripcion-edit").val(itemMenuEdit.descripcion);
+    $("#imagen-edit").attr('src', itemMenuEdit.imagen);
+    $("#actualizar-item-menu").attr("name", id_item_menu);
+    $("#modal-edit-item-menu").modal('show');
+    vistaPreviaEdit();
+    cargarSelect(tipoMenu, itemMenuEdit.id_tipo_menu, $("#id-tipo-menu-edit"));
+});
+
+$(document).on("click", ".delete", function() {
+    const id_item_menu = $(this).attr("data-delete");
+    alertify.confirm("¿Está seguro de eliminar este registro?", "Se borrará el registro",
+    function() {
+        deleteItemMenu(id_item_menu);
+    },
+    function() {
+        alertify.error('Cancelado');
+    });
+});
+
+
+$(document).on("click", ".restore", function() {
+    const id_item_menu = $(this).attr("data-restore");
+    alertify.confirm("Restaurar", "Se restaurará el registro",
+    function() {
+        restoreItemMenu(id_item_menu);
+    },
+    function() {
+        alertify.error('Cancelado');
+    });
+});
+
 
 function cargarItemMenu() {
     const url = rutaApiRest + "item-menu";
@@ -86,10 +79,167 @@ function cargarItemMenu() {
         dataType: "json",
         success: function (response) {
             console.log(response);
-            iteMenu = response.data;
-            cargarAcciones(iteMenu);
-            table.bootstrapTable('load', iteMenu);
+            itemMenu = response.data;
+            cargarTablaItemMenu(itemMenu, false, table);
 
+        },
+        error: function (data, textStatus, jqXHR, error) {
+            console.log(data);
+            console.log(textStatus);
+            console.log(jqXHR);
+            console.log(error);
+        }
+
+    });
+    cargarItemMenuEliminados();
+}
+
+function cargarTablaItemMenu(itemMenu, eliminados = false, table) {
+    const itemMenuObject = [];
+    itemMenu.forEach(element => {
+        const object = {};
+        object.id_item_menu = element.id_item_menu;
+        object.nombre = element.nombre;
+        object.precio = element.precio;
+        object.descripcion = element.descripcion;
+        object.tipo_menu = element.tipo_menu.nombre;
+        object.imagen_td = `<img src="${ rutaLocal + element.imagen}" class="imagen">`;
+
+        const accionRestarurar = `<a data-restore="${element.id_item_menu}" class="btn btn-info btn-sm restore" title="Resturar"><i class="bi bi-arrow-bar-up"></i></a>`;
+        const accionIndex = `<a data-edit="${element.id_item_menu}" class="btn btn-warning btn-sm edit" title="Editar"><i class="bi bi-pencil"></i></a>
+                             <a data-delete="${element.id_item_menu}" class="btn btn-danger btn-sm delete" title="Borrar"><i class="fa fa-trash"></i></a>`;
+        
+        object.acciones = eliminados == true ? accionRestarurar : accionIndex;
+                        
+        itemMenuObject.push(object);
+    });
+
+    table.bootstrapTable('load', itemMenuObject);
+}
+
+function saveItemMenu() {
+    const formData = new FormData();
+
+    formData.append('nombre', $("#nombre").val());
+    formData.append('precio', $("#precio").val());
+    formData.append('descripcion', $("#descripcion").val());
+    formData.append('id_tipo_menu', $("#id-tipo-menu").val());
+
+    const imagenInput = $("#imagen")[0];
+    if (imagenInput.files.length > 0) {
+        formData.append('imagen', imagenInput.files[0]);
+    }
+
+    const url = rutaApiRest + "item-menu";
+    $.ajax({
+        url: url,
+        type: "POST",
+        dataType: "json",
+        data: formData,
+        contentType: false, 
+        processData: false,
+        success: function (response) {
+            console.log(response);
+            const status = response.status;
+            if (status == 200) {
+                const alerta = alertify.alert("Correcto", "¡Súper, se insertó correctamente!");
+                setTimeout(function(){
+                    alerta.close();
+                }, 1000);
+
+                cargarItemMenu();
+                limpiarInput();
+            } else {
+                alertify.alert(
+                    "Error",
+                    "¡Ocurrió un problema!"
+                );
+            }
+        },
+        error: function (data, textStatus, jqXHR, error) {
+            console.log(data);
+            console.log(textStatus);
+            console.log(jqXHR);
+            console.log(error);
+        }
+    });
+}
+
+
+function updateItemMenu(id) {
+    const formData = new FormData();
+
+    formData.append('nombre', $("#nombre-edit").val());
+    formData.append('precio', $("#precio-edit").val());
+    formData.append('descripcion', $("#descripcion-edit").val());
+    formData.append('id_tipo_menu', $("#id-tipo-menu-edit").val());
+
+    const imagenInput = $("#imagen-edit")[0];
+    if (imagenInput.files.length > 0) {
+        formData.append('imagen', imagenInput.files[0]);
+    }
+
+    const url = rutaApiRest + "item-menu/" + id;
+    $.ajax({
+        url: url,
+        type: "POST",
+        dataType: "json",
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (response) {
+            console.log(response);
+            const status = response.status;
+            if (status == 200) {
+                const alerta = alertify.alert("Correcto", "¡Súper, se actualizó correctamente!");
+                setTimeout(function(){
+                    alerta.close();
+                }, 1000);
+
+                cargarItemMenu();
+                limpiarInput();
+            } else {
+                alertify.alert(
+                    "Error",
+                    "¡Ocurrió un problema!"
+                );
+            }
+        },
+        error: function (data, textStatus, jqXHR, error) {
+            console.log(data);
+            console.log(textStatus);
+            console.log(jqXHR);
+            console.log(error);
+        }
+    });
+}
+
+
+function deleteItemMenu(id) {
+    const url = rutaApiRest + "item-menu/" + id;
+    $.ajax({
+        url: url,
+        type: "DELETE",
+        dataType: "json",
+        success: function (response) {
+            console.log(response);
+            const status = response.status;
+            if (status == 200) {
+                const alerta = alertify.alert(
+                    "Correcto",
+                    "¡Súper, se eliminó correctamente!"
+                );
+                setTimeout(function(){
+                    alerta.close();
+                }, 1000);
+
+                cargarItemMenu();
+            } else {
+                alertify.alert(
+                    "Error",
+                    "¡Ocurrio un problema!"
+                );
+            }
         },
         error: function (data, textStatus, jqXHR, error) {
             console.log(data);
@@ -101,29 +251,74 @@ function cargarItemMenu() {
     });
 }
 
-function cargarAcciones(data) {
-    data.forEach(element => {
-        element.imagen_td = `<img src="${ rutaLocal + element.imagen}" class="imagen">`;
-        element.acciones = 
-                `
-                <a data-edit="${element.id_tipo_menu}" class="btn btn-warning btn-sm edit" title="Editar"><i class="bi bi-pencil"></i></a>
-                <a data-delete="${element.id_tipo_menu}" class="btn btn-danger btn-sm delete" title="Borrar"><i class="fa fa-trash"></i></a>
-                `;
+function cargarItemMenuEliminados() {
+    const url = rutaApiRest + "item-menu-eliminados";
+    $.ajax({
+        url: url,
+        type: "GET",
+        dataType: "json",
+        success: function (response) {
+            itemMenuEliminados = response.data;
+            console.log(response);
+            cargarTablaItemMenu(itemMenuEliminados, true, tableEliminados)
+
+        },
+        error: function (data, textStatus, jqXHR, error) {
+            console.log(data);
+            console.log(textStatus);
+            console.log(jqXHR);
+            console.log(error);
+        }
     });
 }
 
-function cargarSelect(array, id = 0) {
-    const select = $("#id_tipo_menu");
-    select.empty();
-    array.forEach(element => {
-        let selected = "";
-        if (id == element.id_tipo_menu) {
-            selected = "selected";
+function restoreItemMenu(id) {
+    const url = rutaApiRest + "item-menu-restaurar/" + id;
+    $.ajax({
+        url: url,
+        type: "GET",
+        dataType: "json",
+        success: function (response) {
+            console.log(response);
+            const status = response.status;
+            if (status == 200) {
+                const alerta = alertify.alert(
+                    "Correcto",
+                    "¡Súper, se restauró correctamente!"
+                );
+                setTimeout(function(){
+                    alerta.close();
+                }, 1000);
+
+                cargarItemMenu();
+                cargarItemMenuEliminados();
+            } else {
+                alertify.alert(
+                    "Correcto",
+                    "Error, ocurrio un problema!"
+                );
+            }
+        },
+        error: function (data, textStatus, jqXHR, error) {
+            console.log(data);
+            console.log(textStatus);
+            console.log(jqXHR);
+            console.log(error);
         }
-        select.append(
-            `<option value="${element.id_tipo_menu}" ${selected}>${element.nombre}</option>`
-          );
+
     });
+}
+
+function limpiarInput() {
+    $("#nombre").val("");
+    $("#precio").val("");
+    $("#descripcion").val("");
+    $("#modal-nuevo-item-menu").modal('hide');
+
+    $("#nombre-edit").val("");
+    $("#precio-edit").val("");
+    $("#descripcion-edit").val("");
+    $("#modal-edit-item-menu").modal('hide');
 }
 
 function cargarTipoMenu() {
@@ -134,7 +329,11 @@ function cargarTipoMenu() {
         dataType: "json",
         success: function (response) {
             tipoMenu = response.data;
-            cargarSelect(tipoMenu);
+            const idTipoMenu = 0;
+            const selectGuardar = $("#id-tipo-menu");
+            const selectEditar = $("#id-tipo-menu-edit");
+            cargarSelect(tipoMenu, idTipoMenu, selectGuardar);
+            cargarSelect(tipoMenu, idTipoMenu, selectEditar);
         },
         error: function (data, textStatus, jqXHR, error) {
             console.log(data);
@@ -143,6 +342,20 @@ function cargarTipoMenu() {
             console.log(error);
         }
 
+    });
+}
+
+function cargarSelect(array, id = 0, select) {
+    select.select2({width: '100%', theme: "classic"});
+    select.empty();
+    array.forEach(element => {
+        let selected = "";
+        if (id == element.id_tipo_menu) {
+            selected = "selected";
+        }
+        select.append(
+            `<option value="${element.id_tipo_menu}" ${selected}>${element.nombre}</option>`
+          );
     });
 }
 
@@ -167,12 +380,36 @@ function mostrarVistaPrevia() {
     }
 }
 
-function limpiarInput() {
-    $("#nombre").val("");
-    $("#precio").val("");
-    $("#descripcion").val("");
-    $("#id_tipo_menu").val("0");
-    $("#imagen").val("");
-    $("#modal-nuevo-tipo-menu").modal('hide');
-    mostrarVistaPrevia();
+function mostrarVistaPreviaEdit() {
+    const inputImagen = document.getElementById('imagen-edit');
+    const vistaPrevia = document.getElementById('vista-previa-edit');
+
+    const archivo = inputImagen.files[0];
+
+    if (archivo) {
+        const lector = new FileReader();
+
+        lector.onload = function(e) {
+            vistaPrevia.src = e.target.result;
+            vistaPrevia.style.display = 'block';
+        };
+
+        lector.readAsDataURL(archivo);
+    } else {
+        vistaPrevia.style.display = 'none';
+        vistaPrevia.src = '';  
+    }
 }
+
+function vistaPreviaEdit() {
+    try {
+        const inputImagen = document.getElementById('imagen-edit');
+        const vistaPrevia = document.getElementById('vista-previa-edit');
+
+        vistaPrevia.src = inputImagen.src;
+        vistaPrevia.style.display = 'block';
+    } catch (error) {
+        
+    }
+}
+

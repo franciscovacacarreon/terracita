@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Storage;
 
 class RepartidorController extends Controller
 {
-     #NORMAL
+     #WEB
      public function getIndex()
      {
          return view('terracita.repartidor.index');

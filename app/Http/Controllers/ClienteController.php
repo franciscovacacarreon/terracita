@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 
 class ClienteController extends Controller
 {
-    #NORMAL
+    #WEB
     public function getIndex()
     {
         return view('terracita.cliente.index');

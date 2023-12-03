@@ -5,62 +5,205 @@ namespace App\Http\Controllers;
 use App\Models\Vehiculo;
 use App\Http\Requests\StoreVehiculoRequest;
 use App\Http\Requests\UpdateVehiculoRequest;
+use App\Http\Resources\VehiculoCollection;
+use App\Http\Resources\VehiculoResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 
 class VehiculoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    #WEB
+    public function getIndex()
+    {
+        return view('terracita.vehiculo.index');
+    }
+
+    #API REST
     public function index()
     {
-        //
+        $data = Vehiculo::where('estado', 1)->with('tipoVehiculo'); //Acceder a la relación de uno a muchos con tipo vehiculo
+        return new VehiculoCollection($data->get());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreVehiculoRequest $request)
     {
-        //
+        $response = [];
+
+        try {
+            // Inicia una transacción
+            DB::beginTransaction();
+            $vehiculo = Vehiculo::create([
+                'placa' => $request->get('placa'),
+                'marca' => $request->get('marca'),
+                'modelo' => $request->get('modelo'),
+                'color' => $request->get('color'),
+                'anio' => $request->get('anio'),
+                'id_tipo_vehiculo' => (int)($request->get('id_tipo_vehiculo')),
+            ]);
+
+
+            $destinationPath = 'images/vehiculo/';
+            $nombre_campo = 'imagen';
+            $this->uploadImage($request, $vehiculo, $nombre_campo, $destinationPath);
+
+            DB::commit();
+
+            $response = [
+                'message' => 'Registro insertado correctamente.',
+                'status' => 200,
+                'data' => $vehiculo,
+            ];
+        } catch (QueryException | ModelNotFoundException $e) {
+
+            // Deshace la transacción en caso de error
+            DB::rollBack();
+            $response = [
+                'message' => 'Error al insertar el registro.',
+                'status' => 500,
+                'error' => $e->getMessage(),
+            ];
+        } catch (\Exception $e) {
+
+            // Deshace la transacción en caso de error
+            DB::rollBack();
+            $response = [
+                'message' => 'Error general al insertar el registro.',
+                'status' => 500,
+                'error' => $e->getMessage(),
+            ];
+        }
+
+        return response()->json($response);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Vehiculo $vehiculo)
     {
-        //
+        return new VehiculoResource($vehiculo);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Vehiculo $vehiculo)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateVehiculoRequest $request, Vehiculo $vehiculo)
     {
-        //
+        $response = [];
+
+        try {
+
+            if (!$vehiculo) {
+                $response = [
+                    'message' => 'Vehiculo no encontrado.',
+                    'status' => 404,
+                ];
+            } else {
+
+                DB::beginTransaction();
+
+                $vehiculo->update([
+                    'placa' => $request->get('placa'),
+                    'marca' => $request->get('marca'),
+                    'modelo' => $request->get('modelo'),
+                    'color' => $request->get('color'),
+                    'anio' => $request->get('anio'),
+                    'id_tipo_vehiculo' => (int)($request->get('id_tipo_vehiculo')),
+                ]);
+
+                //Falta eliminar la imagen anterior
+                $destinationPath = 'images/vehiculo/';
+                $nombre_campo = 'imagen';
+                $this->uploadImage($request, $vehiculo, $nombre_campo, $destinationPath);
+
+                DB::commit();
+
+                $response = [
+                    'message' => 'Registro actualizado correctamente.',
+                    'status' => 200,
+                    'data' => $vehiculo,
+                ];
+            }
+        } catch (QueryException | ModelNotFoundException $e) {
+            DB::rollBack();
+            $response = [
+                'message' => 'Error al actualizar el registro.',
+                'status' => 500,
+                'error' => $e->getMessage(),
+            ];
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $response = [
+                'message' => 'Error general al actualizar el registro.',
+                'status' => 500,
+                'error' => $e->getMessage(),
+            ];
+        }
+
+        return response()->json($response);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Vehiculo $vehiculo)
     {
-        //
+        $response = [];
+        try {
+
+            $vehiculo->update(['estado' => 0]);
+            $response = [
+                'message' => 'Registro eliminado correctamente.',
+                'status' => 200,
+                'msg' => $vehiculo
+            ];
+        } catch (QueryException | ModelNotFoundException $e) {
+            $response = [
+                'message' => 'Error en la BD al eliminar el registro.',
+                'status' => 500,
+                'error' => $e
+            ];
+        } catch (\Exception $e) {
+            $response = [
+                'message' => 'Error general al eliminar el registro.',
+                'status' => 500,
+                'error' => $e
+            ];
+        }
+        return json_encode($response);
+    }
+
+    public function eliminados()
+    {
+        $data = Vehiculo::where('estado', 0)->with('tipoVehiculo'); //Acceder a la relación de uno a muchos con tipo menu
+        return new VehiculoCollection($data->get());
+    }
+
+    public function restaurar(Vehiculo $vehiculo)
+    {
+        $response = [];
+        try {
+            $vehiculo->update(['estado' => 1]);
+
+            $response = [
+                'message' => 'Se restauró correctamente.',
+                'status' => 200,
+                'msg' => $vehiculo
+            ];
+        } catch (\Exception $e) {
+            $response = [
+                'message' => 'La error al resturar.',
+                'status' => 500,
+                'error' => $e
+            ];
+        }
+        return response()->json($response);
+    }
+
+    public function uploadImage($request, $data, $imagen, $destinationPath) 
+    {
+        if ($request->hasFile($imagen)) {
+            $file = $request->file($imagen);
+            $filename = time() . '-' . $data->getKey() . '.' . $file->getClientOriginalExtension();
+            $uploadSuccess = $file->move($destinationPath, $filename);
+
+            if ($uploadSuccess) {
+                $data->imagen = $destinationPath . $filename;
+                $data->save(); // Guardar los cambios en el modelo
+            }
+        }
     }
 }

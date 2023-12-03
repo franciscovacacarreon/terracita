@@ -15,4 +15,9 @@ class TipoVehiculo extends Model
         'estado'
     ];
     public $timestamps = true;
+
+    public function vehiculo()
+    {
+        return $this->hasMany(Vehiculo::class, 'id_tipo_vehiculo');
+    }
 }

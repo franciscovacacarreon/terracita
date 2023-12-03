@@ -18,4 +18,10 @@ class ItemMenu extends Model
         'estado'
     ];
     public $timestamps = true;
+
+    //Para la relación con tipoMenu
+    public function tipoMenu()
+    {
+        return $this->belongsTo(TipoMenu::class, 'id_tipo_menu');
+    }
 }

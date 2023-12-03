@@ -12,7 +12,7 @@ use Illuminate\Database\QueryException;
 
 class TipoVehiculoController extends Controller
 {
-    #NORMAL
+    #WEB
     public function getIndex()
     {
         return view('terracita.tipo_vehiculo.index');

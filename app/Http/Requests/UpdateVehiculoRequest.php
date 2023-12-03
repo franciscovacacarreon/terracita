@@ -11,7 +11,7 @@ class UpdateVehiculoRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,10 @@ class UpdateVehiculoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'placa' => ['required'],
+            'marca' => ['required'],
+            'modelo' => ['required'],
+            'id_tipo_vehiculo' => ['required'],
         ];
     }
 }
