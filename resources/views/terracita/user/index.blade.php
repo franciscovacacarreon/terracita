@@ -31,13 +31,13 @@
             <div class="row">
                 <div class="col-lg-12 col-sm-12">
                     <div id="toolbar">
-                        <a id="btn-nuevo-usuario" class="btn btn-success">
+                        <a id="btn-nuevo-user" class="btn btn-success">
                             <i class="fas fa-plus"></i> Nuevo
                         </a>
                     </div>
                     <table 
                         class="table-bordered table-hover table-striped"
-                        id="tabla-usuario" data-show-export="true" data-search="true"
+                        id="tabla-user" data-show-export="true" data-search="true"
                         data-show-print="true" data-toggle="table" data-toolbar="#toolbar"
                         data-height="100%" data-only-info-pagination="false"
                         data-pagination="true" data-show-columns="true">
@@ -63,7 +63,7 @@
                 <div class="col-lg-12 col-sm-12">
                     <table 
                         class="table-bordered table-hover table-striped"
-                        id="tabla-usuario-eliminados" 
+                        id="tabla-user-eliminados" 
                         data-show-export="true" data-search="true"
                         data-show-print="true" data-toggle="table" 
                         data-height="100%" data-only-info-pagination="false"
@@ -88,150 +88,80 @@
 </div>
 
 
-<div class="modal fade" id="modal-nuevo-usuario" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="staticBackdropLabel">Nuevo usuario</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <div class="row">
-                <div class="col-lg-12 col-sm-12">
-                    <div class="form-group row">
-                        <label for="name" class="col-sm-4 col-form-label">Nombre de usuario:</label>
-                        <div class="col-sm-8">
-                            <input
-                                type="text"
-                                class="form-control"
-                                id="name"
-                                name="name"
-                                placeholder="Ej: juanenrique"
-                                required
-                            >
+{{-- modal nuevo user --}}
+<div class="modal fade" id="modal-nuevo-user" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Nuevo usuario</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="name" class="form-label">Nombre de usuario:</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="juanenrique" required>
+
+                        <label for="email" class="form-label">Correo:</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="ejemplo@gmail.com" required>
+                        <p for="email-advertencia" id="email-advertencia" class="form-label text-danger d-none">Correo no disponible</p>
+
+                        <label for="password" class="form-label">Contraseña:</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="password" name="password" aria-describedby="toggle-password" required>
+                            <button class="btn btn-outline-secondary" type="button" id="toggle-password" title="Mostrar/ocultar contraseña">
+                                <i class="far fa-eye"></i>
+                            </button>
                         </div>
-                    </div>
-            
-                    <div class="form-group row">
-                        <label for="password" class="col-sm-4 col-form-label">Contraseña:</label>
-                        <div class="col-sm-8">
-                            <div class="input-group">
-                                <input
-                                    type="password"
-                                    class="form-control"
-                                    id="password"
-                                    name="password"
-                                    aria-describedby="toggle-password"
-                                    required
-                                >
-                                <div class="input-group-append">
-                                    <button
-                                        class="btn btn-outline-secondary"
-                                        type="button"
-                                        id="toggle-password"
-                                        title="Mostrar/ocultar contraseña"
-                                    >
-                                        <i class="far fa-eye"></i>
-                                    </button>
-                                </div>
-                            </div>
+                        <label for="form-control" class="text-danger d-none password-advertencia">Las contraseñas no coinciden</label>
+
+                        <label for="password-repite" class="form-label">Repite la contraseña:</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="password-repite" name="password-repite" required>
+                            <button class="btn btn-outline-secondary" type="button" id="toggle-password-repite" title="Mostrar/ocultar contraseña">
+                                <i class="far fa-eye"></i>
+                            </button>
                         </div>
+                        <label for="form-control" class="text-danger d-none password-advertencia">Las contraseñas no coinciden</label>
                     </div>
-            
-                    <div class="form-group row">
-                        <label for="password-repite" class="col-sm-4 col-form-label">Repite la contraseña:</label>
-                        <div class="col-sm-8">
-                            <div class="input-group">
-                                <input
-                                    type="password"
-                                    class="form-control"
-                                    id="password-repite"
-                                    name="password-repite"
-                                    required
-                                >
-                                <div class="input-group-append">
-                                    <button
-                                        class="btn btn-outline-secondary"
-                                        type="button"
-                                        id="toggle-password-repite"
-                                        title="Mostrar/ocultar contraseña"
-                                    >
-                                        <i class="far fa-eye"></i>
-                                    </button>
-                                </div>
-                            </div>
+
+                    <div class="col-md-6">
+                        <label for="id-rol" class="form-label">Rol:</label>
+                        <select id="id-rol" name="id-rol" data-placeholder="Selecciona un rol" multiple required></select>
+
+                        <label for="id-persona" class="form-label">Persona:</label>
+                        <select id="id-persona" name="id-persona" data-placeholder="Selecciona una persona" multiple required></select>
+
+                        <label for="imagen" class="form-label">Imagen:</label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="imagen" name="imagen" accept="image/*" onchange="mostrarVistaPrevia()">
+                            <label class="custom-file-label" for="imagen">Seleccionar imagen</label>
                         </div>
-                    </div>
-            
-                    <div class="form-group row">
-                        <label for="id-rol" class="col-sm-4 col-form-label">Rol:</label>
-                        <div class="col-sm-8">
-                            <select
-                                class="form-control"
-                                id="id-rol"
-                                name="id-rol"
-                                required
-                            ></select>
-                        </div>
-                    </div>
-            
-                    <div class="form-group row">
-                        <label for="id-persona" class="col-sm-4 col-form-label">Persona:</label>
-                        <div class="col-sm-8">
-                            <select
-                                class="form-control"
-                                id="id-persona"
-                                name="id-persona"
-                                required
-                            ></select>
-                        </div>
-                    </div>
-            
-                    <div class="form-group row">
-                        <label for="imagen" class="col-sm-4 col-form-label">Imagen:</label>
-                        <div class="col-sm-8">
-                            <div class="custom-file">
-                                <input
-                                    type="file"
-                                    class="custom-file-input"
-                                    id="imagen"
-                                    name="imagen"
-                                    accept="image/*"
-                                    onchange="mostrarVistaPrevia()"
-                                >
-                                <label class="custom-file-label" for="imagen">Seleccionar imagen</label>
-                            </div>
-                            <div class="mt-3">
-                                <img
-                                    id="vista-previa"
-                                    src="#"
-                                    alt="Vista previa de la imagen"
-                                    style="max-width: 100%; max-height: 200px; display: none;"
-                                >
-                            </div>
+                        <div class="mt-3">
+                            <img id="vista-previa" src="#" alt="Vista previa de la imagen" style="max-width: 100%; max-height: 200px; display: none;">
                         </div>
                     </div>
                 </div>
             </div>
-            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">
+                    <i class="fas fa-door-open"></i>
+                    Close
+                </button>
+                <button id="guardar-user" type="button" class="btn btn-success">
+                    <i class="far fa-save"></i> Guardar
+                </button>
+            </div>
         </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-dark" data-bs-dismiss="modal">
-                <i class="fas fa-door-open"></i>    
-                Close
-            </button>
-            <button id="guardar-usuario" type="button" class="btn btn-success">
-                <i class="far fa-save"></i> Guardar
-            </button>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
+
+
 
 
   <!-- modal edit usuario-->
 
-  <div class="modal fade" id="modal-edit-usuario" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal fade" id="modal-edit-user" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
@@ -239,45 +169,48 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <div class="row">
-                <div class="col-lg-12 col-sm-12">
-                    <div class="form-group row">
-                        <label for="nombre-edit" class="col-sm-4 col-form-label">Nombre:</label>
-                        <div class="col-sm-8">
-                            <input name="nombre-edit" type="text" class="form-control" id="nombre-edit" placeholder="Ej: Pollo al jugo">
-                        </div>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="name-edit" class="form-label">Nombre de usuario:</label>
+                    <input type="text" class="form-control" id="name-edit" name="name-edit" placeholder="juanenrique" required>
+
+                    <label for="email-edit" class="form-label">Correo:</label>
+                    <input type="email-edit" class="form-control" id="email-edit" name="email-edit" placeholder="ejemplo@gmail.com" required>
+                    <p for="email-advertencia-edit" id="email-advertencia-edit" class="form-label text-danger d-none">Correo no disponible</p>
+
+                    <label for="password-edit" class="form-label">Contraseña:</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="password-edit" name="password-edit" aria-describedby="toggle-password-edit" required>
+                        <button class="btn btn-outline-secondary" type="button" id="toggle-password-edit" title="Mostrar/ocultar contraseña">
+                            <i class="far fa-eye"></i>
+                        </button>
                     </div>
-                    <div class="form-group row">
-                        <label for="precio-edit" class="col-sm-4 col-form-label">Precio:</label>
-                        <div class="col-sm-8">
-                            <input name="precio-edit" type="number" class="form-control" id="precio-edit" placeholder="Ej: 10" step="any">
-                        </div>
+                    <p for="form-control" class="text-danger d-none password-advertencia-edit">Las contraseñas no coinciden</p>
+
+                    <label for="password-repite-edit" class="form-label">Repite la contraseña:</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="password-repite-edit" name="password-repite-edit" required>
+                        <button class="btn btn-outline-secondary" type="button" id="toggle-password-repite-edit" title="Mostrar/ocultar contraseña">
+                            <i class="far fa-eye"></i>
+                        </button>
                     </div>
-                    <div class="form-group row">
-                        <label for="descripcion-edit" class="col-sm-4 col-form-label">Descripción:</label>
-                        <div class="col-sm-8">
-                            <textarea name="descripcion-edit" class="form-control" id="descripcion-edit" placeholder="Ej: Especial con extra de carne"></textarea>
-                        </div>
+                    <p for="form-control" class="text-danger d-none password-advertencia-edit">Las contraseñas no coinciden</p>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="id-rol-edit" class="form-label">Rol:</label>
+                    <select id="id-rol-edit" name="id-rol-edit" data-placeholder="Selecciona un rol" multiple required></select>
+
+                    <label for="id-persona-edit" class="form-label">Persona:</label>
+                    <select id="id-persona-edit" name="id-persona-edit" data-placeholder="Selecciona una persona" multiple required></select>
+
+                    <label for="imagen-edit" class="form-label">Imagen:</label>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="imagen-edit" name="imagen-edit" accept="image/*" onchange="mostrarVistaPreviaEdit()">
+                        <label class="custom-file-label" for="imagen-edit">Seleccionar imagen</label>
                     </div>
-                    <div class="form-group row">
-                        <label for="id-tipo-menu-edit" class="col-sm-4 col-form-label">Tipo item menú:</label>
-                        <div class="col-sm-8">
-                            <select name="id-tipo-menu-edit" id="id-tipo-menu-edit"></select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="imagen-edit" class="col-sm-4 col-form-label">Imagen:</label>
-                        <div class="col-sm-8">
-                            <div class="input-group">
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="imagen-edit" accept="image/*" onchange="mostrarVistaPreviaEdit()">
-                                    <label class="custom-file-label" for="imagen-edit">Seleccionar imagen</label>
-                                </div>
-                            </div>
-                            <div class="mt-3">
-                                <img id="vista-previa-edit" src="#" alt="Vista previa de la imagen" style="max-width: 100%; max-height: 200px; display: none;">
-                            </div>
-                        </div>
+                    <div class="mt-3">
+                        <img id="vista-previa-edit" src="#" alt="Vista previa de la imagen" style="max-width: 100%; max-height: 200px; display: none;">
                     </div>
                 </div>
             </div>
@@ -287,7 +220,7 @@
                 <i class="fas fa-door-open"></i>    
                 Close
             </button>
-            <button id="actualizar-usuario" type="button" class="btn btn-success">
+            <button id="actualizar-user" type="button" class="btn btn-success">
                 <i class="far fa-save"></i> Actualizar
             </button>
         </div>
@@ -314,6 +247,7 @@
 
     {{-- select 2 --}}
     <link rel="stylesheet" href="{{asset('/bootstrap/css/select2.min.css')}}"/>
+    <link rel="stylesheet" href="{{asset('/bootstrap/css/chosen.css')}}"/>
 
 
 @stop
@@ -335,28 +269,13 @@
     
     {{-- select 2 --}}
     <script src="{{asset('/bootstrap/js/select2.min.js')}}"></script>
+    <script src="{{asset('/bootstrap/js/chosen.jquery.js')}}"></script>
+    <script src="{{asset('/bootstrap/js/chosen.jquery.min.js')}}"></script>
+
+    {{-- loader --}}
+    <script src="{{asset('/bootstrap/js/spin.min.js')}}"></script>
+
 
     <script src="{{asset('/terracita/js/parametros.js')}}"></script>
     <script src="{{asset('/terracita/js/user.js')}}"></script>
-
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const togglePassword = document.getElementById('toggle-password');
-            const passwordInput = document.getElementById('password');
-    
-            togglePassword.addEventListener('click', function () {
-                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                passwordInput.setAttribute('type', type);
-            });
-    
-            const togglePasswordRepite = document.getElementById('toggle-password-repite');
-            const passwordRepiteInput = document.getElementById('password-repite');
-    
-            togglePasswordRepite.addEventListener('click', function () {
-                const type = passwordRepiteInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                passwordRepiteInput.setAttribute('type', type);
-            });
-        });
-    </script>
 @stop

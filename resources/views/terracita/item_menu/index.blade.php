@@ -260,6 +260,10 @@
     {{-- select 2 --}}
     <script src="{{asset('/bootstrap/js/select2.min.js')}}"></script>
 
+    {{-- loader --}}
+    <script src="{{asset('/bootstrap/js/spin.min.js')}}"></script>
+
+
     <script src="{{asset('/terracita/js/parametros.js')}}"></script>
     <script src="{{asset('/terracita/js/item_menu.js')}}"></script>
 @stop

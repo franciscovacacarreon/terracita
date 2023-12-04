@@ -292,8 +292,7 @@
     <script src="{{asset('/bootstrap/js/select2.min.js')}}"></script>
 
     {{-- loader --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js"></script>
-
+    <script src="{{asset('/bootstrap/js/spin.min.js')}}"></script>
 
     <script src="{{asset('/terracita/js/parametros.js')}}"></script>
     <script src="{{asset('/terracita/js/vehiculo.js')}}"></script>

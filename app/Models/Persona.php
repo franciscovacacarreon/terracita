@@ -23,4 +23,8 @@ class Persona extends Model
         'id_persona',
     ];
     public $timestamps = true;
+
+    public function user() {
+        return $this->hasMany(User::class, 'id_persona');
+    }
 }

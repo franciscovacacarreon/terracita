@@ -9,20 +9,25 @@ use App\Http\Resources\UserCollection;
 use App\Http\Resources\UserResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
     #WEB
     public function getIndex()
     {
+        // $usuarioAutenticado = Auth::user();
+        // $user = User::findOrFail($usuarioAutenticado->id);
+        // return $user->load('rol', 'persona');
         return view('terracita.user.index');
     }
 
     #API REST
     public function index()
     {
-        $data = User::where('estado', 1)->with('rol');
+        $data = User::where('estado', 1)->with('rol')->with('persona');
         return new UserCollection($data->get());
     }
 
@@ -36,7 +41,7 @@ class UserController extends Controller
             $user = User::create([
                 'name' => $request->get('name'),
                 'email' => $request->get('email'),
-                'password' => $request->get('password'),
+                'password' => Hash::make($request->get('password')),
                 'id_rol' => (int)($request->get('id_rol')),
                 'id_persona' => (int)($request->get('id_persona')),
             ]);
@@ -78,6 +83,7 @@ class UserController extends Controller
 
     public function show(User $user)
     {
+        $user->load('rol', 'persona');
         return new UserResource($user);
     }
 
@@ -100,7 +106,7 @@ class UserController extends Controller
                 $user->update([
                     'name' => $request->get('name'),
                     'email' => $request->get('email'),
-                    'password' => $request->get('password'),
+                    'password' => Hash::make($request->get('password')),
                     'id_rol' => (int)($request->get('id_rol')),
                     'id_persona' => (int)($request->get('id_persona')),
                 ]);
@@ -167,7 +173,7 @@ class UserController extends Controller
 
     public function eliminados()
     {
-        $data = User::where('estado', 0)->with('tipoMenu'); //Acceder a la relación de uno a muchos con tipo menu
+        $data = User::where('estado', 0)->with('rol')->with('persona');
         return new UserCollection($data->get());
     }
 

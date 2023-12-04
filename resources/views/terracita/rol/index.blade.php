@@ -191,6 +191,10 @@
     <script src="{{asset('/bootstrap/js/alertify.min.js')}}"></script>
 
     {{-- perzonalizado --}}
+    {{-- loader --}}
+    <script src="{{asset('/bootstrap/js/spin.min.js')}}"></script>
+
+
     <script src="{{asset('/terracita/js/parametros.js')}}"></script>
     <script src="{{asset('/terracita/js/rol.js')}}"></script>
 @stop

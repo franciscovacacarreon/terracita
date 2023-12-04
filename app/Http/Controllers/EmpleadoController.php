@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Empleado;
 use App\Http\Requests\StoreEmpleadoRequest;
 use App\Http\Requests\UpdateEmpleadoRequest;
+use App\Http\Resources\EmpleadoCollection;
 use App\Http\Resources\EmpleadoResource;
 use App\Models\Persona;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

@@ -12,6 +12,17 @@ function validar(campo) {
     }
 }
 
+function validarSelect(campo) {
+    var selectedValues = campo.val();
+    if (!selectedValues || selectedValues.length === 0) {
+        campo.addClass("validarIncorrecto");
+        return false;
+    } else {
+        campo.removeClass("validarIncorrecto");
+        return true;
+    }
+}
+
 function showLoader() {
     const target = document.getElementById('loader-container');
     spinner = new Spinner().spin(target);

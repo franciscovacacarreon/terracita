@@ -256,6 +256,10 @@
     {{-- alert --}}
     <script src="{{asset('/bootstrap/js/alertify.min.js')}}"></script>
     
+    {{-- loader --}}
+    <script src="{{asset('/bootstrap/js/spin.min.js')}}"></script>
+
+
     <script src="{{asset('/terracita/js/parametros.js')}}"></script>
     <script src="{{asset('/terracita/js/cliente.js')}}"></script>
 @stop

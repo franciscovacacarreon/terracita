@@ -20,8 +20,8 @@ class ClienteController extends Controller
         return view('terracita.cliente.index');
     }
 
-    #API REST
-    public function index()
+    #API REST 
+    public function index() //(Mejorar metodo con las relaciones de laravel)
     {
         $clientes = Cliente::where('estado', 1)->get();
         $clientePersona = [];
