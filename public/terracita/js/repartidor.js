@@ -116,7 +116,7 @@ function cargarTablaRepartidor(repartidores, eliminados = false, table) {
         object.imagen_td = `<img src="${ rutaLocal + persona.imagen}" class="imagen">`;
 
         const accionRestarurar = `<a data-restore="${repartidor.id_repartidor}" class="btn btn-info btn-sm restore" title="Resturar"><i class="bi bi-arrow-bar-up"></i></a>`;
-        const accionIndex = `<a data-edit="${repartidor.id_repartidor}" class="btn btn-warning btn-sm edit" title="Editar"><i class="bi bi-pencil"></i></a>
+        const accionIndex = `<a data-edit="${repartidor.id_repartidor}" class="btn btn-warning btn-sm edit" title="Editar"><i class="fa fa-edit"></i></a>
                              <a data-delete="${repartidor.id_repartidor}" class="btn btn-danger btn-sm delete" title="Borrar"><i class="fa fa-trash"></i></a>`;
         
         object.acciones = eliminados == true ? accionRestarurar : accionIndex;

@@ -11,6 +11,8 @@ class MenuItemMenu extends Model
     protected $table = 'menu_item_menu';
     protected $primaryKey = ['id_item_menu', 'id_menu'];
     protected $fillable = [
+        'id_item_menu',
+        'id_menu',
         'cantidad'
     ];
     // public $timestamps = true;
