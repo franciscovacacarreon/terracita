@@ -7,127 +7,166 @@ use App\Http\Requests\StoreMenuRequest;
 use App\Http\Requests\UpdateMenuRequest;
 use App\Http\Resources\MenuCollection;
 use App\Http\Resources\MenuResource;
+use App\Models\MenuItemMenu;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 
 class MenuController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    #WEB
+    public function getIndex()
+    {
+        return view('terracita.menu.index');
+    }
+
+    public function getCreate()
+    {
+        return view('terracita.menu.create');
+    }
+
+    #API REST
     public function index()
     {
         $data = Menu::where('estado', 1);
         return new MenuCollection($data->get());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreMenuRequest $request)
     {
-        {
-            $response = [];
-            try {
+        $response = [];
 
-                $data = Menu::create($request->all());
-                $newData = new MenuResource($data);
-                $response = [
-                    'message' => 'Registro insertado correctamente.',
-                    'status' => 200,
-                    'msg' => $newData
-                ];
-    
-            } catch (QueryException | ModelNotFoundException $e) {
-                $response = [
-                    'message' => 'Error al insertar el registro.',
-                    'status' => 500,
-                    'error' => $e
-                ];
-            } catch (\Exception $e) {
-                $response = [
-                    'message' => 'Error general al insertar el registro.',
-                    'status' => 500,
-                    'error' => $e
-                ];
+        try {
+
+            DB::beginTransaction();
+            //Insertar el menú
+            $menu = Menu::create([
+                'nombre' => $request->get('nombre'),
+                'descripcion' => $request->get('descripcion'),
+                // 'fecha' => $request->get('fecha')
+            ]);
+
+            //Insertar menu_item_menu
+            $idMenu = $menu->id_menu;
+            $items = $request->get('items_menu');
+            foreach ($items as $item) {
+                MenuItemMenu::create([
+                    'id_menu' => $idMenu,
+                    'id_item_menu' => $item['id_item_menu'],
+                    'cantidad' => $item['cantidad'],
+                ]);
             }
-            return json_encode($response);
+
+            DB::commit();
+
+            $response = [
+                'message' => 'Registro insertado correctamente.',
+                'status' => 200,
+                'data' => $menu,
+            ];
+        } catch (QueryException | ModelNotFoundException $e) {
+
+            // Deshace la transacción en caso de error
+            DB::rollBack();
+            $response = [
+                'message' => 'Error al insertar el registro.',
+                'status' => 500,
+                'error' => $e->getMessage(),
+            ];
+        } catch (\Exception $e) {
+
+            // Deshace la transacción en caso de error
+            DB::rollBack();
+            $response = [
+                'message' => 'Error general al insertar el registro.',
+                'status' => 500,
+                'error' => $e->getMessage(),
+            ];
         }
+
+        return response()->json($response);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Menu $menu)
     {
         return new MenuResource($menu);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Menu $menu)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateMenuRequest $request, Menu $menu)
     {
         $response = [];
+
         try {
 
-            $menu->update($request->all());
-            
-            $response = [
-                'message' => 'Registro actualizado correctamente.',
-                'status' => 200,
-                'msg' => $menu
-            ];
+            if (!$menu) {
+                $response = [
+                    'message' => 'Menu no encontrado.',
+                    'status' => 404,
+                ];
+            } else {
 
+                DB::beginTransaction();
+
+                DB::beginTransaction();
+                //actualizar el menú
+                $menu->update([
+                    'nombre' => $request->get('nombre'),
+                    'descripcion' => $request->get('descripcion'),
+                    // 'fecha' => $request->get('fecha')
+                ]);
+
+                //actualizar menu_item_menu
+                $idMenu = $menu->id_menu;
+                $items = $request->get('items_menu');
+                MenuItemMenu::where('id_menu', $idMenu)->delete();
+
+                foreach ($items as $item) {
+                    MenuItemMenu::create([
+                        'id_menu' => $idMenu,
+                        'id_item_menu' => $item['id_item_menu'],
+                        'cantidad' => $item['cantidad'],
+                    ]);
+                }
+
+                DB::commit();
+
+                $response = [
+                    'message' => 'Registro actualizado correctamente.',
+                    'status' => 200,
+                    'data' => $menu,
+                ];
+            }
         } catch (QueryException | ModelNotFoundException $e) {
+            DB::rollBack();
             $response = [
-                'message' => 'Error en la BD al actualizar el registro.',
+                'message' => 'Error al actualizar el registro.',
                 'status' => 500,
-                'error' => $e
+                'error' => $e->getMessage(),
             ];
         } catch (\Exception $e) {
+            DB::rollBack();
             $response = [
                 'message' => 'Error general al actualizar el registro.',
                 'status' => 500,
-                'error' => $e
+                'error' => $e->getMessage(),
             ];
         }
-        return json_encode($response);
+
+        return response()->json($response);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Menu $menu)
     {
         $response = [];
         try {
 
-            $menu->estado = 0;
-            $menu->update();
+            $menu->update(['estado' => 0]);
             $response = [
                 'message' => 'Registro eliminado correctamente.',
                 'status' => 200,
                 'msg' => $menu
             ];
-
         } catch (QueryException | ModelNotFoundException $e) {
             $response = [
                 'message' => 'Error en la BD al eliminar el registro.',
@@ -142,5 +181,32 @@ class MenuController extends Controller
             ];
         }
         return json_encode($response);
+    }
+
+    public function eliminados()
+    {
+        $data = Menu::where('estado', 0);
+        return new MenuCollection($data->get());
+    }
+
+    public function restaurar(Menu $menu)
+    {
+        $response = [];
+        try {
+            $menu->update(['estado' => 1]);
+
+            $response = [
+                'message' => 'Se restauró correctamente.',
+                'status' => 200,
+                'msg' => $menu
+            ];
+        } catch (\Exception $e) {
+            $response = [
+                'message' => 'La error al resturar.',
+                'status' => 500,
+                'error' => $e
+            ];
         }
+        return response()->json($response);
+    }
 }

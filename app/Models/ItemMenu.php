@@ -24,4 +24,9 @@ class ItemMenu extends Model
     {
         return $this->belongsTo(TipoMenu::class, 'id_tipo_menu');
     }
+
+    public function Menu()
+    {
+        return $this->belongsToMany(Menu::class, 'menu_item_menu', 'id_item_menu', 'id_menu');
+    }
 }

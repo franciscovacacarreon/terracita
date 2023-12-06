@@ -11,7 +11,16 @@ class Menu extends Model
     protected $table = 'menu';
     protected $primaryKey = 'id_menu';
     protected $fillable = [
-        'dia'
+        'nombre',
+        'descripcion',
+        'fecha',
+        'estado',
     ];
     public $timestamps = true;
+
+    public function itemMenu()
+    {
+        return $this->belongsToMany(ItemMenu::class, 'menu_item_menu', 'id_menu', 'id_item_menu') 
+                    ->withPivot('cantidad');
+    }
 }

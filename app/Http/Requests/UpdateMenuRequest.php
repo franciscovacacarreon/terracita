@@ -24,11 +24,11 @@ class UpdateMenuRequest extends FormRequest
         $method = $this->method();
         if ($method == 'PUT') {
             return [
-                'dia' => ['required'],
+                'nombre' => ['required'],
             ];
         } else {
             return [
-                'dia' => ['sometimes', 'required'],
+                'nombre' => ['sometimes', 'required'],
             ];
         }
     }

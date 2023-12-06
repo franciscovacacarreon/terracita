@@ -13,8 +13,11 @@ return new class extends Migration
     {
         Schema::create('menu', function (Blueprint $table) {
             $table->id('id_menu');
-            $table->string('dia', 20);
-            $table->string('img_menu', 250)->nullable();
+            $table->string('nombre', 250);
+            $table->string('descripcion', 500);
+            $table->date('fecha')->nullable();
+            // $table->string('dia', 20);
+            $table->string('imagen', 250)->nullable();
             $table->tinyInteger('estado')->default(1);
             
             $table->timestamps();

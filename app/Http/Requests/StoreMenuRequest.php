@@ -22,7 +22,7 @@ class StoreMenuRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'dia' => ['required'],
+            'nombre' => ['required'],
         ];
     }
 }
