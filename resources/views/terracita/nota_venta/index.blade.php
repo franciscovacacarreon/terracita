@@ -3,39 +3,39 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-    <h1>Catálogo Menú</h1>
+    <h1>Ventas</h1>
 @stop
 
 @section('content')
 
 <!-- BAARRA DE NAVEGACION -->
-<div class="card">
+{{-- <div class="card">
     <div class="card-header p-2">
         <ul class="nav nav-pills">
-            <li class="nav-item"><a class="nav-link active" href="#menu-tab"
-                    data-toggle="tab"><i class="fas fa-user"></i>&nbsp;&nbsp;Catálogo Menú</a>
+            <li class="nav-item"><a class="nav-link active" href="#nota-venta-tab"
+                    data-toggle="tab"><i class="fas fa-user"></i>&nbsp;&nbsp;Ventas realizadas</a>
             </li>
-            <li class="nav-item"><a class="nav-link" href="#menu-eliminados-tab"
+            <li class="nav-item"><a class="nav-link" href="#nota-venta-eliminados-tab"
                     data-toggle="tab"><i class="far fa-trash-alt"></i>&nbsp;&nbsp;Eliminados</a>
-            </li>
+            </li> 
         </ul>
     </div>
-</div>
+</div> --}}
 
 
 <div class="card-body">
 
     <div class="tab-content">
         <!------------------- INDEX ------------------->
-        <div class="active tab-pane" id="menu-tab">
+        <div class="active tab-pane" id="nota-venta-tab">
             <div class="row">
                 <div class="col-lg-12 col-sm-12">
                     <div id="toolbar">
-                        <a id="btn-nuevo-menu" href="{{asset('/menu-create')}}" class="btn btn-success">
+                        <a id="btn-nuevo-nota-venta" href="{{asset('/nota-venta-create')}}" class="btn btn-success">
                             <i class="fas fa-plus"></i> Nuevo
                         </a>
                     </div>
-                    <table id="tabla-menu"
+                    <table id="tabla-nota-venta"
                             data-toggle="table"
                             data-show-print="true" 
                             data-show-columns="true" 
@@ -49,39 +49,17 @@
 
                         <thead>
                             <tr>
-                                <th data-sortable="true" data-field="id_menu">ID</th>
-                                <th data-sortable="true" data-field="nombre">Nombre</th>
-                                <th data-sortable="true" data-field="descripcion">Descripción</th>
+                                <th data-sortable="true" data-field="id_nota_venta">ID</th>
+                                <th data-sortable="true" data-field="monto">Monto</th>
+                                <th data-sortable="true" data-field="cliente_td">Cliente</th>
+                                <th data-sortable="true" data-field="empleado_td">Empleado</th>
+                                <th data-sortable="true" data-field="metodo_pago">Método de pago</th>
                                 <th data-sortable="true" data-width="100" data-field="acciones">Acción</th>
                             </tr>
                         </thead>
                     </table>
                 </div>
             </div>
-        </div>
-
-        <!------------------- ELIMINADOS ------------------->
-        <div class="tab-pane" id="menu-eliminados-tab">
-            <div class="row">
-                <div class="col-lg-12 col-sm-12">
-                    <table 
-                        class="table-bordered table-hover table-striped"
-                        id="tabla-menu-eliminados" 
-                        data-show-export="true" data-search="true"
-                        data-show-print="true" data-toggle="table" 
-                        data-height="100%" data-only-info-pagination="false"
-                        data-pagination="true" data-show-columns="true">
-                        <thead>
-                            <tr>
-                                <th data-sortable="true" data-field="id_menu">ID</th>
-                                <th data-sortable="true" data-field="nombre">Nombre</th>
-                                <th data-sortable="true" data-field="descripcion">Descripción</th>
-                                <th data-sortable="true" data-width="100" data-field="acciones">Acción</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div> 
         </div>
     </div>
 
@@ -133,5 +111,5 @@
 
 
     <script src="{{asset('/terracita/js/parametros.js')}}"></script>
-    <script src="{{asset('/terracita/js/menu/index_menu.js')}}"></script>
+    <script src="{{asset('/terracita/js/nota_venta/index_nota_venta.js')}}"></script>
 @stop

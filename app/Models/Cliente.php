@@ -18,4 +18,9 @@ class Cliente extends Model
     ];
     public $timestamps = true;
 
+    public function notaVenta()
+    {
+        return $this->hasMany(NotaVenta::class, 'id_cliente');
+    }
+
 }

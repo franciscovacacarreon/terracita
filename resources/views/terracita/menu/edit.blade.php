@@ -12,7 +12,7 @@
     <div class="row">
         <div class="col-4 m-3">
             <a href="{{asset('/menu')}}" class="btn btn-infor">
-                <i class="fas fa-arrow-left"></i> Regresar 
+                <i class="fas fa-plus"></i> Regresar 
             </a>
         </div>
     </div>
@@ -79,7 +79,7 @@
 
 <div class="floating-btn">
     <button class="btn btn-primary" id="guardar-menu" data-toggle="modal" data-target="#carritoModal">
-        <i class="fa fa-save"></i> Guardar
+        <i class="fa fa-save"></i> Editar
     </button>
 </div>
 
@@ -127,7 +127,7 @@
 
 
     <script src="{{asset('/terracita/js/parametros.js')}}"></script>
-    <script src="{{asset('/terracita/js/menu/create_menu.js')}}"></script>
+    <script src="{{asset('/terracita/js/menu/edit_menu.js')}}"></script>
 
     <script>
     </script>

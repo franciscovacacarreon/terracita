@@ -3,7 +3,7 @@
 @section('title', 'Crear Menú')
 
 @section('content_header')
-    <h1>Catálogo Menú</h1>
+    <h1>Nueva venta</h1>
 @stop
 
 @section('content')
@@ -11,7 +11,7 @@
 <div class="card">
     <div class="row">
         <div class="col-4 m-3">
-            <a href="{{asset('/menu')}}" class="btn btn-infor">
+            <a href="{{asset('/nota-venta')}}" class="btn btn-infor">
                 <i class="fas fa-arrow-left"></i> Regresar 
             </a>
         </div>
@@ -21,19 +21,49 @@
     </div>
     <div class="card-body">
         <div class="row d-flex">
-            <div class="col-lg-5 col-md-5 col-xl-5 col-sm-12">
+            <div class="col-lg-6 col-md-6 col-xl-6 col-sm-12">
                 <div class="form-group d-flex" >
-                    <label for="nombre" class="col-sm-3 col-form-label">Nombre:</label>
+                    <label for="id-menu" class="col-sm-3 col-form-label">Menús:</label>
                     <div class="col-9">
-                        <input name="nombre" id="nombre" type="text" class="form-control" placeholder="Almuerzos">
+                        <select  name="id-menu" id="id-menu" class="form-control">
+                            <option value="0">Seleccione el menú</option>
+                        </select>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-7 col-md-7 col-xl-7 col-sm-12">
+            <div class="col-lg-6 col-md-6 col-xl-6 col-sm-12">
                 <div class="form-group d-flex" >
-                    <label for="descripcion" class="col-sm-3 col-form-label">Descripción:</label>
+                    <label for="id-cliente" class="col-sm-3 col-form-label">Clientes:</label>
                     <div class="col-9">
-                        <textarea name="descripcion" id="descripcion" type="text" class="form-control" placeholder="Descripción"></textarea>
+                        <select  name="id-cliente" id="id-cliente" class="form-control">
+                            <option value="0">Seleccione el cliente</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            {{-- <div class="col-lg-6 col-md-6 col-xl-6 col-sm-12">
+                <div class="form-group d-flex" >
+                    <label for="id-tipo-pago" class="col-sm-3 col-form-label">Método de pago:</label>
+                    <div class="col-9">
+                        <select  name="id-tipo-pago" id="id-tipo-pago" class="form-control">
+                            <option value="0">Seleccione el cliente</option>
+                        </select>
+                    </div>
+                </div>
+            </div> --}}
+            <div class="col-lg-6 col-md-6 col-xl-6 col-sm-12">
+                <div class="form-group d-flex" >
+                    <label for="descripcion" class="col-sm-3 col-form-label">Fecha:</label>
+                    <div class="col-9">
+                        <input type="date" class="form-control" id="fecha" name="fecha" disabled>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-xl-6 col-sm-12">
+                <div class="form-group d-flex" >
+                    <label for="monto" class="col-sm-3 col-form-label">Monto total:</label>
+                    <div class="col-9">
+                        <input type="text" class="form-control" id="monto" name="monto" disabled>
                     </div>
                 </div>
             </div>
@@ -78,7 +108,7 @@
 <!-- Botón flotante para agregar al carrito -->
 
 <div class="floating-btn">
-    <button class="btn btn-primary" id="guardar-menu" data-toggle="modal" data-target="#carritoModal">
+    <button class="btn btn-primary" id="guardar-nota-venta" data-toggle="modal" data-target="#carritoModal">
         <i class="fa fa-save"></i> Guardar
     </button>
 </div>
@@ -100,10 +130,17 @@
     <!-- Default theme -->
     <link rel="stylesheet" href="{{asset('/bootstrap/css/default.min.css')}}"/>
 
+    {{-- select 2 --}}
+    <link rel="stylesheet" href="{{asset('/bootstrap/css/select2.min.css')}}"/>
+
 
 @stop
 
 @section('js')
+
+    <script>
+        const user = <?=$user?>;
+    </script>
 
     {{-- bootstrap table --}}
     <script src="{{asset('/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
@@ -126,9 +163,9 @@
     <script src="{{asset('/bootstrap/js/spin.min.js')}}"></script>
 
 
-    <script src="{{asset('/terracita/js/parametros.js')}}"></script>
-    <script src="{{asset('/terracita/js/menu/create_menu.js')}}"></script>
+    {{-- select 2 --}}
+    <script src="{{asset('/bootstrap/js/select2.min.js')}}"></script>
 
-    <script>
-    </script>
+    <script src="{{asset('/terracita/js/parametros.js')}}"></script>
+    <script src="{{asset('/terracita/js/nota_venta/create_nota_venta.js')}}"></script>
 @stop

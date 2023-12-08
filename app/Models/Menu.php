@@ -18,7 +18,7 @@ class Menu extends Model
     ];
     public $timestamps = true;
 
-    public function itemMenu()
+    public function itemMenus()
     {
         return $this->belongsToMany(ItemMenu::class, 'menu_item_menu', 'id_menu', 'id_item_menu') 
                     ->withPivot('cantidad');

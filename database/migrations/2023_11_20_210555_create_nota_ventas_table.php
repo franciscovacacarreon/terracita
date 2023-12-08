@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('nota_venta', function (Blueprint $table) {
             $table->id('id_nota_venta');
             $table->decimal('monto', 10, 2);
-            $table->date('fecha');
+            $table->date('fecha'); //->useCurrent();
             $table->tinyInteger('estado')->default(1);
             
             $table->unsignedBigInteger('id_empleado');
-            $table->unsignedBigInteger('id_cliente');
-            $table->unsignedBigInteger('id_tipo_pago');
+            $table->unsignedBigInteger('id_cliente')->nullable();
+            $table->unsignedBigInteger('id_tipo_pago')->nullable();
             
             $table->foreign('id_empleado')->references('id_empleado')->on('empleado');
             $table->foreign('id_cliente')->references('id_cliente')->on('cliente');

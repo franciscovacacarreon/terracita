@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Cliente;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,10 @@ class ClienteSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Cliente::create([
+            'id_cliente' => 2,
+            'descuento' => 0,
+            'compras_realizadas' => 0,
+        ]);
     }
 }
