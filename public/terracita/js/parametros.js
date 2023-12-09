@@ -1,5 +1,5 @@
 const rutaApiRest = "http://66.29.135.157/api/v1/";
-const rutaLocal = "http://66.29.135.157/terracita/public/";
+const rutaLocal = "http://66.29.135.157/";
 let spinner;
 
 function validar(campo) {
