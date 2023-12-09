@@ -24,16 +24,12 @@ class MenuController extends Controller
     {
         return view('terracita.menu.create');
     }
-    public function getEdit() 
-    {
-        return view('terracita.menu.edit');
-    }
 
     #API REST
     public function index()
     {
-        $menus = Menu::with('itemMenus')->get();
-        return new MenuCollection($menus);
+        $data = Menu::where('estado', 1);
+        return new MenuCollection($data->get());
     }
 
     public function store(StoreMenuRequest $request)
@@ -44,7 +40,6 @@ class MenuController extends Controller
             $menu = Menu::create([
                 'nombre' => $datos['nombre'],
                 'descripcion' => $datos['descripcion'],
-                'fecha' => date('Y-m-d'),
             ]);
 
             $idMenu = $menu->id_menu;
@@ -60,7 +55,7 @@ class MenuController extends Controller
 
             $response = [
                 'message' => 'Registro insertado correctamente.',
-                'status' => 200,
+                'status' => 201,
                 'data' => $menu,
             ];
         } catch (\Exception $e) {
@@ -78,7 +73,7 @@ class MenuController extends Controller
 
     public function show(Menu $menu)
     {
-        return new MenuResource($menu->load('itemMenus'));
+        return new MenuResource($menu);
     }
 
 

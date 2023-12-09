@@ -314,12 +314,12 @@ return [
             'submenu' => [
                 [
                     'text' => 'Nueva venta',
-                    'url'  => 'nota-venta-create',
+                    'url'  => 'nueva-venta',
                     'icon'  => 'fas fa-fw fa-dollar-sign',
                 ],
                 [
                     'text' => 'Ventas',
-                    'url'  => 'nota-venta',
+                    'url'  => 'venta',
                     'icon'    => 'fas fa-fw fa-list-ul',
                 ],
                 [
@@ -334,14 +334,14 @@ return [
             'icon'    => 'fas fa-fw fa-utensils', //fas fa-fw por defecto en la plantilla
             'submenu' => [
                 [
-                    'text' => 'Catalogo menú',
-                    'url'  => 'menu',
-                    'icon'    => 'fas fa-fw fa-book',
-                ],
-                [
                     'text' => 'Item menú',
                     'url'  => 'item-menu',
                     'icon'    => 'fas fa-fw fa-utensil-spoon',
+                ],
+                [
+                    'text' => 'Catalogo menú',
+                    'url'  => 'menu',
+                    'icon'    => 'fas fa-fw fa-book',
                 ],
                 [
                     'text' => 'Tipo item menú',

@@ -9,16 +9,11 @@ class MenuItemMenu extends Model
 {
     use HasFactory;
     protected $table = 'menu_item_menu';
-    //protected $primaryKey = ['id_item_menu', 'id_menu'];
+    protected $primaryKey = ['id_item_menu', 'id_menu'];
     protected $fillable = [
         'id_item_menu',
         'id_menu',
         'cantidad'
     ];
-    public $timestamps = false;
-    
-    public function detalleVenta()
-    {
-        return $this->hasMany(DetalleVenta::class, ['id_item_menu', 'id_menu']);
-    }
+    // public $timestamps = true;
 }

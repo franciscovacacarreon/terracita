@@ -9,13 +9,6 @@
 @section('content')
 
 <div class="card">
-    <div class="row">
-        <div class="col-4 m-3">
-            <a href="{{asset('/menu')}}" class="btn btn-infor">
-                <i class="fas fa-arrow-left"></i> Regresar 
-            </a>
-        </div>
-    </div>
     <div class="card-header">
         Datos
     </div>
@@ -64,7 +57,7 @@
             <div class="card-header">
                 <h5 class="card-title my-2">Items agregados</h5>
                 <div class="form-group">
-                    <input type="text" class="form-control" id="buscar-add" placeholder="Escribe para buscar...">
+                    <input type="text" class="form-control" id="buscar-agregado" placeholder="Escribe para buscar...">
                 </div>
             </div>
             <div class="card-body">
@@ -127,8 +120,41 @@
 
 
     <script src="{{asset('/terracita/js/parametros.js')}}"></script>
-    <script src="{{asset('/terracita/js/menu/create_menu.js')}}"></script>
+    <script src="{{asset('/terracita/js/create_menu.js')}}"></script>
 
     <script>
+        $(document).ready(function () {
+            // Función para realizar la búsqueda
+            $('#buscar').on('keyup', function () {
+                var searchText = $(this).val().toLowerCase();
+
+                // Iterar sobre cada tarjeta y mostrar/ocultar según la búsqueda
+                $('.menu-card').each(function () {
+                    var cardText = $(this).text().toLowerCase();
+                    if (cardText.includes(searchText)) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+        });
+
+        $(document).ready(function () {
+            // Función para realizar la búsqueda
+            $('#buscar-agregado').on('keyup', function () {
+                var searchText = $(this).val().toLowerCase();
+
+                // Iterar sobre cada tarjeta y mostrar/ocultar según la búsqueda
+                $('.agregado').each(function () {
+                    var cardText = $(this).text().toLowerCase();
+                    if (cardText.includes(searchText)) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+        });
     </script>
 @stop

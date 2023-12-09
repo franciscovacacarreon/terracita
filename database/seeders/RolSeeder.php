@@ -14,17 +14,5 @@ class RolSeeder extends Seeder
         DB::table('rol')->insert([
             'nombre' => 'Administrador',
         ]);
-
-        DB::table('rol')->insert([
-            'nombre' => 'Cajer@',
-        ]);
-
-        DB::table('rol')->insert([
-            'nombre' => 'Repartidor',
-        ]);
-
-        DB::table('rol')->insert([
-            'nombre' => 'Cliente',
-        ]);
     }
 }

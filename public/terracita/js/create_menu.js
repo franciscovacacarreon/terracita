@@ -1,6 +1,11 @@
 let menus = [];
 let itemsMenu = [];
 let itemsCarrito = [];
+let table = $("#tabla-menu");
+let tableEliminados = $("#tabla-menu-eliminados");
+
+// newCarrito = carrito.filter(deleteProducto => deleteProducto.id_producto != idProducto);
+//                 carrito = newCarrito;
 
 $(document).ready( () => {
     const carritoStorage = JSON.parse(localStorage.getItem('carrito'));
@@ -13,6 +18,8 @@ $(document).ready( () => {
     cargarItemsMenu();
 });
 
+
+
 $("#guardar-menu").click(() => {
     if (validar($("#nombre")) && 
         validar($("#descripcion")) &&
@@ -21,15 +28,6 @@ $("#guardar-menu").click(() => {
     } 
 });
 
-$('#buscar').on('keyup', function () {
-    realizarBusqueda('#buscar', '.buscar-disponible');
-});
-
-$('#buscar-add').on('keyup', function () {
-    realizarBusqueda('#buscar-add', '.buscar-agregado');
-});
-
-//Boton para agregar un item
 $(document).on("click", ".agregar-disponible", function(e) {
     const idItemMenu = this.name;
     const itemAdd = itemsMenu.find(item => item.id_item_menu == idItemMenu);
@@ -42,7 +40,6 @@ $(document).on("click", ".agregar-disponible", function(e) {
     }
 });
 
-//boton para eliminar un item
 $(document).on("click", ".eliminar-item-add", function(e) {
     const idItemMenu = this.name;
     const itemADelete = itemsMenu.find(item => item.id_item_menu == idItemMenu);
@@ -54,7 +51,6 @@ $(document).on("click", ".eliminar-item-add", function(e) {
     localStorage.setItem('carrito', JSON.stringify(itemsCarrito));
 });
 
-//boton para sumar cantidad
 $(document).on("click", ".btn-plus-agregado", function(e) {
     const idItemMenu = this.name;
     const itemAddCantidad = itemsCarrito.find(item => item.id_item_menu == idItemMenu);
@@ -67,7 +63,6 @@ $(document).on("click", ".btn-plus-agregado", function(e) {
     localStorage.setItem('carrito', JSON.stringify(itemsCarrito));
 });
 
-//boton para restar cantidad
 $(document).on("click", ".btn-minus-agregado", function(e) {
     const idItemMenu = this.name;
     const itemAddCantidad = itemsCarrito.find(item => item.id_item_menu == idItemMenu);
@@ -82,7 +77,6 @@ $(document).on("click", ".btn-minus-agregado", function(e) {
     }
 });
 
-//cargar las tarjetas de items
 function cargarCardItemsMenu(items) {
     const contenedorCards = $("#content-card-disponible");
     items.forEach(item => {
@@ -90,7 +84,7 @@ function cargarCardItemsMenu(items) {
         item.cantidad = 1;
         const cardCuerpo = `
         <div class="col-md-6 col-sm-5 col-lg-4 col-xl-4 mb-4">
-            <div class="card card-sm menu-card buscar-disponible" style="width: 10rem;">
+            <div class="card card-sm menu-card" style="width: 10rem;">
                 <img src="${rutaLocal + item.imagen}" alt="${item.nombre}">
                     <div class="menu-card-content">
                         <h3>${item.nombre}</h3>
@@ -105,14 +99,13 @@ function cargarCardItemsMenu(items) {
     });
 }
 
-//Cargar las tarjetas de items agregados
 function cargarItemMenuAgregado(items) {
     const contenedorAgregados = document.getElementById("content-card-add");
    contenedorAgregados.innerHTML = "";
     items.forEach(item => {
         const cuerpoCard = `
                 <div class="col-md-6 col-sm-5 col-lg-4 col-xl-4 mb-4">
-                    <div class="card card-sm menu-card buscar-agregado" style="width: 10rem;">
+                    <div class="card card-sm menu-card agregado" style="width: 10rem;">
                         <img src="${rutaLocal + item.imagen}" alt="${item.nombre}">
                         <div class="menu-card-content">
                             <h3>${item.nombre}</h3>
@@ -151,7 +144,7 @@ function cargarItemMenuAgregado(items) {
     });
 }
 
-//cargar todos los items disponibles
+
 function cargarItemsMenu() {
     const url = rutaApiRest + "item-menu";
     $.ajax({
@@ -172,7 +165,6 @@ function cargarItemsMenu() {
     });
 }
 
-//guardar menu
 function saveMenu() {
     const data = {};
     data.nombre = $("#nombre").val();
@@ -180,7 +172,7 @@ function saveMenu() {
     data.items_menu = itemsCarrito;
     datosEnviar = JSON.stringify(data);
     const url = rutaApiRest + "menu";
-    // console.log(datosEnviar);
+    console.log(datosEnviar);
     showLoader();
     $.ajax({
         url: url,
@@ -196,10 +188,7 @@ function saveMenu() {
                 }, 1000);
 
                 $("#nombre").val("");
-
-                itemsCarrito = [];
-                localStorage.removeItem('carrito');
-                cargarItemMenuAgregado(itemsCarrito);
+                $("#modal-nuevo-rol").modal('hide');
             } else {
                 alertify.alert(
                     "Error",
@@ -221,17 +210,4 @@ function saveMenu() {
     });
 }
 
-function realizarBusqueda(botonBuscar, claseBusqueda) {
-    var searchText = $(botonBuscar).val().toLowerCase();
-
-    // Iterar sobre cada elemento con la clase proporcionada y mostrar/ocultar según la búsqueda
-    $(claseBusqueda).each(function () {
-        var cardText = $(this).text().toLowerCase();
-        if (cardText.includes(searchText)) {
-            $(this).show();
-        } else {
-            $(this).hide();
-        }
-    });
-}
 

@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('detalle_venta', function (Blueprint $table) {
+            $table->unsignedBigInteger('id_nota_venta');
             $table->decimal('sub_monto', 10, 2);
             $table->integer('cantidad');
             $table->tinyInteger('estado')->default(1);
             
-            $table->unsignedBigInteger('id_nota_venta');
             $table->unsignedBigInteger('id_item_menu');
             $table->unsignedBigInteger('id_menu');
 

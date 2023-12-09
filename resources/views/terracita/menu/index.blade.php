@@ -35,18 +35,12 @@
                             <i class="fas fa-plus"></i> Nuevo
                         </a>
                     </div>
-                    <table id="tabla-menu"
-                            data-toggle="table"
-                            data-show-print="true" 
-                            data-show-columns="true" 
-                            data-search="true" 
-                            data-show-export="true" 
-                            data-show-export="true"
-                            data-pagination="true" 
-                            data-toolbar="#toolbar"
-                            data-detail-view="true" 
-                            data-detail-formatter="detailFormatter">
-
+                    <table 
+                        class="table-bordered table-hover table-striped"
+                        id="tabla-menu" data-show-export="true" data-search="true"
+                        data-show-print="true" data-toggle="table" data-toolbar="#toolbar"
+                        data-height="100%" data-only-info-pagination="false"
+                        data-pagination="true" data-show-columns="true">
                         <thead>
                             <tr>
                                 <th data-sortable="true" data-field="id_menu">ID</th>
@@ -88,7 +82,31 @@
 </div>
 
 
-@stop
+<!-- modal nuevo menu-->
+<div class="modal fade" id="modal-nuevo-menu" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Nuevo tipo item menú</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">
+                    <i class="fas fa-door-open"></i>    
+                    Close
+                </button>
+                <button id="guardar-menu" type="button" class="btn btn-success">
+                    <i class="far fa-save"></i> Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+  @stop
 
 @section('css')
 
@@ -133,5 +151,5 @@
 
 
     <script src="{{asset('/terracita/js/parametros.js')}}"></script>
-    <script src="{{asset('/terracita/js/menu/index_menu.js')}}"></script>
+    <script src="{{asset('/terracita/js/menu.js')}}"></script>
 @stop
