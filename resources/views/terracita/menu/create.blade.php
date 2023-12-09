@@ -37,6 +37,14 @@
                     </div>
                 </div>
             </div>
+            <div class="col-lg-5 col-md-5 col-xl-5 col-sm-12">
+                <div class="form-group d-flex" >
+                    <label for="fecha" class="col-sm-3 col-form-label">Fecha:</label>
+                    <div class="col-9">
+                        <input name="fecha" id="fecha" type="date" class="form-control" required>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

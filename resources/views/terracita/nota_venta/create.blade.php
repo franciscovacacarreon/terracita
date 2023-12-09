@@ -21,7 +21,7 @@
     </div>
     <div class="card-body">
         <div class="row d-flex">
-            <div class="col-lg-6 col-md-6 col-xl-6 col-sm-12">
+            {{-- <div class="col-lg-6 col-md-6 col-xl-6 col-sm-12">
                 <div class="form-group d-flex" >
                     <label for="id-menu" class="col-sm-3 col-form-label">Menús:</label>
                     <div class="col-9">
@@ -30,7 +30,7 @@
                         </select>
                     </div>
                 </div>
-            </div>
+            </div> --}}
             <div class="col-lg-6 col-md-6 col-xl-6 col-sm-12">
                 <div class="form-group d-flex" >
                     <label for="id-cliente" class="col-sm-3 col-form-label">Clientes:</label>

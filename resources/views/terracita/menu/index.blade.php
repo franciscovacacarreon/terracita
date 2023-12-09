@@ -52,6 +52,7 @@
                                 <th data-sortable="true" data-field="id_menu">ID</th>
                                 <th data-sortable="true" data-field="nombre">Nombre</th>
                                 <th data-sortable="true" data-field="descripcion">Descripción</th>
+                                <th data-sortable="true" data-field="fecha">Fecha</th>
                                 <th data-sortable="true" data-width="100" data-field="acciones">Acción</th>
                             </tr>
                         </thead>

@@ -15,7 +15,6 @@ $(document).ready( () => {
             itemsCarrito = carritoStorage;
         }
     }
-    // cargarItemsMenu();
     cargarCatalogoMenu();
     cargarCliente();
     $("#fecha").val(obtenerFechaActual());
@@ -61,6 +60,7 @@ $(document).on("click", ".eliminar-item-add", function(e) {
     itemADelete.add = false;
     const newItemTemp = itemsCarrito.filter(deleteItem => deleteItem.id_item_menu != idItemMenu);
     itemsCarrito = newItemTemp;
+
     cargarItemMenuAgregado(itemsCarrito);
 
     $("#monto").val(montoTotal(itemsCarrito));
@@ -123,13 +123,6 @@ $(document).on("keyup", ".input-cantidad", function(e) {
 });
 
 //evento select
-$('#id-menu').on('select2:select', function (e) {
-    const data = e.params.data;
-    idMenu = parseInt(data.id);
-    console.log(idMenu);
-    cargarCatalogoMenuId(idMenu);
-});
-
 $('#id-cliente').on('select2:select', function (e) {
     const data = e.params.data;
     idCliente = parseInt(data.id);
@@ -161,7 +154,7 @@ function cargarCardItemsMenu(items) {
 
 function cargarItemMenuAgregado(items) {
     const contenedorAgregados = document.getElementById("content-card-add");
-   contenedorAgregados.innerHTML = "";
+    contenedorAgregados.innerHTML = "";
     items.forEach(item => {
         const cuerpoCard = `
                 <div class="col-md-6 col-sm-5 col-lg-4 col-xl-4 mb-4">
@@ -204,37 +197,18 @@ function cargarItemMenuAgregado(items) {
     });
 }
 
-function cargarItemsMenu() {
-    const url = rutaApiRest + "item-menu";
-    $.ajax({
-        url: url,
-        type: "GET",
-        dataType: "json",
-        success: function (response) {
-            itemsMenu = response.data;
-            cargarCardItemsMenu(itemsMenu);
-        },
-        error: function (data, textStatus, jqXHR, error) {
-            console.log(data);
-            console.log(textStatus);
-            console.log(jqXHR);
-            console.log(error);
-        }
-
-    });
-}
-
 function cargarCatalogoMenu() {
-    const url = rutaApiRest + "menu";
+    const fecha = obtenerFechaActual();
+    const url = rutaApiRest + "menu-fecha/" + fecha;
     $.ajax({
         url: url,
         type: "GET",
         dataType: "json",
         success: function (response) {
             catalogoMenus = response.data;
-            const fechaActual = obtenerFechaActual();
-            const menusDia = catalogoMenus.filter(menu => menu.fecha == fechaActual);
-            cargarSelectCatalogoMenu(menusDia);
+            if (catalogoMenus.length > 0) {
+                itemsMenu = menusDia.item_menus;
+            }
         },
         error: function (data, textStatus, jqXHR, error) {
             console.log(data);
@@ -243,49 +217,6 @@ function cargarCatalogoMenu() {
             console.log(error);
         }
 
-    });
-}
-
-function cargarCatalogoMenuId(id) {
-    const url = rutaApiRest + "menu/" + id;
-    showLoader();
-    $.ajax({
-        url: url,
-        type: "GET",
-        dataType: "json",
-        success: function (response) {
-            const catalogoMenuId = response.data;
-            itemsMenu = catalogoMenuId.item_menus;
-            cargarCardItemsMenu(itemsMenu);
-            console.log(catalogoMenuId);
-            hideLoader();
-        },
-        error: function (data, textStatus, jqXHR, error) {
-            console.log(data);
-            console.log(textStatus);
-            console.log(jqXHR);
-            console.log(error);
-            hideLoader();
-        }
-
-    });
-}
-
-function cargarSelectCatalogoMenu(array, id = 0) {
-    const select = $("#id-menu");
-    array.forEach(element => {
-        let selected = "";
-        if (id == element.id_menu) {
-            selected = "selected";
-        }
-        select.append(
-            `<option value="${element.id_menu}" ${selected}>${element.nombre}</option>`
-          );
-    });
-    select.select2({
-        width: '100%', 
-        theme: "classic",
-        // maximumSelectionLength: 1
     });
 }
 

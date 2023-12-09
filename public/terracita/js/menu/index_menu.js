@@ -10,19 +10,9 @@ $(document).ready( () => {
 $(document).on("click", ".edit", function() {
 
     const idMenu = $(this).attr("data-edit");
-    alertify.confirm("¿Está seguro de editar este registro?", "se enviará a la vista editar",
-    function() {
-        const menuEdit = menus.find(element => element.id_menu == idMenu);
-        const itemsEdit = menuEdit.item_menus;
-        itemsEdit.nombre_menu = menuEdit.nombre;
-        itemsEdit.descripcion = menuEdit.descripcion;
-
-        localStorage.setItem('itemsEdit', JSON.stringify(itemsEdit));
-        window.location.href = rutaLocal + 'menu-edit';
-    },
-    function() {
-        alertify.error('Cancelado');
-    });
+    const menuEdit = menus.find(element => element.id_menu == idMenu);
+    localStorage.setItem('menuEdit', JSON.stringify(menuEdit));
+    window.location.href = 'menu-edit';
 });
 
 function cargarMenu() {
@@ -92,6 +82,4 @@ function detailFormatter(index, row) {
 
     return detalleHtml;
 }
-
-
 

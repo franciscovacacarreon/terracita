@@ -10,6 +10,7 @@ use App\Http\Resources\MenuResource;
 use App\Models\MenuItemMenu;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class MenuController extends Controller
@@ -36,6 +37,12 @@ class MenuController extends Controller
         return new MenuCollection($menus);
     }
 
+    public function indexFecha(Request $request, $fecha)
+    {
+        $menus = Menu::where('fecha', $fecha)->with('itemMenus')->get();
+        return new MenuCollection($menus);
+    }
+
     public function store(StoreMenuRequest $request)
     {
         try {
@@ -44,7 +51,7 @@ class MenuController extends Controller
             $menu = Menu::create([
                 'nombre' => $datos['nombre'],
                 'descripcion' => $datos['descripcion'],
-                'fecha' => date('Y-m-d'),
+                'fecha' => $datos['fecha'],
             ]);
 
             $idMenu = $menu->id_menu;
@@ -85,7 +92,7 @@ class MenuController extends Controller
     public function update(UpdateMenuRequest $request, Menu $menu)
     {
         $response = [];
-
+        $datos = $request->json()->all();
         try {
             if (!$menu) {
                 $response = [
@@ -96,24 +103,30 @@ class MenuController extends Controller
 
                 // Actualizar el menú
                 $menu->update([
-                    'nombre' => $request->get('nombre'),
-                    'descripcion' => $request->get('descripcion'),
+                    'nombre' => $datos['nombre'],
+                    'descripcion' => $datos['descripcion'],
                 ]);
 
                 // Actualizar menu_item_menu
                 $idMenu = $menu->id_menu;
-                $items = $request->get('items_menu');
-
-                // Eliminar registros existentes
-                MenuItemMenu::where('id_menu', $idMenu)->delete();
+                $items = $datos['items_menu'];
 
                 // Insertar nuevos registros
                 foreach ($items as $item) {
-                    MenuItemMenu::create([
-                        'id_menu' => $idMenu,
-                        'id_item_menu' => $item['id_item_menu'],
-                        'cantidad' => $item['cantidad'],
-                    ]);
+                    $itemUpdate = MenuItemMenu::where('id_menu', $idMenu)
+                                  ->where('id_item_menu', $item['id_item_menu'])
+                                  ->first();
+                    if ($itemUpdate) {
+                        MenuItemMenu::where('id_menu', $idMenu)
+                                ->where('id_item_menu', $item['id_item_menu'])
+                                ->update(['cantidad' => $item['cantidad']]);
+                    } else {
+                        MenuItemMenu::create([
+                            'id_menu' => $idMenu,
+                            'id_item_menu' => $item['id_item_menu'],
+                            'cantidad' => $item['cantidad'],
+                        ]);
+                    }
                 }
 
 

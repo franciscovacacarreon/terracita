@@ -3,7 +3,7 @@
 @section('title', 'Crear Menú')
 
 @section('content_header')
-    <h1>Catálogo Menú</h1>
+    <h1>Editar Catálogo Menú</h1>
 @stop
 
 @section('content')
@@ -11,9 +11,14 @@
 <div class="card">
     <div class="row">
         <div class="col-4 m-3">
-            <a href="{{asset('/menu')}}" class="btn btn-infor">
+            <a href="{{asset('/menu')}}" class="btn">
                 <i class="fas fa-plus"></i> Regresar 
             </a>
+        </div>
+        <div class="col-4 m-3">
+            <button type="button" class="btn" id="copiar-catalogo-menu">
+                <i class="fas fa-copy"></i> Copiar catálogo para hoy 
+            </button>
         </div>
     </div>
     <div class="card-header">
@@ -34,6 +39,14 @@
                     <label for="descripcion" class="col-sm-3 col-form-label">Descripción:</label>
                     <div class="col-9">
                         <textarea name="descripcion" id="descripcion" type="text" class="form-control" placeholder="Descripción"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 col-md-5 col-xl-5 col-sm-12">
+                <div class="form-group d-flex" >
+                    <label for="fecha" class="col-sm-3 col-form-label">Fecha:</label>
+                    <div class="col-9">
+                        <input name="fecha" id="fecha" type="date" class="form-control" disabled required>
                     </div>
                 </div>
             </div>
@@ -78,7 +91,7 @@
 <!-- Botón flotante para agregar al carrito -->
 
 <div class="floating-btn">
-    <button class="btn btn-primary" id="guardar-menu" data-toggle="modal" data-target="#carritoModal">
+    <button class="btn btn-primary" id="actualizar-menu" data-toggle="modal" data-target="#carritoModal">
         <i class="fa fa-save"></i> Editar
     </button>
 </div>

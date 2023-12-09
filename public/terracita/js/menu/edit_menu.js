@@ -1,25 +1,47 @@
-let menus = [];
+let menu = [];
 let itemsMenu = [];
 let itemsCarrito = [];
 let table = $("#tabla-menu");
 let tableEliminados = $("#tabla-menu-eliminados");
 
 $(document).ready( () => {
-    const carritoStorage = JSON.parse(localStorage.getItem('itemsEdit'));
-    if (carritoStorage) {
-        itemsCarrito = carritoStorage;
-        cargarItemMenuAgregado(itemsCarrito);
-        
+    const menuStorage = JSON.parse(localStorage.getItem('menuEdit'));
+    if (menuStorage) {
+        menu = menuStorage;
+        itemsCarrito = menuStorage.item_menus;
+        if (itemsCarrito.length > 0) {
+            cargarItemMenuAgregado(itemsCarrito);
+        }
+
+        $("#nombre").val(menu.nombre);
+        $("#descripcion").val(menu.descripcion);
+        $("#fecha").val(menu.fecha);
     }
     cargarItemsMenu();
 });
 
-$("#guardar-menu").click(() => {
+$("#actualizar-menu").click(() => {
     if (validar($("#nombre")) && 
         validar($("#descripcion")) &&
         itemsCarrito.length > 0) {
-        saveMenu();
+        updateMenu();
     } 
+});
+
+$("#copiar-catalogo-menu").click(() => {
+    alertify.confirm('Copiar catálogo', '¿Seguro de copiar el catálogo?', 
+        function () {
+            if (validar($("#nombre")) && 
+                validar($("#descripcion")) &&
+                validar($("#fecha")) &&
+                itemsCarrito.length > 0) {
+                saveMenu();
+            }
+        },
+        function () {
+            alertify.error('cancelado');
+        }
+    );
 });
 
 $('#buscar').on('keyup', function () {
@@ -81,6 +103,7 @@ $(document).on("click", ".btn-minus-agregado", function(e) {
 
 function cargarDatos() {
     itemsCarrito.forEach(element => {
+        element.cantidad = element.cantidad == null ? element.pivot.cantidad : element.cantidad;
         itemsMenu.forEach(element2 => {
             if (element.id_item_menu == element2.id_item_menu) {
                 element2.add = true;
@@ -165,6 +188,7 @@ function cargarItemsMenu() {
         success: function (response) {
             itemsMenu = response.data;
             cargarCardItemsMenu(itemsMenu);
+            cargarDatos();
         },
         error: function (data, textStatus, jqXHR, error) {
             console.log(data);
@@ -176,15 +200,18 @@ function cargarItemsMenu() {
     });
 }
 
-function saveMenu() {
+function updateMenu() {
     const data = {};
+    const idMenu = menu.id_menu;
     data.nombre = $("#nombre").val();
     data.descripcion = $("#descripcion").val();
     data.items_menu = itemsCarrito;
     datosEnviar = JSON.stringify(data);
-    const url = rutaApiRest + "menu";
+
+    const url = rutaApiRest + "menu/" + idMenu;
     console.log(datosEnviar);
     showLoader();
+    
     $.ajax({
         url: url,
         type: "POST",
@@ -193,12 +220,13 @@ function saveMenu() {
             console.log(response);
             const status = response.status;
             if (status == 200) {
-                const alerta = alertify.alert("Correcto", "¡Súper, se insertó correctamente!");
+                const alerta = alertify.alert("Correcto", "¡Súper, se actualizó correctamente!");
                 setTimeout(function(){
                     alerta.close();
+                    window.location.href = 'menu';
                 }, 1000);
 
-                $("#nombre").val("");
+
 
                 itemsCarrito = [];
                 localStorage.removeItem('itemsEdit');
@@ -224,17 +252,63 @@ function saveMenu() {
     });
 }
 
-function realizarBusqueda(botonBuscar, claseBusqueda) {
-    var searchText = $(botonBuscar).val().toLowerCase();
+function saveMenu() {
+    const data = {};
+    data.nombre = $("#nombre").val();
+    data.descripcion = $("#descripcion").val();
+    data.fecha = obtenerFechaActual();
+    data.items_menu = itemsCarrito;
+    datosEnviar = JSON.stringify(data);
+    const url = rutaApiRest + "menu";
+    // console.log(datosEnviar);
+    showLoader();
+    $.ajax({
+        url: url,
+        type: "POST",
+        data: datosEnviar,
+        success: function (response) {
+            console.log(response);
+            const status = response.status;
+            if (status == 200) {
+                const alerta = alertify.alert("Correcto", "¡Súper, se insertó correctamente!");
+                setTimeout(function(){
+                    alerta.close();
+                }, 1000);
 
-    // Iterar sobre cada elemento con la clase proporcionada y mostrar/ocultar según la búsqueda
-    $(claseBusqueda).each(function () {
-        var cardText = $(this).text().toLowerCase();
-        if (cardText.includes(searchText)) {
-            $(this).show();
-        } else {
-            $(this).hide();
+                $("#nombre").val("");
+
+                itemsCarrito = [];
+                localStorage.removeItem('carrito');
+                cargarItemMenuAgregado(itemsCarrito);
+            } else {
+                alertify.alert(
+                    "Error",
+                    "Error, ocurrio un problema!"
+                );
+            }
+            
+            hideLoader();
+        },
+        error: function (data, textStatus, jqXHR, error) {
+            console.log(data);
+            console.log(textStatus);
+            console.log(jqXHR);
+            console.log(error);
+            
+            hideLoader();
         }
+
     });
 }
+
+function obtenerFechaActual() {
+    var fechaActual = new Date();
+    var año = fechaActual.getFullYear();
+    var mes = ('0' + (fechaActual.getMonth() + 1)).slice(-2); // Agrega un cero al mes si es necesario
+    var dia = ('0' + fechaActual.getDate()).slice(-2); // Agrega un cero al día si es necesario
+
+    var fechaFormateada = año + '-' + mes + '-' + dia;
+    return fechaFormateada;
+}
+
 
