@@ -114,7 +114,7 @@ function cargarTablaEmpleado(empleados, eliminados = false, table) {
         object.imagen_td = `<img src="${ rutaLocal + persona.imagen}" class="imagen">`;
 
         const accionRestarurar = `<a data-restore="${empleado.id_empleado}" class="btn btn-info btn-sm restore" title="Resturar"><i class="bi bi-arrow-bar-up"></i></a>`;
-        const accionIndex = `<a data-edit="${empleado.id_empleado}" class="btn btn-warning btn-sm edit" title="Editar"><i class="fa fa-edit"></i></a>
+        const accionIndex = `<a data-edit="${empleado.id_empleado}" class="btn btn-warning btn-sm edit" title="Editar"><i class="bi bi-pencil"></i></a>
                              <a data-delete="${empleado.id_empleado}" class="btn btn-danger btn-sm delete" title="Borrar"><i class="fa fa-trash"></i></a>`;
         
         object.acciones = eliminados == true ? accionRestarurar : accionIndex;

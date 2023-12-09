@@ -111,7 +111,7 @@ function cargarTablaCliente(clientes, eliminados = false, table) {
         object.correo = persona.correo;
 
         const accionRestarurar = `<a data-restore="${cliente.id_cliente}" class="btn btn-info btn-sm restore" title="Resturar"><i class="bi bi-arrow-bar-up"></i></a>`;
-        const accionIndex = `<a data-edit="${cliente.id_cliente}" class="btn btn-warning btn-sm edit" title="Editar"><i class="fa fa-edit"></i></a>
+        const accionIndex = `<a data-edit="${cliente.id_cliente}" class="btn btn-warning btn-sm edit" title="Editar"><i class="bi bi-pencil"></i></a>
                              <a data-delete="${cliente.id_cliente}" class="btn btn-danger btn-sm delete" title="Borrar"><i class="fa fa-trash"></i></a>`;
         
         object.acciones = eliminados == true ? accionRestarurar : accionIndex;
