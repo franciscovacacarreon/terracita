@@ -1,7 +1,7 @@
 let notaVentas = [];
-let itemsMenu = [];
+let itemMenus = [];
 let itemsCarrito = [];
-let catalogoMenus = [];
+let catalogoMenu = [];
 let userAutenticado = user; //user es un objeto que lo obtenemos de create.blade.php
 let clientes = [];
 let idMenu = 0;
@@ -38,7 +38,7 @@ $('#buscar-add').on('keyup', function () {
 //boton para agregar del card para agregar item
 $(document).on("click", ".agregar-disponible", function(e) {
     const idItemMenu = this.name;
-    const itemAdd = itemsMenu.find(item => item.id_item_menu == idItemMenu);
+    const itemAdd = itemMenus.find(item => item.id_item_menu == idItemMenu);
     if (!itemAdd.add) {
         itemAdd.add = true;
         itemAdd.sub_monto = itemAdd.precio;
@@ -56,7 +56,7 @@ $(document).on("click", ".agregar-disponible", function(e) {
 //boton del card para eliminar item
 $(document).on("click", ".eliminar-item-add", function(e) {
     const idItemMenu = this.name;
-    const itemADelete = itemsMenu.find(item => item.id_item_menu == idItemMenu);
+    const itemADelete = itemMenus.find(item => item.id_item_menu == idItemMenu);
     itemADelete.add = false;
     const newItemTemp = itemsCarrito.filter(deleteItem => deleteItem.id_item_menu != idItemMenu);
     itemsCarrito = newItemTemp;
@@ -205,9 +205,11 @@ function cargarCatalogoMenu() {
         type: "GET",
         dataType: "json",
         success: function (response) {
-            catalogoMenus = response.data;
-            if (catalogoMenus.length > 0) {
-                itemsMenu = menusDia.item_menus;
+            catalogoMenu = response.data;
+            console.log(response);
+            if (catalogoMenu.length > 0) {
+                itemMenus = catalogoMenu[0].item_menus;
+                cargarCardItemsMenu(itemMenus);
             }
         },
         error: function (data, textStatus, jqXHR, error) {

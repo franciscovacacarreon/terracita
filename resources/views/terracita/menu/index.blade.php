@@ -65,18 +65,24 @@
         <div class="tab-pane" id="menu-eliminados-tab">
             <div class="row">
                 <div class="col-lg-12 col-sm-12">
-                    <table 
-                        class="table-bordered table-hover table-striped"
-                        id="tabla-menu-eliminados" 
-                        data-show-export="true" data-search="true"
-                        data-show-print="true" data-toggle="table" 
-                        data-height="100%" data-only-info-pagination="false"
-                        data-pagination="true" data-show-columns="true">
+                    <table id="tabla-menu-eliminados"
+                            data-toggle="table"
+                            data-show-print="true" 
+                            data-show-columns="true" 
+                            data-search="true" 
+                            data-show-export="true" 
+                            data-show-export="true"
+                            data-pagination="true" 
+                            data-toolbar="#toolbar"
+                            data-detail-view="true" 
+                            data-detail-formatter="detailFormatter">
+
                         <thead>
                             <tr>
                                 <th data-sortable="true" data-field="id_menu">ID</th>
                                 <th data-sortable="true" data-field="nombre">Nombre</th>
                                 <th data-sortable="true" data-field="descripcion">Descripción</th>
+                                <th data-sortable="true" data-field="fecha">Fecha</th>
                                 <th data-sortable="true" data-width="100" data-field="acciones">Acción</th>
                             </tr>
                         </thead>

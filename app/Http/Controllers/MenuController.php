@@ -33,13 +33,16 @@ class MenuController extends Controller
     #API REST
     public function index()
     {
-        $menus = Menu::with('itemMenus')->get();
+        $menus = Menu::where('estado', 1)->with('itemMenus')->get();
         return new MenuCollection($menus);
     }
 
     public function indexFecha(Request $request, $fecha)
     {
-        $menus = Menu::where('fecha', $fecha)->with('itemMenus')->get();
+        $menus = Menu::where('fecha', $fecha)
+                    ->where('estado', 1)
+                    ->with('itemMenus')
+                    ->get();
         return new MenuCollection($menus);
     }
 
@@ -180,7 +183,7 @@ class MenuController extends Controller
 
     public function eliminados()
     {
-        $data = Menu::where('estado', 0);
+        $data = Menu::where('estado', 0)->with('itemMenus');
         return new MenuCollection($data->get());
     }
 
