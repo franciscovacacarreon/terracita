@@ -8,6 +8,47 @@
 
 @section('content')
 
+<div class="card">
+    <div class="row">
+        <div class="col-4 m-3">
+            <a href="{{asset('/menu')}}" class="btn btn-infor">
+                <i class="fas fa-arrow-left"></i> Regresar 
+            </a>
+        </div>
+    </div>
+    <div class="card-header">
+        Datos
+    </div>
+    <div class="card-body">
+        <div class="row d-flex">
+            <div class="col-lg-5 col-md-5 col-xl-5 col-sm-12">
+                <div class="form-group d-flex" >
+                    <label for="nombre" class="col-sm-3 col-form-label">Nombre:</label>
+                    <div class="col-9">
+                        <input name="nombre" id="nombre" type="text" class="form-control" placeholder="Almuerzos">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7 col-md-7 col-xl-7 col-sm-12">
+                <div class="form-group d-flex" >
+                    <label for="descripcion" class="col-sm-3 col-form-label">Descripción:</label>
+                    <div class="col-9">
+                        <textarea name="descripcion" id="descripcion" type="text" class="form-control" placeholder="Descripción"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 col-md-5 col-xl-5 col-sm-12">
+                <div class="form-group d-flex" >
+                    <label for="fecha" class="col-sm-3 col-form-label">Fecha:</label>
+                    <div class="col-9">
+                        <input name="fecha" id="fecha" type="date" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row">
     <!-- Primera mitad para mostrar los primeros 3 items disponibles -->
     <div class="col-md-6">

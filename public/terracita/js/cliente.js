@@ -148,6 +148,7 @@ function saveCliente() {
 
                 cargarCliente();
                 limpiarInput();
+                cargarClientesAsync(); //Metodo que viene de create_nota_venta.js
             } else {
                 alertify.alert(
                     "Correcto",

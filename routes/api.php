@@ -50,6 +50,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers'], function
     Route::post('menu/{menu}', [MenuController::class, 'update']); //Porque ocurrio un error al mandar datos por el formulario, por eso de tipo post
     Route::get('menu-eliminados', [MenuController::class, 'eliminados']);
     Route::get('menu-restaurar/{menu}', [MenuController::class, 'restaurar']);
+    Route::get('menu-fecha/{fecha}', [MenuController::class, 'indexFecha']);
 
     #Menú item menu
     Route::apiResource('menu-items', MenuItemMenuController::class);

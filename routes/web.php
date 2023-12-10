@@ -58,5 +58,17 @@ Route::middleware(['auth'])->group(function () {
     Route::get('user', [UserController::class, 'getIndex']);
     Route::get('menu', [MenuController::class, 'getIndex']);
     Route::get('menu-create', [MenuController::class, 'getCreate']);
+    Route::get('menu-edit', [MenuController::class, 'getEdit']);
+    ///Fin menu///
+
+    ////Nota venta////
+    Route::get('nota-venta', [NotaVentaController::class, 'getIndex']);
+    Route::get('nota-venta-create', [NotaVentaController::class, 'getCreate']);
+    Route::get('nota-venta-comprobante-pdf/{id}', [NotaVentaController::class, 'getComprobantePdf']);
+    ///Fin venta///
+
     Route::get('restaurante-setting', [RestauranteController::class, 'getIndex']);
 });
+
+//para generar el pdf
+Route::get('nota-venta-comprobante/{id}', [NotaVentaController::class, 'getComprobante']);

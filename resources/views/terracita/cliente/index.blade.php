@@ -49,7 +49,7 @@
                                 <th data-sortable="true" data-field="materno">Materno</th>
                                 <th data-sortable="true" data-field="telefono">Telefono</th>
                                 <th data-sortable="true" data-field="correo">Correo</th>
-                                <th data-sortable="true" data-field="descuento">Descuento</th>
+                                <th data-sortable="true" data-field="descuento">Descuento %</th>
                                 <th data-sortable="true" data-width="100" data-field="acciones">Acción</th>
                             </tr>
                         </thead>
@@ -77,7 +77,7 @@
                                 <th data-sortable="true" data-field="materno">Materno</th>
                                 <th data-sortable="true" data-field="telefono">Telefono</th>
                                 <th data-sortable="true" data-field="correo">Correo</th>
-                                <th data-sortable="true" data-field="descuento">Descuento</th>
+                                <th data-sortable="true" data-field="descuento">Descuento %</th>
                                 <th data-sortable="true" data-width="100" data-field="acciones">Acción</th>
                             </tr>
                         </thead>
@@ -91,9 +91,8 @@
 
 
 <!-- modal nuevo cliente-->
-
 <div class="modal fade" id="modal-nuevo-cliente" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-md">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="staticBackdropLabel">Nuevo Cliente</h5>
@@ -133,7 +132,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="descuento" class="col-sm-4 col-form-label">Descuento:</label>
+                        <label for="descuento" class="col-sm-4 col-form-label">Descuento %:</label>
                         <div class="col-sm-8">
                             <input name="descuento" type="number" class="form-control" id="descuento" placeholder="Ej: 10" value="0">
                         </div>
@@ -158,7 +157,7 @@
   <!-- modal edit cliente-->
 
   <div class="modal fade" id="modal-edit-cliente" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-md">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="staticBackdropLabel">Editar Cliente</h5>
@@ -198,7 +197,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="descuento-edit" class="col-sm-4 col-form-label">Descuento:</label>
+                        <label for="descuento-edit" class="col-sm-4 col-form-label">Descuento %:</label>
                         <div class="col-sm-8">
                             <input name="descuento-edit" type="number" class="form-control" id="descuento-edit" placeholder="Ej: 10" value="0">
                         </div>

@@ -10,6 +10,7 @@ use App\Http\Resources\MenuResource;
 use App\Models\MenuItemMenu;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class MenuController extends Controller
@@ -28,8 +29,17 @@ class MenuController extends Controller
     #API REST
     public function index()
     {
-        $data = Menu::where('estado', 1);
-        return new MenuCollection($data->get());
+        $menus = Menu::where('estado', 1)->with('itemMenus')->get();
+        return new MenuCollection($menus);
+    }
+
+    public function indexFecha(Request $request, $fecha)
+    {
+        $menus = Menu::where('fecha', $fecha)
+                    ->where('estado', 1)
+                    ->with('itemMenus')
+                    ->get();
+        return new MenuCollection($menus);
     }
 
     public function store(StoreMenuRequest $request)
@@ -41,9 +51,9 @@ class MenuController extends Controller
             DB::beginTransaction();
             //Insertar el menú
             $menu = Menu::create([
-                'nombre' => $request->get('nombre'),
-                'descripcion' => $request->get('descripcion'),
-                // 'fecha' => $request->get('fecha')
+                'nombre' => $datos['nombre'],
+                'descripcion' => $datos['descripcion'],
+                'fecha' => $datos['fecha'],
             ]);
 
             //Insertar menu_item_menu
@@ -96,7 +106,7 @@ class MenuController extends Controller
     public function update(UpdateMenuRequest $request, Menu $menu)
     {
         $response = [];
-
+        $datos = $request->json()->all();
         try {
 
             if (!$menu) {
@@ -111,22 +121,29 @@ class MenuController extends Controller
                 DB::beginTransaction();
                 //actualizar el menú
                 $menu->update([
-                    'nombre' => $request->get('nombre'),
-                    'descripcion' => $request->get('descripcion'),
-                    // 'fecha' => $request->get('fecha')
+                    'nombre' => $datos['nombre'],
+                    'descripcion' => $datos['descripcion'],
                 ]);
 
                 //actualizar menu_item_menu
                 $idMenu = $menu->id_menu;
-                $items = $request->get('items_menu');
-                MenuItemMenu::where('id_menu', $idMenu)->delete();
+                $items = $datos['items_menu'];
 
                 foreach ($items as $item) {
-                    MenuItemMenu::create([
-                        'id_menu' => $idMenu,
-                        'id_item_menu' => $item['id_item_menu'],
-                        'cantidad' => $item['cantidad'],
-                    ]);
+                    $itemUpdate = MenuItemMenu::where('id_menu', $idMenu)
+                                  ->where('id_item_menu', $item['id_item_menu'])
+                                  ->first();
+                    if ($itemUpdate) {
+                        MenuItemMenu::where('id_menu', $idMenu)
+                                ->where('id_item_menu', $item['id_item_menu'])
+                                ->update(['cantidad' => $item['cantidad']]);
+                    } else {
+                        MenuItemMenu::create([
+                            'id_menu' => $idMenu,
+                            'id_item_menu' => $item['id_item_menu'],
+                            'cantidad' => $item['cantidad'],
+                        ]);
+                    }
                 }
 
                 DB::commit();
@@ -185,7 +202,7 @@ class MenuController extends Controller
 
     public function eliminados()
     {
-        $data = Menu::where('estado', 0);
+        $data = Menu::where('estado', 0)->with('itemMenus');
         return new MenuCollection($data->get());
     }
 

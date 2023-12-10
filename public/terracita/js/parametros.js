@@ -1,3 +1,5 @@
+// const rutaApiRest = "http://localhost/terracita/public/api/v1/";
+// const rutaLocal = "http://localhost/terracita/public/";
 const rutaApiRest = "http://66.29.135.157/api/v1/";
 const rutaLocal = "http://66.29.135.157/";
 let spinner;
@@ -14,7 +16,7 @@ function validar(campo) {
 
 function validarSelect(campo) {
     var selectedValues = campo.val();
-    if (!selectedValues || selectedValues.length === 0) {
+    if (selectedValues == "" || selectedValues.length === 0) {
         campo.addClass("validarIncorrecto");
         return false;
     } else {

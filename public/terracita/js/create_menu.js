@@ -15,6 +15,7 @@ $(document).ready( () => {
             itemsCarrito = carritoStorage;
         }
     }
+    $("#fecha").val(obtenerFechaActual());
     cargarItemsMenu();
 });
 
@@ -23,6 +24,7 @@ $(document).ready( () => {
 $("#guardar-menu").click(() => {
     if (validar($("#nombre")) && 
         validar($("#descripcion")) &&
+        validar($("#fecha")) &&
         itemsCarrito.length > 0) {
         saveMenu();
     } 
@@ -169,6 +171,7 @@ function saveMenu() {
     const data = {};
     data.nombre = $("#nombre").val();
     data.descripcion = $("#descripcion").val();
+    data.fecha = $("#fecha").val();
     data.items_menu = itemsCarrito;
     datosEnviar = JSON.stringify(data);
     const url = rutaApiRest + "menu";
@@ -210,4 +213,14 @@ function saveMenu() {
     });
 }
 
+
+function obtenerFechaActual() {
+    var fechaActual = new Date();
+    var año = fechaActual.getFullYear();
+    var mes = ('0' + (fechaActual.getMonth() + 1)).slice(-2); // Agrega un cero al mes si es necesario
+    var dia = ('0' + fechaActual.getDate()).slice(-2); // Agrega un cero al día si es necesario
+
+    var fechaFormateada = año + '-' + mes + '-' + dia;
+    return fechaFormateada;
+}
 
