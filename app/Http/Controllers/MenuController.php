@@ -25,6 +25,10 @@ class MenuController extends Controller
     {
         return view('terracita.menu.create');
     }
+    public function getEdit() 
+    {
+        return view('terracita.menu.edit');
+    }
 
     #API REST
     public function index()
@@ -44,21 +48,18 @@ class MenuController extends Controller
 
     public function store(StoreMenuRequest $request)
     {
-        $response = [];
-
         try {
+            $datos = $request->json()->all();
 
-            DB::beginTransaction();
-            //Insertar el menú
             $menu = Menu::create([
                 'nombre' => $datos['nombre'],
                 'descripcion' => $datos['descripcion'],
                 'fecha' => $datos['fecha'],
             ]);
 
-            //Insertar menu_item_menu
             $idMenu = $menu->id_menu;
-            $items = $request->get('items_menu');
+            $items = $datos['items_menu'];
+
             foreach ($items as $item) {
                 MenuItemMenu::create([
                     'id_menu' => $idMenu,
@@ -67,39 +68,27 @@ class MenuController extends Controller
                 ]);
             }
 
-            DB::commit();
-
             $response = [
                 'message' => 'Registro insertado correctamente.',
                 'status' => 200,
                 'data' => $menu,
             ];
-        } catch (QueryException | ModelNotFoundException $e) {
-
-            // Deshace la transacción en caso de error
-            DB::rollBack();
+        } catch (\Exception $e) {
             $response = [
                 'message' => 'Error al insertar el registro.',
                 'status' => 500,
                 'error' => $e->getMessage(),
             ];
-        } catch (\Exception $e) {
-
-            // Deshace la transacción en caso de error
-            DB::rollBack();
-            $response = [
-                'message' => 'Error general al insertar el registro.',
-                'status' => 500,
-                'error' => $e->getMessage(),
-            ];
         }
 
-        return response()->json($response);
+        // Laravel manejará automáticamente la conversión a JSON
+        return $response;
     }
+
 
     public function show(Menu $menu)
     {
-        return new MenuResource($menu);
+        return new MenuResource($menu->load('itemMenus'));
     }
 
 
@@ -108,7 +97,6 @@ class MenuController extends Controller
         $response = [];
         $datos = $request->json()->all();
         try {
-
             if (!$menu) {
                 $response = [
                     'message' => 'Menu no encontrado.',
@@ -116,19 +104,17 @@ class MenuController extends Controller
                 ];
             } else {
 
-                DB::beginTransaction();
-
-                DB::beginTransaction();
-                //actualizar el menú
+                // Actualizar el menú
                 $menu->update([
                     'nombre' => $datos['nombre'],
                     'descripcion' => $datos['descripcion'],
                 ]);
 
-                //actualizar menu_item_menu
+                // Actualizar menu_item_menu
                 $idMenu = $menu->id_menu;
                 $items = $datos['items_menu'];
 
+                // Insertar nuevos registros
                 foreach ($items as $item) {
                     $itemUpdate = MenuItemMenu::where('id_menu', $idMenu)
                                   ->where('id_item_menu', $item['id_item_menu'])
@@ -146,7 +132,6 @@ class MenuController extends Controller
                     }
                 }
 
-                DB::commit();
 
                 $response = [
                     'message' => 'Registro actualizado correctamente.',
@@ -154,24 +139,20 @@ class MenuController extends Controller
                     'data' => $menu,
                 ];
             }
-        } catch (QueryException | ModelNotFoundException $e) {
-            DB::rollBack();
+        } catch (\Exception $e) {
+
             $response = [
                 'message' => 'Error al actualizar el registro.',
                 'status' => 500,
                 'error' => $e->getMessage(),
             ];
-        } catch (\Exception $e) {
-            DB::rollBack();
-            $response = [
-                'message' => 'Error general al actualizar el registro.',
-                'status' => 500,
-                'error' => $e->getMessage(),
-            ];
         }
 
-        return response()->json($response);
+        // Laravel manejará automáticamente la conversión a JSON
+        return $response;
     }
+
+
 
     public function destroy(Menu $menu)
     {

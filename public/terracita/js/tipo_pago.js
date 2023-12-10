@@ -68,7 +68,7 @@ function cargarTipoPago() {
             tipoPago.forEach(element => {
                 element.acciones = 
                         `
-                        <a data-edit="${element.id_tipo_pago}" class="btn btn-warning btn-sm edit" title="Editar"><i class="bi bi-pencil"></i></a>
+                        <a data-edit="${element.id_tipo_pago}" class="btn btn-warning btn-sm edit" title="Editar"><i class="fa fa-edit"></i></a>
                         <a data-delete="${element.id_tipo_pago}" class="btn btn-danger btn-sm delete" title="Borrar"><i class="fa fa-trash"></i></a>
                         `;
             });

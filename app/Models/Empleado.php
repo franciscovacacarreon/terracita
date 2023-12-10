@@ -16,4 +16,9 @@ class Empleado extends Model
         'estado'
     ];
     public $timestamps = true;
+
+    public function notaVenta()
+    {
+        return $this->hasMany(NotaVenta::class, 'id_empleado');
+    }
 }

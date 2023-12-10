@@ -5,6 +5,7 @@ use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\ItemMenuController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\MenuItemMenuController;
+use App\Http\Controllers\NotaVentaController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\RepartidorController;
 use App\Http\Controllers\RolController;
@@ -101,4 +102,11 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers'], function
     Route::post('user/{user}', [UserController::class, 'update']); //Porque ocurrio un error al mandar datos por el formulario, por eso de tipo post
     Route::get('user-eliminados', [UserController::class, 'eliminados']);
     Route::get('user-restaurar/{user}', [UserController::class, 'restaurar']);
+
+    #nota venta
+    Route::apiResource('nota-venta', NotaVentaController::class);
+    Route::post('nota-venta/{notaVenta}', [NotaVentaController::class, 'update']); //Porque ocurrio un error al mandar datos por el formulario, por eso de tipo post
+    Route::get('nota-venta-eliminados', [NotaVentaController::class, 'eliminados']);
+    Route::get('nota-venta-restaurar/{user}', [NotaVentaController::class, 'restaurar']);
+
 });

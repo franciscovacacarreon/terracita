@@ -22,7 +22,6 @@ class StoreMenuRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombre' => ['required'],
         ];
     }
 }

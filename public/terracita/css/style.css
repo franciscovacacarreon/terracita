@@ -124,3 +124,16 @@
 .add-to-cart-btn:hover {
     background-color: #218838;
 }
+
+ /* Agrega estilos para el botón flotante en la esquina inferior derecha */
+ .floating-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 999; /* Ajusta el índice z según sea necesario para que esté por encima de otros elementos */
+}
+
+/* Ajusta el estilo del botón según tus preferencias */
+.floating-btn button {
+    /* Agrega estilos personalizados aquí */
+}

@@ -23,7 +23,7 @@ class ItemMenuController extends Controller
     #API REST
     public function index()
     {
-        $data = ItemMenu::where('estado', 1)->with('tipoMenu'); //Acceder a la relación de uno a muchos con tipo menu
+        $data = ItemMenu::where('estado', 1)->with('tipoMenu')->with('menus'); //Acceder a la relación de uno a muchos con tipo menu
         return new ItemMenuCollection($data->get());
     }
 

@@ -17,7 +17,8 @@ class TipoVehiculoFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'nombre' => $this->faker->word,
+            'estado' => $this->faker->randomElement([0, 1]),
         ];
     }
 }
