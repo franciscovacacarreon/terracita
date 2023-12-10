@@ -3,9 +3,9 @@ let itemMenus = [];
 let itemsCarrito = [];
 let catalogoMenu = [];
 let userAutenticado = user; //user es un objeto que lo obtenemos de create.blade.php
-let clientes = [];
+// let clientes = [];
 let idMenu = 0;
-let idCliente = 0;
+let descuentoCliente = 0;
 
 $(document).ready( () => {
     const carritoStorage = JSON.parse(localStorage.getItem('carritoVenta'));
@@ -13,17 +13,25 @@ $(document).ready( () => {
         if (carritoStorage.length > 0) {
             cargarItemMenuAgregado(carritoStorage);
             itemsCarrito = carritoStorage;
+
+           
+            montoTotal(itemsCarrito);
         }
     }
     cargarCatalogoMenu();
-    cargarCliente();
+    cargarClientesAsync();
     $("#fecha").val(obtenerFechaActual());
 });
 
 $("#guardar-nota-venta").click(() => {
-    if (itemsCarrito.length > 0) {
+    if (validar($("#monto")) &&
+        itemsCarrito.length > 0) {
         saveNotaVenta();
     } 
+});
+
+$("#btn-search-cliente").click(() => {
+   $("#modal-lista-cliente").modal('show');
 });
 
 //Buscadores para los items
@@ -35,21 +43,28 @@ $('#buscar-add').on('keyup', function () {
     realizarBusqueda('#buscar-add', '.buscar-agregado');
 });
 
+
 //boton para agregar del card para agregar item
 $(document).on("click", ".agregar-disponible", function(e) {
     const idItemMenu = this.name;
     const itemAdd = itemMenus.find(item => item.id_item_menu == idItemMenu);
+    const objectVerificar = vericarCantidad(idItemMenu, 1);
     if (!itemAdd.add) {
-        itemAdd.add = true;
-        itemAdd.sub_monto = itemAdd.precio;
-        itemAdd.id_menu = idMenu;
 
-        itemsCarrito.push(itemAdd);
-        cargarItemMenuAgregado(itemsCarrito);
-        
-        $("#monto").val(montoTotal(itemsCarrito));
+        if (objectVerificar.verificar) {
+            itemAdd.add = true;
+            itemAdd.sub_monto = itemAdd.precio;
+            itemAdd.id_menu = idMenu;
 
-        localStorage.setItem('carritoVenta', JSON.stringify(itemsCarrito));
+            itemsCarrito.push(itemAdd);
+            cargarItemMenuAgregado(itemsCarrito);
+            
+            montoTotal(itemsCarrito);
+
+            localStorage.setItem('carritoVenta', JSON.stringify(itemsCarrito));
+        } else {
+            alerta("Item agotado", "Item agotado :c, no hay más del plato", 1500);
+        }
     }
 });
 
@@ -63,7 +78,7 @@ $(document).on("click", ".eliminar-item-add", function(e) {
 
     cargarItemMenuAgregado(itemsCarrito);
 
-    $("#monto").val(montoTotal(itemsCarrito));
+    montoTotal(itemsCarrito);
 
     localStorage.setItem('carritoVenta', JSON.stringify(itemsCarrito));
 });
@@ -76,15 +91,22 @@ $(document).on("click", ".btn-plus-agregado", function(e) {
     const spanSubmonto = $("#submonto-" + idItemMenu);
     const cantidadActualInput = inputCantidad.val();
     const cantidad = parseInt(cantidadActualInput) + 1;
-    itemAddCantidad.cantidad = cantidad;
-    itemAddCantidad.sub_monto = cantidad * itemAddCantidad.precio;
-    
-    inputCantidad.val(cantidad);
-    spanSubmonto.text(itemAddCantidad.sub_monto);
+    const objectVerificar = vericarCantidad(idItemMenu, cantidad);
 
-    $("#monto").val(montoTotal(itemsCarrito));
-    
-    localStorage.setItem('carritoVenta', JSON.stringify(itemsCarrito));
+    if (objectVerificar.verificar) {
+        console.log("cantidad menor a stock");
+        itemAddCantidad.cantidad = cantidad;
+        itemAddCantidad.sub_monto = cantidad * itemAddCantidad.precio;
+        
+        inputCantidad.val(cantidad);
+        spanSubmonto.text(itemAddCantidad.sub_monto);
+
+        montoTotal(itemsCarrito);
+        
+        localStorage.setItem('carritoVenta', JSON.stringify(itemsCarrito));
+    } else {
+        alerta("Item agotado", "No hay mas de la cantidad actual en el restaurante", 1500);
+    }
 });
 
 //boton del card para restar cantidad
@@ -103,7 +125,7 @@ $(document).on("click", ".btn-minus-agregado", function(e) {
         inputCantidad.val(cantidad);
         spanSubmonto.text(itemAddCantidad.sub_monto);
 
-        $("#monto").val(montoTotal(itemsCarrito));
+        montoTotal(itemsCarrito);
 
         localStorage.setItem('carritoVenta', JSON.stringify(itemsCarrito));
     }
@@ -113,20 +135,37 @@ $(document).on("click", ".btn-minus-agregado", function(e) {
 $(document).on("keyup", ".input-cantidad", function(e) {
     const id = this.id;
     const inputCantidad = $("#" + id);
-    if (parseInt(inputCantidad.val()) <= 0) {
-        const alerta = alertify.alert("Error", "No se permiten cantidades negativas");
-        setTimeout(function(){
-            alerta.close();
-        }, 1000);
+    const cantidad = parseInt(inputCantidad.val());
+    const object = vericarCantidad(id, cantidad);
+    
+    if ( cantidad <= 0) {
+        alerta("Error", "No se permiten cantidades negativas", 1000);
         inputCantidad.val(1);
+    } else {
+        if (!object.verificar) {
+            alerta("Item agotado", "No hay mas de la cantidad actual en el restaurante", 1500);
+            inputCantidad.val(object.cantidad);
+        }
     }
 });
 
-//evento select
+//seleccionar cliente
+$(document).on("click", ".check", function() {
+    const idCliente = $(this).attr("data-check");
+    const cliente  = clientes.find(cliente => cliente.id_cliente == idCliente);   
+    $("#descuento-venta").val(cliente.descuento); 
+    $("#modal-lista-cliente").modal('hide');
+    cargarSelectClientes(clientes, idCliente);
+    
+});
+
 $('#id-cliente').on('select2:select', function (e) {
-    const data = e.params.data;
-    idCliente = parseInt(data.id);
-    console.log(idCliente);
+    const idCliente = $("#id-cliente").val();
+    const cliente  = clientes.find(cliente => cliente.id_cliente == idCliente); 
+    descuentoCliente = cliente.descuento;  
+    montoTotal(itemsCarrito);
+    $("#descuento-venta").val(cliente.descuento); 
+
 });
 
 function cargarCardItemsMenu(items) {
@@ -208,6 +247,7 @@ function cargarCatalogoMenu() {
             catalogoMenu = response.data;
             console.log(response);
             if (catalogoMenu.length > 0) {
+                idMenu = catalogoMenu[0].id_menu;
                 itemMenus = catalogoMenu[0].item_menus;
                 cargarCardItemsMenu(itemMenus);
             }
@@ -222,28 +262,9 @@ function cargarCatalogoMenu() {
     });
 }
 
-function cargarCliente() {
-    const url = rutaApiRest + "cliente";
-    $.ajax({
-        url: url,
-        type: "GET",
-        dataType: "json",
-        success: function (response) {
-            clientes = response.data;
-            cargarSelectClientes(clientes);
-        },
-        error: function (data, textStatus, jqXHR, error) {
-            console.log(data);
-            console.log(textStatus);
-            console.log(jqXHR);
-            console.log(error);
-        }
-
-    });
-}
-
 function cargarSelectClientes(array, id = 0) {
     const select = $("#id-cliente");
+    select.empty();
     array.forEach(element => {
         let selected = "";
         if (id == element.id_cliente) {
@@ -261,10 +282,11 @@ function cargarSelectClientes(array, id = 0) {
 }
 function saveNotaVenta() {
     const data = {};
-    data.monto = parseFloat($("#monto").val());
+    const montos = montoTotal(itemsCarrito);
+    data.monto = parseFloat(montos.monto_descuento);
     data.fecha = $("#fecha").val();
+    data.id_cliente = $("#id-cliente").val();;
     data.id_empleado = userAutenticado.id_persona;
-    data.id_cliente = idCliente;
     data.id_tipo_pago = 1; //Corregir
     data.items_menu = itemsCarrito;
     datosEnviar = JSON.stringify(data);
@@ -278,13 +300,14 @@ function saveNotaVenta() {
         success: function (response) {
             console.log(response);
             const status = response.status;
+            const notaVenta = response.data;
             if (status == 200) {
                 const alerta = alertify.alert("Correcto", "¡Súper, se insertó correctamente!");
                 setTimeout(function(){
                     alerta.close();
+                    window.open("nota-venta-comprobante-pdf/" + notaVenta.id_nota_venta, "_blank"); //abrir el comprobante
+                    window.location.reload(); // recargar la pagin
                 }, 1000);
-
-                $("#nombre").val("");
 
                 itemsCarrito = [];
                 localStorage.removeItem('carritoVenta');
@@ -310,6 +333,64 @@ function saveNotaVenta() {
     });
 }
 
+function cargarClientePromise() {
+    cargarClienteEliminados();
+    return new Promise((resolve, reject) => {
+        const url = rutaApiRest + "cliente";
+        $.ajax({
+            url: url,
+            type: "GET",
+            dataType: "json",
+            success: function (response) {
+                console.log(response);
+                const clientes = response.data;
+                cargarTablaClienteVenta(clientes, false, table);
+                cargarSelectClientes(clientes);
+                resolve(clientes);
+            },
+            error: function (data, textStatus, jqXHR, error) {
+                console.log(data);
+                console.log(textStatus);
+                console.log(jqXHR);
+                console.log(error);
+                reject(error); // Rechaza la Promise en caso de error
+            }
+        });
+    });
+}
+
+async function cargarClientesAsync() {
+    try {
+        await cargarClientePromise();
+    } catch (error) {
+    }
+}
+
+
+function cargarTablaClienteVenta(clientes) {
+    const clientePersona = [];
+    const table = $("#tabla-cliente-venta");
+    clientes.forEach(cliente => {
+        const object = {};
+        const persona = cliente.persona;
+        object.id_cliente = cliente.id_cliente;
+        object.descuento = cliente.descuento;
+        object.compras_realizadas = cliente.compras_realizadas;
+        object.nombre = persona.nombre;
+        object.paterno = persona.paterno;
+        object.materno = persona.materno;
+        object.telefono = persona.telefono;
+        object.correo = persona.correo;
+        
+        object.acciones = `<a data-check="${cliente.id_cliente}" class="btn btn-info btn-sm check" title="Resturar"><i class="fa fa-check"></i></a>`;
+                        
+        clientePersona.push(object);
+    });
+
+    table.bootstrapTable('load', clientePersona);
+}
+
+
 function realizarBusqueda(botonBuscar, claseBusqueda) {
     var searchText = $(botonBuscar).val().toLowerCase();
 
@@ -326,10 +407,44 @@ function realizarBusqueda(botonBuscar, claseBusqueda) {
 
 function montoTotal(array) {
     let monto = 0;
+    const montoInput = $("#monto");
+    const descuentoInput = $("#monto-descuento");
+    const descuento = descuentoCliente;
     array.forEach(element => {
         monto += parseFloat(element.sub_monto);
     });
-    return monto;
+
+    const montoDescuento = calcularMontoConDescuento(monto, descuento).toFixed(2);
+
+    descuentoInput.val(montoDescuento);
+    montoInput.val(monto);
+
+    return {
+        monto: monto,
+        monto_descuento: montoDescuento 
+    };
+}
+
+function calcularMontoConDescuento(montoTotal, porcentajeDescuento) {
+    
+    const descuento = montoTotal * (porcentajeDescuento / 100);
+    const montoConDescuento = montoTotal - descuento;
+
+    return montoConDescuento;
+}
+
+function vericarCantidad(idItem, cantidad) {
+    const item = itemMenus.find(element => element.id_item_menu == idItem);
+    const object = {};
+    if (item) {
+        object.cantidad = item.pivot.cantidad;
+        if (cantidad > object.cantidad) {
+            object.verificar = false;
+        } else {
+            object.verificar = true;
+        }
+    }
+    return object;
 }
 
 function obtenerFechaActual() {
@@ -342,3 +457,18 @@ function obtenerFechaActual() {
     return fechaFormateada;
 }
 
+function alerta(titulo, mesaje, duracion) {
+    const alerta = alertify.alert(titulo, mesaje);
+    setTimeout(function(){
+        alerta.close();
+    }, duracion);
+}
+
+
+
+//evento select
+// $('#id-cliente').on('select2:select', function (e) {
+//     const data = e.params.data;
+//     idCliente = parseInt(data.id);
+//     console.log(idCliente);
+// });

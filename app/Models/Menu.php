@@ -18,6 +18,7 @@ class Menu extends Model
     ];
     public $timestamps = true;
 
+    //para la relacion de muchos a muchos
     public function itemMenus()
     {
         return $this->belongsToMany(ItemMenu::class, 'menu_item_menu', 'id_menu', 'id_item_menu') 

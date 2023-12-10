@@ -14,7 +14,7 @@ function validar(campo) {
 
 function validarSelect(campo) {
     var selectedValues = campo.val();
-    if (!selectedValues || selectedValues.length === 0) {
+    if (selectedValues == "" || selectedValues.length === 0) {
         campo.addClass("validarIncorrecto");
         return false;
     } else {

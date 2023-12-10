@@ -64,10 +64,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('menu-edit', [MenuController::class, 'getEdit']);
     ///Fin menu///
 
-    ////Menu////
+    ////Nota venta////
     Route::get('nota-venta', [NotaVentaController::class, 'getIndex']);
     Route::get('nota-venta-create', [NotaVentaController::class, 'getCreate']);
-    ///Fin menu///
+    Route::get('nota-venta-comprobante-pdf/{id}', [NotaVentaController::class, 'getComprobantePdf']);
+    ///Fin venta///
 
     Route::get('restaurante-setting', [RestauranteController::class, 'getIndex']);
 });
+
+//para generar el pdf
+Route::get('nota-venta-comprobante/{id}', [NotaVentaController::class, 'getComprobante']);

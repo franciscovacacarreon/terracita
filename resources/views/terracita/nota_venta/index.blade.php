@@ -51,6 +51,7 @@
                             <tr>
                                 <th data-sortable="true" data-field="id_nota_venta">ID</th>
                                 <th data-sortable="true" data-field="monto">Monto</th>
+                                <th data-sortable="true" data-field="descuento">Descuento %</th>
                                 <th data-sortable="true" data-field="cliente_td">Cliente</th>
                                 <th data-sortable="true" data-field="empleado_td">Empleado</th>
                                 <th data-sortable="true" data-field="metodo_pago">Método de pago</th>

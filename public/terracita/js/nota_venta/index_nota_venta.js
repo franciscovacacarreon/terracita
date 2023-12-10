@@ -17,6 +17,7 @@ function cargarNotaVenta() {
             notaVentas = response.data;
 
             notaVentas.forEach(element => {
+                element.descuento = element.cliente.descuento;
                 element.cliente_td = element.cliente.persona.nombre;
                 element.empleado_td = element.empleado.persona.nombre;
                 element.metodo_pago = element.tipo_pago.nombre;
@@ -42,6 +43,7 @@ function cargarNotaVenta() {
 
 //detalle venta, para la tabla principal
 function detailFormatter(index, row) {
+    let montoTotal = 0;
     var detalleHtml = `
         <div class="table-detail">
             <h5 class="detail-heading">Detalles del catálogo menú</h5>
@@ -49,8 +51,10 @@ function detailFormatter(index, row) {
                 <thead class="thead-light">
                     <tr>
                         <th>ID</th>
-                        <th>Submonto</th>
+                        <th>Nombre</th>
                         <th>Cantidad</th>
+                        <th>Precio</th>
+                        <th>Submonto</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -65,18 +69,29 @@ function detailFormatter(index, row) {
                 <tr style="background-color: ${backgroundColor};">
                     <td>${detalle.item_menu.id_item_menu}</td>
                     <td>${detalle.item_menu.nombre}</td>
+                    <td>${detalle.cantidad}</td>
                     <td>${detalle.item_menu.precio}</td>
                     <td>${detalle.sub_monto}</td>
-                    <td>${detalle.cantidad}</td>
                 </tr>
             `;
+
+            montoTotal += parseFloat(detalle.sub_monto);
         });
     }
 
     detalleHtml += `
-                </tbody>
-            </table>
-        </div>
+        <tr>
+            <td colspan="4" style="text-align: right;">Total:</td>
+            <td>${montoTotal}</td>
+        </tr>
+        <tr>
+            <td colspan="4" style="text-align: right;">Descuento %:</td>
+            <td>${row.descuento}</td>
+        </tr>
+        <tr>
+            <td colspan="4" style="text-align: right;">Total a pagar:</td>
+            <td>${row.monto}</td>
+        </tr>
     `;
 
     return detalleHtml;
