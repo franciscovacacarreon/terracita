@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\ItemMenuController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\NotaVentaController;
 use App\Http\Controllers\RepartidorController;
 use App\Http\Controllers\RestauranteController;
 use App\Http\Controllers\RolController;
