@@ -48,7 +48,7 @@ $('#buscar-add').on('keyup', function () {
 $(document).on("click", ".agregar-disponible", function(e) {
     const idItemMenu = this.name;
     const itemAdd = itemMenus.find(item => item.id_item_menu == idItemMenu);
-    const objectVerificar = vericarCantidad(idItemMenu, 1);
+    const objectVerificar = verificarCantidad(idItemMenu, 1);
     if (!itemAdd.add) {
 
         if (objectVerificar.verificar) {
@@ -91,7 +91,7 @@ $(document).on("click", ".btn-plus-agregado", function(e) {
     const spanSubmonto = $("#submonto-" + idItemMenu);
     const cantidadActualInput = inputCantidad.val();
     const cantidad = parseInt(cantidadActualInput) + 1;
-    const objectVerificar = vericarCantidad(idItemMenu, cantidad);
+    const objectVerificar = verificarCantidad(idItemMenu, cantidad);
 
     if (objectVerificar.verificar) {
         console.log("cantidad menor a stock");
@@ -136,7 +136,7 @@ $(document).on("keyup", ".input-cantidad", function(e) {
     const id = this.id;
     const inputCantidad = $("#" + id);
     const cantidad = parseInt(inputCantidad.val());
-    const object = vericarCantidad(id, cantidad);
+    const object = verificarCantidad(id, cantidad);
     
     if ( cantidad <= 0) {
         alerta("Error", "No se permiten cantidades negativas", 1000);
@@ -175,7 +175,7 @@ function cargarCardItemsMenu(items) {
         item.add = false;
         item.cantidad = 1;
         const cardCuerpo = `
-        <div class="col-md-6 col-sm-5 col-lg-4 col-xl-4 mb-4">
+        <div class="col-md-6 col-sm-5 col-lg-4 col-xl-4 mb-2">
             <div class="card card-sm menu-card buscar-disponible" style="width: 10rem;">
                 <img src="${rutaLocal + item.imagen}" alt="${item.nombre}">
                     <div class="menu-card-content">
@@ -185,8 +185,7 @@ function cargarCardItemsMenu(items) {
                         <button class="add-to-cart-btn agregar-disponible" name="${item.id_item_menu}">Agregar</button>
                     </div>
             </div>
-        </div>
-        `;
+        </div>`;
         contenedorCards.append(cardCuerpo);
     });
 }
@@ -196,10 +195,10 @@ function cargarItemMenuAgregado(items) {
     contenedorAgregados.innerHTML = "";
     items.forEach(item => {
         const cuerpoCard = `
-                <div class="col-md-6 col-sm-5 col-lg-4 col-xl-4 mb-4">
-                    <div class="card card-sm menu-card buscar-agregado" style="width: 10rem; height: 225px">
+                <div class="col-md-6 col-sm-5 col-lg-4 col-xl-4 mb-2">
+                    <div class="card card-sm menu-card buscar-agregado" style="width: 10rem;">
                         <img src="${rutaLocal + item.imagen}" alt="${item.nombre}">
-                        <div class="menu-card-content">
+                        <div class="menu-card-content pb-0">
                             <h3>${item.nombre}</h3>
                             <p>Precio: <span class="menu-card-price">Bs ${item.precio}</span></p>
                             <p>Submonto: <span class="menu-card-price" id="submonto-${item.id_item_menu}">Bs ${item.sub_monto}</span></p>
@@ -219,9 +218,10 @@ function cargarItemMenuAgregado(items) {
                                 
                                 <div class="d-flex justify-content-between align-items-center my-1">
                                     
-                                   <button type="button" class="btn btn-info btn-sm mx-1 ver-item-add" name="${item.id_item_menu}">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
+                                   <!-- <button type="button" class="btn btn-info btn-sm mx-1 ver-item-add" name="${item.id_item_menu}">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    -->
                     
                                     <button class="btn btn-danger btn-sm mx-1 eliminar-item-add" name="${item.id_item_menu}">
                                         <i class="fas fa-trash"></i> Eliminar
@@ -280,6 +280,7 @@ function cargarSelectClientes(array, id = 0) {
         // maximumSelectionLength: 1
     });
 }
+
 function saveNotaVenta() {
     const data = {};
     const montos = montoTotal(itemsCarrito);
@@ -433,7 +434,7 @@ function calcularMontoConDescuento(montoTotal, porcentajeDescuento) {
     return montoConDescuento;
 }
 
-function vericarCantidad(idItem, cantidad) {
+function verificarCantidad(idItem, cantidad) {
     const item = itemMenus.find(element => element.id_item_menu == idItem);
     const object = {};
     if (item) {

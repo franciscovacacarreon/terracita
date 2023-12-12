@@ -76,7 +76,7 @@ class ClienteController extends Controller
             $response = [
                 'message' => 'Registro insertado correctamente.',
                 'status' => 200,
-                'data' => $idPerson,
+                'data' => $dataPerson,
             ];
         } catch (QueryException | ModelNotFoundException $e) {
 

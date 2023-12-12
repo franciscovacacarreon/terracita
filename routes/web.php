@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminGentella;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ClienteWeb;
+use App\Http\Controllers\ClienteWebController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\ItemMenuController;
@@ -43,8 +44,6 @@ Route::middleware([
     })->name('dashboard');
 });
 
-Route::get('cliente-web', [ClienteWeb::class, 'index']);
-
 // Rutas protegidas por middleware 'auth'
 Route::middleware(['auth'])->group(function () {
     Route::get('tipo-menu', [TipoMenuController::class, 'getIndex']);
@@ -72,6 +71,11 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('restaurante-setting', [RestauranteController::class, 'getIndex']);
 });
+
+//Para el pedido (cliente web)
+Route::get('cliente-web', [ClienteWebController::class, 'getIndex']);
+Route::get('cliente-web-form', [ClienteWebController::class, 'getForm']);
+Route::get('cliente-web-confirmar', [ClienteWebController::class, 'getConfirmar']);
 
 //para generar el pdf
 Route::get('nota-venta-comprobante/{id}', [NotaVentaController::class, 'getComprobante']);

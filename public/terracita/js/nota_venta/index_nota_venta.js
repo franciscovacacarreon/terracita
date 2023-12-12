@@ -6,8 +6,15 @@ $(document).ready( () => {
     cargarNotaVenta();
 });
 
+$(document).on("click", ".print", function() {
+    const idNotaVenta = $(this).attr("data-id");
+    window.location.href = "nota-venta-comprobante-pdf/" + idNotaVenta;
+    // window.open("nota-venta-comprobante-pdf/" + idNotaVenta, "_blank");
+});
+
 
 function cargarNotaVenta() {
+    showLoader();
     const url = rutaApiRest + "nota-venta";
     $.ajax({
         url: url,
@@ -23,19 +30,22 @@ function cargarNotaVenta() {
                 element.metodo_pago = element.tipo_pago.nombre;
                 element.acciones = 
                         `
-                        <a data-pdf="${element.id_nota_venta}" class="btn btn-warning btn-sm edit" title="Editar"><i class="fa fa-edit"></i></a>
+                        <a data-id="${element.id_nota_venta}" class="btn btn-primary btn-sm print" title="Imprimir"><i class="fa fa-print"></i></a>
                         `;
             });
 
             cargarItemMenu();
             table.bootstrapTable('load', notaVentas);
 
+            hideLoader();
         },
         error: function (data, textStatus, jqXHR, error) {
             console.log(data);
             console.log(textStatus);
             console.log(jqXHR);
             console.log(error);
+
+            hideLoader();
         }
 
     });
@@ -125,6 +135,3 @@ function cargarItemMenu() {
 
     });
 }
-
-
-

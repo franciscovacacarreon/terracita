@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Menu;
 use Illuminate\Http\Request;
 
-class ClienteWeb extends Controller
+class ClienteWebController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function getIndex()
     {
         return view('cliente_web.index');
     }
@@ -17,9 +18,14 @@ class ClienteWeb extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function getForm()
     {
-        //
+        return view('cliente_web.form');
+    }
+
+    public function getConfirmar()
+    {
+        return view('cliente_web.confirmar');
     }
 
     /**

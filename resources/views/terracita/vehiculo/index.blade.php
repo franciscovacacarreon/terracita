@@ -11,6 +11,9 @@
 {{-- Loader --}}
 <div id="loader-container"></div>
 
+{{-- Loader --}}
+<div id="loader-container"></div>
+
 <!-- BAARRA DE NAVEGACION -->
 <div class="card">
     <div class="card-header p-2">

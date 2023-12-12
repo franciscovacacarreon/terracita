@@ -17,4 +17,9 @@ class Repartidor extends Model
         'estado'
     ];
     public $timestamps = true;
+
+    public function pedido()
+    {
+        return $this->hasMany(Pedido::class, 'id_repartidor');
+    }
 }

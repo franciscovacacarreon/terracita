@@ -6,12 +6,14 @@ use App\Http\Controllers\ItemMenuController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\MenuItemMenuController;
 use App\Http\Controllers\NotaVentaController;
+use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\RepartidorController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\TipoMenuController;
 use App\Http\Controllers\TipoPagoController;
 use App\Http\Controllers\TipoVehiculoController;
+use App\Http\Controllers\UbicacionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehiculoController;
 use App\Models\TipoMenu;
@@ -107,6 +109,15 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers'], function
     Route::apiResource('nota-venta', NotaVentaController::class);
     Route::post('nota-venta/{notaVenta}', [NotaVentaController::class, 'update']); //Porque ocurrio un error al mandar datos por el formulario, por eso de tipo post
     Route::get('nota-venta-eliminados', [NotaVentaController::class, 'eliminados']);
-    Route::get('nota-venta-restaurar/{user}', [NotaVentaController::class, 'restaurar']);
+    Route::get('nota-venta-restaurar/{notaVenta}', [NotaVentaController::class, 'restaurar']);
+
+    #Ubicación
+    Route::apiResource('ubicacion', UbicacionController::class);
+
+    #nota venta
+    Route::apiResource('pedido', PedidoController::class);
+    Route::post('pedido/{pedido}', [PedidoController::class, 'update']); //Porque ocurrio un error al mandar datos por el formulario, por eso de tipo post
+    Route::get('pedido-eliminados', [PedidoController::class, 'eliminados']);
+    Route::get('pedido-restaurar/{pedido}', [PedidoController::class, 'restaurar']);
 
 });

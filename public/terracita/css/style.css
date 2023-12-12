@@ -41,7 +41,7 @@
     border-radius: 0.25rem;
 }
 
-.custom-file-input:focus ~ .custom-file-label::after {
+.custom-file-input:focus~.custom-file-label::after {
     border-color: #80bdff;
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
@@ -60,13 +60,16 @@
     justify-content: flex-start;
     padding: 20px;
 }
+
 .menu-card {
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     overflow: hidden;
-    width: 150px; /* Reducí el ancho */
-    height: 200px; /* Reducí la altura */
-    margin: 10px; /* Reducí el margen */
+    width: 140px !important;
+    /* Reducí el ancho */
+    /* height: 200px; Reducí la altura */
+    margin: 10px;
+    /* Reducí el margen */
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease-in-out;
 }
@@ -77,24 +80,29 @@
 
 .menu-card img {
     width: 100%;
-    height: 80px; /* Reducí la altura */
+    height: 80px;
+    /* Reducí la altura */
     object-fit: cover;
     cursor: pointer;
 }
 
 .menu-card-content {
-    padding: 8px; /* Reducí el padding */
+    padding: 8px;
+    /* Reducí el padding */
 }
 
 .menu-card h3 {
     margin: 0;
-    font-size: 14px; /* Reducí el tamaño de la fuente */
+    font-size: 14px;
+    /* Reducí el tamaño de la fuente */
     color: #333;
 }
 
 .menu-card p {
-    margin: 6px 0; /* Reducí el margen */
-    font-size: 10px; /* Reducí el tamaño de la fuente */
+    margin: 6px 0;
+    /* Reducí el margen */
+    font-size: 10px;
+    /* Reducí el tamaño de la fuente */
     color: #555;
 }
 
@@ -110,7 +118,8 @@
 .add-to-cart-btn {
     display: block;
     width: 100%;
-    padding: 6px; /* Reducí el padding */
+    padding: 6px;
+    /* Reducí el padding */
     text-align: center;
     background-color: #28a745;
     color: #fff;
@@ -125,15 +134,80 @@
     background-color: #218838;
 }
 
- /* Agrega estilos para el botón flotante en la esquina inferior derecha */
- .floating-btn {
+/* Agrega estilos para el botón flotante en la esquina inferior derecha */
+.floating-btn {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    z-index: 999; /* Ajusta el índice z según sea necesario para que esté por encima de otros elementos */
+    z-index: 999;
+    /* Ajusta el índice z según sea necesario para que esté por encima de otros elementos */
 }
 
 /* Ajusta el estilo del botón según tus preferencias */
 .floating-btn button {
     /* Agrega estilos personalizados aquí */
+}
+
+
+/* Alert */
+.alertify-notifier {
+    left: 30%;
+    /* top: 90%; */
+    /* bottom: 10%; */
+    transform: translate(-50%, 0);
+    background-color: #333;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+    font-size: 14px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Estilos para Alertify Confirm */
+
+/* Contenedor del cuadro de diálogo */
+.alertify .ajs-modal {
+    /* background: #fff; */
+    border-radius: 6px; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+}
+
+/* Encabezado del cuadro de diálogo */
+.alertify .ajs-header {
+    background: #24292e;
+    color: #fff;
+    border-radius: 6px 6px 0 0;
+}
+
+/* Contenido del cuadro de diálogo */
+.alertify .ajs-content {
+    padding: 20px;
+}
+
+/* Botones del cuadro de diálogo */
+.alertify .ajs-buttons {
+    text-align: center;
+}
+
+.alertify .ajs-ok,
+.alertify .ajs-cancel {
+    padding: 10px 20px;
+    margin: 0 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.alertify .ajs-ok {
+    background: #2ecc71;
+    color: #fff;
+}
+
+.alertify .ajs-cancel {
+    background: #e74c3c;
+    color: #fff;
+}
+
+/* Hover y estado activo de los botones */
+.alertify .ajs-buttons .ajs-button:hover,
+.alertify .ajs-buttons .ajs-button:active {
+    opacity: 0.8;
 }
