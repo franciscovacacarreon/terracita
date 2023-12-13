@@ -104,6 +104,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers'], function
     Route::post('user/{user}', [UserController::class, 'update']); //Porque ocurrio un error al mandar datos por el formulario, por eso de tipo post
     Route::get('user-eliminados', [UserController::class, 'eliminados']);
     Route::get('user-restaurar/{user}', [UserController::class, 'restaurar']);
+    Route::post('user-inicio-sesion', [UserController::class, 'inicioSesion']);
 
     #nota venta
     Route::apiResource('nota-venta', NotaVentaController::class);
@@ -114,10 +115,11 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers'], function
     #Ubicación
     Route::apiResource('ubicacion', UbicacionController::class);
 
-    #nota venta
+    #pedidos
     Route::apiResource('pedido', PedidoController::class);
     Route::post('pedido/{pedido}', [PedidoController::class, 'update']); //Porque ocurrio un error al mandar datos por el formulario, por eso de tipo post
     Route::get('pedido-eliminados', [PedidoController::class, 'eliminados']);
     Route::get('pedido-restaurar/{pedido}', [PedidoController::class, 'restaurar']);
+    Route::get('pedido-cliente/{idCliente}', [PedidoController::class, 'showPedidoCliente']);
 
 });

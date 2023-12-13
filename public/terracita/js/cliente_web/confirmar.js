@@ -5,6 +5,9 @@ let marker;
 $(document).ready(function () {
     cargarDatosCliente();
     cargarDetalleProducto();
+
+    $("#registrarme-nav").addClass("d-none");
+    $("#nav-carrito-search").addClass("d-none");
 });
 
 $(document).on("click", "#ubicacion-actual-btn", () => {
@@ -12,8 +15,11 @@ $(document).on("click", "#ubicacion-actual-btn", () => {
 });
 
 $(document).on("click", "#confirmar-pedido", () => {
-    saveUbicacion();
+    if (validar($("#direccion"))) {
+        saveUbicacion();
+    }
 });
+
 
 function savePedido(idUbicacion) {
     let carritomall = JSON.parse(localStorage.getItem('carritomall'));
@@ -40,13 +46,18 @@ function savePedido(idUbicacion) {
         success: function (response) {
             console.log(response);
             const status = response.status;
-            const notaVenta = response.data;
             if (status == 200) {
-                const alerta = alertify.alert("Correcto", "¡Súper, se insertó correctamente!");
+                const data = response.data;
+                const alerta = alertify.alert("Correcto", "¡Súper, hiciste tu pedido correctamente!");
                 setTimeout(function(){
                     alerta.close();
+                    window.location.href = "cliente-web-detalle/" + data.id_pedido;
+
                 }, 1000);
+
+                
                 localStorage.removeItem('carritomall');
+
             } else {
                 alertify.alert(
                     "Error",
@@ -156,8 +167,14 @@ function obtenerFechaActual() {
     return fechaFormateada;
 }
 
+
+/// GOOGLE MAPS
 function initMap() {
-    var myLatLng = { lat: -17.7962, lng: -63.1814 };
+    const latitud = -17.7962;
+    const longitud = -63.1814;
+    $("#latitud").val(latitud);
+    $("#longitud").val(longitud);
+    var myLatLng = { lat: latitud, lng: longitud };
     var mapOptions = {
       center: myLatLng,
       zoom: 8,
@@ -339,14 +356,3 @@ function ubicacionActualReady() {
             console.log("Error al obtener la ubicación:", error);
     });
 }
-
-
-error
-: 
-"SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`terracita`.`pedido`, CONSTRAINT `pedido_id_cliente_foreign` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`)) (Connection: mysql, SQL: insert into `pedido` (`monto`, `fecha`, `id_repartidor`, `id_cliente`, `id_tipo_pago`, `estado_pedido`, `id_ubicacion`, `updated_at`, `created_at`) values (32, 2023-12-12, ?, 17, 1, Pendiente, 3, 2023-12-12 10:26:58, 2023-12-12 10:26:58))"
-message
-: 
-"Error al insertar el registro."
-status
-: 
-500

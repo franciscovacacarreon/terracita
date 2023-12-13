@@ -28,6 +28,16 @@ class ClienteWebController extends Controller
         return view('cliente_web.confirmar');
     }
 
+    public function getDetallePedido(Request $request, $idPedido)
+    {
+        return view('cliente_web.detalle_pedido', ['idPedido' => $idPedido]);
+    }
+
+    public function getMisPedidos(Request $request, $idCliente)
+    {
+        return view('cliente_web.mis_pedidos', ['idCliente' => $idCliente]);
+    }
+
     /**
      * Store a newly created resource in storage.
      */

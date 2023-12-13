@@ -23,4 +23,8 @@ class Cliente extends Model
         return $this->hasMany(NotaVenta::class, 'id_cliente');
     }
 
+    public function pedido()
+    {
+        return $this->hasMany(Pedido::class, 'id_cliente');
+    }
 }

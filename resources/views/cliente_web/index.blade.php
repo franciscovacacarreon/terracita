@@ -138,8 +138,102 @@
     </div>
   </div>
 </div>
-
 {{-- end modal carrito --}}
+
+
+<!-- modal perfil-->
+<div class="modal fade" id="modal-perfil" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        {{-- <h5 class="modal-title" id="staticBackdropLabel">Tu información</h5> --}}
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <div class="row">
+              <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Perfil de Usuario</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-3">
+                                    <!-- Columna de la Foto de Perfil -->
+                                    <div class="col-md-4 text-center">
+                                        <img src="https://via.placeholder.com/150" alt="Foto de Perfil" id="preview" class="img-fluid rounded-circle">
+                                        <input type="file" class="form-control mt-2" accept="image/*" onchange="previewImage(event)" />
+                                    </div>
+            
+                                    <!-- Columna de la Información del Usuario -->
+                                    <div class="col-md-8">
+                                        <form>
+                                            <h5>Información Personal</h5>
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="nombre" class="form-label">Nombre:</label>
+                                                    <input type="text" class="form-control" id="nombre" value="John Doe">
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="email" class="form-label">Email:</label>
+                                                    <input type="email" class="form-control" id="email" value="john@example.com">
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="telefono" class="form-label">Teléfono:</label>
+                                                    <input type="tel" class="form-control" id="telefono" value="(123) 456-7890">
+                                                </div>
+                                            </div>
+                                            <button type="submit" class="btn btn-warning">
+                                              <i class="fas fa-save"></i> 
+                                              Guardar Cambios
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-dark" data-bs-dismiss="modal">
+              <i class="fas fa-door-open"></i>    
+              Close
+          </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{-- modal inicio de sesión --}}
+<div class="modal fade" id="modal-inicio-sesion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Iniciar Sesión</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+                  <div class="mb-3">
+                      <label for="email-inicio" class="form-label">Correo Electrónico</label>
+                      <input type="email-inicio" class="form-control" id="email-inicio" required>
+                  </div>
+                  <div class="mb-3">
+                      <label for="password-inicio" class="form-label">Contraseña</label>
+                      <input type="password" class="form-control" id="password-inicio" required>
+                  </div>
+                  <button type="button" class="btn btn-info" id="crear-cuenta"><i class="fas fa-user-plus"></i> Crear cuenta</button>
+                  <button type="button" class="btn btn-warning" id="iniciar-sesion"><i class="fas fa-sign-in-alt"></i> Iniciar Sesión</button>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+      </div>
+  </div>
+</div>
 
 {{-- Botón flotante --}}
 <div class="floating-cart-button" id="boton-flotante">

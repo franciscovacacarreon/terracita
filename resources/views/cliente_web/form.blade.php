@@ -6,9 +6,9 @@
 <section class="book_section layout_padding mt-3">
     <div class="container">
       <div class="heading_container">
-        <h2>
-          Create una cuenta para hacer tu pedido
-        </h2>
+        <h4>
+          <i class="fas fa-user-plus"></i> Crea una cuenta para hacer tu pedido
+        </h4>
       </div>
       <div class="row">
         <div class="col-md-6">
@@ -40,12 +40,17 @@
           <div class="form_container">
               <div>
                 <input id="correo" type="email" class="form-control" placeholder="Tu Correo" />
+                <p id="correo-advertencia" class="form-label text-danger d-none">Correo no disponible</p>
+                
               </div>
               <div>
                 <input id="password" type="password" class="form-control" placeholder="Contraseña" />
+                <p class="form-label text-danger d-none password-advertencia">Las contraseñas no coinciden</p>
               </div>
               <div>
                 <input id="password-repite" type="password" class="form-control" placeholder="Repite la Contraseña" />
+                <p class="form-label text-danger d-none password-advertencia">Las contraseñas no coinciden</p>
+
               </div>
               {{-- <div>
                 <input type="date" class="form-control">
@@ -67,11 +72,38 @@
 
 @endsection
 
+@section('clienteweb-css')
+  <style>
+      .heading_container {
+          text-align: center;
+          margin-bottom: 30px;
+      }
+
+      .form_container {
+          background-color: #f8f9fa;
+          padding: 20px;
+          border-radius: 10px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          margin-bottom: 20px;
+      }
+
+      .btn_box {
+          margin-top: 20px;
+      }
+
+      .map_container {
+          margin-top: 20px;
+      }
+
+      #map {
+          width: 100%;
+          height: 350px;
+          border-radius: 10px;
+      }
+  </style>
+@endsection
+
   @section('clienteweb-js')
-        <!-- Maps -->
-      <script async defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVIXqy33ZmOtGAUY8b5gnC0exNaFB_9l4&libraries=places,directions,geometry&callback=initMap"
-      type="text/javascript"></script>
 
       <script src="{{asset('/terracita/js/cliente_web/form_cliente.js')}}"></script>
 

@@ -7,36 +7,43 @@ use App\Http\Requests\StorePedidoRequest;
 use App\Http\Requests\UpdatePedidoRequest;
 use App\Http\Resources\PedidoCollection;
 use App\Http\Resources\PedidoResource;
+use App\Models\Cliente;
 use App\Models\DetallePedido;
 use App\Models\MenuItemMenu;
 use App\Models\Persona;
+use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
 
 class PedidoController extends Controller
 {
     #API REST
     public function index()
     {
-
-        $notaVentas = Pedido::with('detallePedido')
-                ->with(['detallePedido', 
-                        'repartidor', 
-                        'cliente', 
-                        'tipoPago'
+        $pedidos = Pedido::with(['detallePedido', 
+                                'repartidor', 
+                                'cliente', 
+                                'tipoPago',
+                                'ubicacion',
                         ])
                 ->get();
 
-        foreach ($notaVentas as $pedido) {
-            $idRepartidor = $pedido['repartidor']['id_repartidor'];
-            $idCliente = $pedido['cliente']['id_cliente'];
-            $personaRepartidor = Persona::findOrFail($idRepartidor);
-            $personaCliente = Persona::findOrFail($idCliente);
-            $pedido['repartidor']['persona'] = $personaRepartidor; 
-            $pedido['cliente']['persona'] = $personaCliente; 
+         foreach ($pedidos as $pedido) {
+
+             if ($pedido['repartidor'] != null) {
+                $idRepartidor = $pedido['repartidor']['id_repartidor'];
+                $personaRepartidor = Persona::findOrFail($idRepartidor);
+                $pedido['repartidor']['persona'] = $personaRepartidor; 
+             }
+
+
+             $idCliente = $pedido['cliente']['id_cliente'];
+             $personaCliente = Persona::findOrFail($idCliente);
+             $pedido['cliente']['persona'] = $personaCliente; 
         }
 
-        return new PedidoCollection($notaVentas);
+        return new PedidoCollection($pedidos);
     }
 
     public function store(StorePedidoRequest $request)
@@ -106,7 +113,27 @@ class PedidoController extends Controller
 
     public function show(Pedido $pedido)
     {
+        $pedido = $pedido->load('detallePedido', 
+                                'repartidor', 
+                                'cliente', 
+                                'tipoPago',
+                                'ubicacion',
+                            );
+
+        $pedido['cliente']['persona'] = Persona::findOrFail($pedido['cliente']['id_cliente']);
+        if ($pedido['repartidor'] != null) {
+            $pedido['repartidor']['persona'] = Persona::findOrFail($pedido['repartidor']['id_repartidor']);
+        }
+        
         return new PedidoResource($pedido);
+    }
+
+    public function showPedidoCliente($idCliente)
+    {
+        $cliente = Cliente::find($idCliente)->load('pedido');
+        return $cliente;
+        
+        return new PedidoResource($cliente);
     }
 
 

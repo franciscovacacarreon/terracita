@@ -76,6 +76,8 @@ Route::middleware(['auth'])->group(function () {
 Route::get('cliente-web', [ClienteWebController::class, 'getIndex']);
 Route::get('cliente-web-form', [ClienteWebController::class, 'getForm']);
 Route::get('cliente-web-confirmar', [ClienteWebController::class, 'getConfirmar']);
+Route::get('cliente-web-detalle/{idPedido}', [ClienteWebController::class, 'getDetallePedido']);
+Route::get('cliente-web-mis-pedidos/{idCliente}', [ClienteWebController::class, 'getMisPedidos']);
 
 //para generar el pdf
 Route::get('nota-venta-comprobante/{id}', [NotaVentaController::class, 'getComprobante']);

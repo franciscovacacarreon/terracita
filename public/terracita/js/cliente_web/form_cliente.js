@@ -1,15 +1,28 @@
 let cliente = {};
-
-$(document).ready(function (params) {
+let users = []; //corregir esta parte
+$(document).ready(function () {
+    cargarUser();
+    $("#registrarme-nav").addClass("d-none");
+    $("#nav-carrito-search").addClass("d-none");
+    $("#dropdwn-user").addClass("d-none");
 });
 
 $("#btn-registrar").click(() => {
     if (validar($("#nombre")) && 
+        validar($("#usuario")) && 
         validar($("#paterno")) && 
         validar($("#telefono")) && 
-        validar($("#correo"))) {
+        validar($("#correo")) &&
+        validar($("#password")) && 
+        validar($("#password-repite")) &&
+        verifyEmail() &&
+        verifyPassword()) {
         saveCliente();
     } 
+});
+
+$("#correo").on('input', function () {
+    verifyEmail();
 });
 
 function saveCliente() {
@@ -61,6 +74,38 @@ function saveCliente() {
     });
 }
 
+function verifyEmail() {
+    const mailTemp = $("#correo").val();
+    const userMail = users.find(element => element.email == mailTemp);
+    let result = true;
+    if (userMail != undefined) {
+        setTimeout(() => {
+            $("#correo-advertencia").removeClass("d-none");
+            $("#correo-advertencia").text("Correo no disponible");
+            result = false;
+        }, 1000);
+    } else {
+        $("#correo-advertencia").addClass("d-none");
+    }
+    return result;
+}
+
+function verifyPassword() {
+    const password = document.getElementById('password').value;
+    const repeatPassword = document.getElementById('password-repite').value;
+    const advertencias = document.querySelectorAll('.password-advertencia');
+    let result = true;
+
+    if (password !== repeatPassword) {
+        advertencias[0].classList.remove('d-none');
+        advertencias[1].classList.remove('d-none');
+        result = false;
+    } else {
+        advertencias[0].classList.add('d-none');
+        advertencias[1].classList.add('d-none');
+    }
+    return result;
+}
 
 function saveUser(idCliente) {
     const formData = new FormData();
@@ -96,16 +141,25 @@ function saveUser(idCliente) {
 }
 
 
-// function initMap() {
-//     var myLatLng = { lat: -34.397, lng: 150.644 };
-//     var mapOptions = {
-//       center: myLatLng,
-//       zoom: 8
-//     };
-//     var map = new google.maps.Map(document.getElementById('map'), mapOptions);
-//     var marker = new google.maps.Marker({
-//       position: myLatLng,
-//       map: map,
-//       title: 'Mi marcador'
-//     });
-//   }
+function cargarUser() {
+    const url = rutaApiRest + "user";
+    showLoader();
+    $.ajax({
+        url: url,
+        type: "GET",
+        dataType: "json",
+        success: function (response) {
+            console.log(response);
+            users = response.data;
+            hideLoader();
+        },
+        error: function (data, textStatus, jqXHR, error) {
+            console.log(data);
+            console.log(textStatus);
+            console.log(jqXHR);
+            console.log(error);
+            hideLoader();
+        }
+
+    });
+}

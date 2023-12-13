@@ -21,4 +21,9 @@ class MenuItemMenu extends Model
     {
         return $this->hasMany(DetalleVenta::class, ['id_item_menu', 'id_menu']);
     }
+
+    public function detallePedido()
+    {
+        return $this->hasMany(DetallePedido::class, ['id_item_menu', 'id_menu']);
+    }
 }

@@ -2,12 +2,31 @@ let catalogoMenu = [];
 let tipoMenu = [];
 let itemMenu = [];
 let carrito = [];
+// let users =[]; //corregir luego, (no debe estar en el front, hacer en el back)
 let descuentoCliente = 0;
 
 $(document).ready(() => {
+    const carritomall = JSON.parse(localStorage.getItem('carritomall'));
+    if (carritomall) {
+        cargarCardItemMenuCarrito(carritomall);
+    }  else {
+        $("#total-item").text(0);
+    }
+    
+
     cargarTipoMenu();
-    // cargarDatosCliente();
+    cargarInformacionCliente();
 })
+
+$(document).on("click", "#iniciar-sesion", function() {
+    iniciarSesion();
+});
+
+$(document).on("click", "#crear-cuenta", function() {
+    const enlaceTemporal = document.createElement('a');
+    enlaceTemporal.href = rutaLocal + "cliente-web-form";
+    enlaceTemporal.click();
+});
 
 $(document).on("click", ".agregar-carrito", function() {
     const idItem = $(this).attr("data-carrito");
@@ -18,7 +37,6 @@ $(document).on("click", ".agregar-carrito", function() {
         const item = itemMenu.find(element => element.id_item_menu == idItem);
         item.cantidad = item.cantidad == null ? 1 : item.cantidad + 1;
         item.sub_monto = item.precio * item.cantidad;
-        $("#total-item").text(carrito.length + 1)
         carrito.push(item);
         cargarCardItemMenuCarrito(carrito);
     } else {
@@ -117,6 +135,7 @@ $(document).on("click", "#proceder-pagar", () => {
 
 
 function cargarCatalogoMenu() {
+    // showLoader();
     const fecha = obtenerFechaActual();
     const url = rutaApiRest + "menu-fecha/" + fecha;
     $.ajax({
@@ -131,12 +150,16 @@ function cargarCatalogoMenu() {
                 itemMenu = catalogoMenu[0].item_menus;
                 cargarCardItemMenu(itemMenu);
             }
+
+            hideLoader();
         },
         error: function (data, textStatus, jqXHR, error) {
             console.log(data);
             console.log(textStatus);
             console.log(jqXHR);
             console.log(error);
+
+            hideLoader();
         }
 
     });
@@ -144,6 +167,7 @@ function cargarCatalogoMenu() {
 
 
 function cargarTipoMenu() {
+    // showLoader();
     const url = rutaApiRest + "tipo-menu";
     $.ajax({
         url: url,
@@ -153,16 +177,75 @@ function cargarTipoMenu() {
             tipoMenu = response.data;
             cargarUlTipoMenu(tipoMenu);
             cargarCatalogoMenu();
+
+            hideLoader();
         },
         error: function (data, textStatus, jqXHR, error) {
             console.log(data);
             console.log(textStatus);
             console.log(jqXHR);
             console.log(error);
+
+            hideLoader();
         }
 
     });
 }
+
+function iniciarSesion() {
+    showLoader();
+    const data = {
+        email: $("#email-inicio").val(),
+        password: $("#password-inicio").val(),
+    };
+    const dataEnviar = JSON.stringify(data);
+    const url = rutaApiRest + "user-inicio-sesion";
+    
+    console.log(dataEnviar);
+    $.ajax({
+        url: url,
+        type: "POST",
+        dataType: "json",
+        data: dataEnviar,
+        success: function (response) {
+            if (response.status == 200) {
+                const data = response.data;
+                const cliente = {
+                    id_cliente: data.persona.id_persona,
+                    nombre: data.persona.nombre,
+                    paterno: data.persona.paterno,
+                    correo: data.email,
+                    descuento: 0,
+                    persona: data.persona,
+                    user: {
+                        id: data.id,
+                        id_persona: data.persona.id_persona,
+                        id_rol: data.id_rol,
+                        name: data.name,
+                    },
+                };
+
+                console.log(cliente);
+                localStorage.setItem('clientemall', JSON.stringify(cliente));
+                alerta("Éxito", "Sesión iniciada correctamente");
+                location.href = location.href; 
+
+            } else {
+                alerta("Error", "Credenciales incorrectas");
+            }
+        },
+        error: function (data, textStatus, jqXHR, error) {
+            console.log(data);
+            console.log(textStatus);
+            console.log(jqXHR);
+            console.log(error);
+
+            hideLoader();
+        }
+
+    });
+}
+
 
 function cargarUlTipoMenu(tipMenu) {
     const ulTipoMenu = $("#ul-tipo-menu");
@@ -240,6 +323,8 @@ function cargarCardItemMenuCarrito(itemcarrito) {
         </div>`;
         carContenedor.append(cuerpo);
     });
+
+    $("#total-item").text(itemcarrito.length);
 }
 
 function cargarDatosCliente() {
@@ -256,6 +341,27 @@ function cargarDatosCliente() {
             alertify.error('Cancelado');
         });
     }
+}
+
+function cargarInformacionCliente() {
+    const clientemall = JSON.parse(localStorage.getItem('clientemall'));
+    if (clientemall) {
+        $("#nombre-usuario").text(clientemall.user.name);
+        $("#nombre").val(clientemall.nombre);
+        $("#email").val(clientemall.correo);
+        $("#telefono").val(clientemall.telefono);
+    }
+
+    setTimeout(() => {
+        $("#registrarme-nav").removeClass("d-none");
+        $("#nav-carrito-search").removeClass("d-none");
+        $("#dropdwn-user").removeClass("d-none");
+    }, 1);
+}
+
+
+function iniciarSesión() {
+    
 }
 
 function verificarCantidad(idItem, cantidad) {
@@ -312,9 +418,24 @@ function obtenerFechaActual() {
 }
 
 
-function alerta(titulo, mesaje, duracion) {
-    const alerta = alertify.alert(titulo, mesaje);
+function alerta(titulo, mensaje, duracion) {
+    const alerta = alertify.alert(titulo, mensaje);
     setTimeout(function(){
         alerta.close();
     }, duracion);
+}
+
+
+function previewImage(event) {
+    var input = event.target;
+
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+            document.getElementById('preview').src = e.target.result;
+        }
+
+        reader.readAsDataURL(input.files[0]);
+    }
 }

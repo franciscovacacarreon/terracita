@@ -101,8 +101,8 @@ class NotaVentaController extends Controller
     public function index()
     {
 
-        $notaVentas = NotaVenta::with('detalleVenta')
-                ->with(['detalleVenta', 
+        $notaVentas = NotaVenta::with([
+                        'detalleVenta', 
                         'empleado', 
                         'cliente', 
                         'tipoPago'

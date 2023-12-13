@@ -71,6 +71,8 @@
 
 <body>
 
+  <div id="loader-container"></div>
+
   <!-- header section strats -->
   <header class="header_section header-section">
     <div class="container">
@@ -97,29 +99,37 @@
               <a class="nav-link" href="#about">Sobre nosotros</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{asset('/cliente-web-form')}}">Registrarme</a>
+              <a class="nav-link" href="{{asset('/cliente-web-form')}}" id="registrarme-nav">Registrarme</a>
             </li>
           </ul>
-          <div class="dropdown">
+          <div class="dropdown" id="dropdwn-user">
             <button class="btn btn-sm btn-dark dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="text-white"><i class="fa fa-user" aria-hidden="true"></i></span>
                 <span id="nombre-usuario"></span>
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-              <button class="dropdown-item" type="button" id="perfil">Perfil</button>
-              <button class="dropdown-item" type="button" id="mis-pedidos">Mis pedidos</button>
-              <button class="dropdown-item" type="button" id="cerrar-sesion">Salir</button>
+                <button class="dropdown-item" type="button" id="perfil">
+                  <i class="fas fa-user"></i> Perfil
+                </button>
+                
+                <button class="dropdown-item" type="button" id="mis-pedidos">
+                    <i class="fas fa-shopping-cart"></i> Mis pedidos
+                </button>
+                
+                <button class="dropdown-item" type="button" id="cerrar-sesion">
+                    <i class="fas fa-sign-out-alt"></i> Salir
+                </button>            
             </div>
           </div>
-          <div class="user_option">
-            <a class="btn btn-sm user_link" href="">
+          <div class="user_option" id="nav-carrito-search">
+            <a class="btn btn-sm user_link" href="alg" data-toggle="modal" data-target="#carritoModal">
               <i class="fa fa-shopping-cart" aria-hidden="true"></i>
             </a>
-            <form class="form-inline">
+            {{-- <form class="form-inline">
               <button class="btn my-2 my-sm-0 nav_search-btn" type="submit">
                 <i class="fa fa-search" aria-hidden="true"></i>
               </button>
-            </form>
+            </form> --}}
             {{-- <a href="" class="order_online text-center">
               Ordene en línea
             </a> --}}
@@ -308,6 +318,8 @@
 
   {{-- parametros --}}
   <script src="{{asset('/terracita/js/parametros.js')}}"></script>
+  <script src="{{asset('/terracita/js/cliente_web/nav.js')}}"></script>
+
   
   {{-- leaflet --}}
   {{-- <script src="{{asset('/bootstrap/js/leaflet.js')}}"></script>

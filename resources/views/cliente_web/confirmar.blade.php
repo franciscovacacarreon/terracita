@@ -62,9 +62,9 @@
                     <p class="font-weight-bold">Total: <span id="total"></span></p>
                 </ul>
                 <div>
-                    <a id="confirmar-pedido" class="btn btn-warning" style="width: 100%;">
+                    <button id="confirmar-pedido" class="btn btn-warning" style="width: 100%;">
                         <i class="fas fa-credit-card" aria-hidden="true"></i> Confirmar pedido
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>

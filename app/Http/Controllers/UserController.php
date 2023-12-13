@@ -9,6 +9,7 @@ use App\Http\Resources\UserCollection;
 use App\Http\Resources\UserResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -29,6 +30,42 @@ class UserController extends Controller
     {
         $data = User::where('estado', 1)->with('rol')->with('persona');
         return new UserCollection($data->get());
+    }
+
+    public function inicioSesion(Request $request)
+    {
+        $response = [];
+        $datos = $request->json()->all();
+
+        $data = User::where('email', $datos['email'])
+                    ->with('rol')
+                    ->with('persona')
+                    ->get();
+
+        if (count($data) > 0) {
+            $user = $data[0];
+            if (Hash::check($datos['password'], $user['password'])) {
+                $response = [
+                    'message' => 'Sesión inicia correctamente.',
+                    'status' => 200,
+                    'data' => $user,
+                ];
+            } else {
+                $response = [
+                    'message' => 'Credenciales incorrectas.',
+                    'status' => 501,
+                    'data' => 0,
+                ];
+            }
+        } else {
+            $response = [
+                'message' => 'Credenciales incorrectas.',
+                'status' => 500,
+                'data' => 0,
+            ];
+        }
+
+        return response()->json($response);
     }
 
     public function store(StoreUserRequest $request)
@@ -198,7 +235,7 @@ class UserController extends Controller
         return response()->json($response);
     }
 
-    public function uploadImage($request, $data, $imagen, $destinationPath) 
+    public function uploadImage($request, $data, $imagen, $destinationPath)
     {
         if ($request->hasFile($imagen)) {
             $file = $request->file($imagen);
