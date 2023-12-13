@@ -193,7 +193,7 @@ function cargarTipoMenu() {
 }
 
 function iniciarSesion() {
-    showLoader();
+    showLoader();;
     const data = {
         email: $("#email-inicio").val(),
         password: $("#password-inicio").val(),
