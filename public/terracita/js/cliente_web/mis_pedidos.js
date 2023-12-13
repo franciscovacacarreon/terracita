@@ -12,7 +12,7 @@ function cargarPedidosCliente() {
         type: "GET",
         dataType: "json",
         success: function (response) {
-            const pedidos = response.pedido;
+            const pedidos = response.data.pedido;
             console.log(response);
             cargarCardPedidos(pedidos);
             hideLoader();

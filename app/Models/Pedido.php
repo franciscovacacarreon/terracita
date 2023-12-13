@@ -13,6 +13,7 @@ class Pedido extends Model
     protected $fillable = [
         'fecha',
         'monto',
+        'descripcion',
         'estado_pedido',
         'id_ubicacion',
         'id_tipo_pago',

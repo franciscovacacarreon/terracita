@@ -9,38 +9,62 @@ use App\Http\Resources\PedidoCollection;
 use App\Http\Resources\PedidoResource;
 use App\Models\Cliente;
 use App\Models\DetallePedido;
+use App\Models\ItemMenu;
 use App\Models\MenuItemMenu;
 use App\Models\Persona;
+use App\Models\User;
 use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PedidoController extends Controller
 {
+
+    #WEB
+    public function getIndex()
+    {
+        return view('terracita.pedido.index');
+    }
+
+    public function getDetallePedido(Request $request, $idPedido)
+    {
+        return view('terracita.pedido.detalle_pedido', ['idPedido' => $idPedido]);
+    }
+
+    public function getMisPedidos()
+    {
+        $usuarioAutenticado = Auth::user();
+        $user = User::findOrFail($usuarioAutenticado->id);
+        $user = $user->load('rol', 'persona');
+        return view('terracita.pedido.mispedidos', ['user' => $user]);
+    }
+
     #API REST
     public function index()
     {
-        $pedidos = Pedido::with(['detallePedido', 
-                                'repartidor', 
-                                'cliente', 
-                                'tipoPago',
-                                'ubicacion',
-                        ])
-                ->get();
+        $pedidos = Pedido::with([
+            'detallePedido',
+            'repartidor',
+            'cliente',
+            'tipoPago',
+            'ubicacion',
+        ])
+            ->get();
 
-         foreach ($pedidos as $pedido) {
+        foreach ($pedidos as $pedido) {
 
-             if ($pedido['repartidor'] != null) {
+            if ($pedido['repartidor'] != null) {
                 $idRepartidor = $pedido['repartidor']['id_repartidor'];
                 $personaRepartidor = Persona::findOrFail($idRepartidor);
-                $pedido['repartidor']['persona'] = $personaRepartidor; 
-             }
+                $pedido['repartidor']['persona'] = $personaRepartidor;
+            }
 
 
-             $idCliente = $pedido['cliente']['id_cliente'];
-             $personaCliente = Persona::findOrFail($idCliente);
-             $pedido['cliente']['persona'] = $personaCliente; 
+            $idCliente = $pedido['cliente']['id_cliente'];
+            $personaCliente = Persona::findOrFail($idCliente);
+            $pedido['cliente']['persona'] = $personaCliente;
         }
 
         return new PedidoCollection($pedidos);
@@ -75,9 +99,9 @@ class PedidoController extends Controller
                     'cantidad' => $item['cantidad'],
                 ]);
 
-                
+
                 //actualizar cantidad en menu_item_menu con sql puro (porque es llave compuesta)
-               /* $menuItemMenu = MenuItemMenu::where('id_menu', $item['id_menu'])
+                /* $menuItemMenu = MenuItemMenu::where('id_menu', $item['id_menu'])
                     ->where('id_item_menu', $item['id_item_menu'])
                     ->first();
 
@@ -113,31 +137,47 @@ class PedidoController extends Controller
 
     public function show(Pedido $pedido)
     {
-        $pedido = $pedido->load('detallePedido', 
-                                'repartidor', 
-                                'cliente', 
-                                'tipoPago',
-                                'ubicacion',
-                            );
+        $pedido = $pedido->load(
+            'detallePedido',
+            'repartidor',
+            'cliente',
+            'tipoPago',
+            'ubicacion',
+        );
 
         $pedido['cliente']['persona'] = Persona::findOrFail($pedido['cliente']['id_cliente']);
         if ($pedido['repartidor'] != null) {
             $pedido['repartidor']['persona'] = Persona::findOrFail($pedido['repartidor']['id_repartidor']);
         }
-        
+
         return new PedidoResource($pedido);
     }
 
     public function showPedidoCliente($idCliente)
     {
         $cliente = Cliente::find($idCliente)->load('pedido');
-        return $cliente;
-        
         return new PedidoResource($cliente);
     }
 
 
-    //Sin uso
+    public function actualizarEstadoPedido(Pedido $pedido, $estado)
+    {
+        $pedido = $pedido->load(
+            'detallePedido',
+            'repartidor',
+            'cliente',
+            'tipoPago',
+            'ubicacion',
+        );
+
+        $pedido['cliente']['persona'] = Persona::findOrFail($pedido['cliente']['id_cliente']);
+        if ($pedido['repartidor'] != null) {
+            $pedido['repartidor']['persona'] = Persona::findOrFail($pedido['repartidor']['id_repartidor']);
+        }
+
+        return new PedidoResource($pedido);
+    }
+
     public function update(UpdatePedidoRequest $request, Pedido $pedido)
     {
         $response = [];
@@ -152,33 +192,11 @@ class PedidoController extends Controller
                 ];
             } else {
 
-                // Actualizar nota
+                // Actualizar pedido
                 $pedido->update([
-                    'monto' => $datos['monto'],
-                    'fecha' => $datos['fecha'],
                     'id_repartidor' => $datos['id_repartidor'],
-                    'id_cliente' => $datos['id_cliente'],
-                    'id_tipo_pago' => $datos['id_tipo_pago'],
                     'estado_pedido' => $datos['estado_pedido'],
                 ]);
-
-
-                $idPedido = $pedido->id_pedido;
-                $items = $request->get('items_menu');
-
-                // Eliminar registros existentes
-                DetallePedido::where('id_pedido', $idPedido)->delete();
-
-                // Insertar nuevos registros actualizados
-                foreach ($items as $item) {
-                    DetallePedido::create([
-                        'id_pedido' => $idPedido,
-                        'id_item_menu' => $item['id_item_menu'],
-                        'id_menu' => $item['id_menu'],
-                        'sub_monto' => $item['sub_monto'],
-                        'cantidad' => $item['cantidad'],
-                    ]);
-                }
 
                 $response = [
                     'message' => 'Registro actualizado correctamente.',
@@ -195,7 +213,6 @@ class PedidoController extends Controller
             ];
         }
 
-        // Laravel manejará automáticamente la conversión a JSON
         return $response;
     }
 
@@ -227,14 +244,14 @@ class PedidoController extends Controller
         return json_encode($response);
     }
 
-     //Sin uso
+    //Sin uso
     public function eliminados()
     {
         $data = Pedido::where('estado', 0);
         return new PedidoCollection($data->get());
     }
 
-     //Sin uso
+    //Sin uso
     public function restaurar(Pedido $pedido)
     {
         $response = [];

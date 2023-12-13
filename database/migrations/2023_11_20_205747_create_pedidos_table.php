@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('id_pedido');
             $table->date('fecha');
             $table->decimal('monto', 10, 2);
+            $table->string('descripcion', 2048)->nullable();
             $table->string('estado_pedido', 30);
             $table->tinyInteger('estado')->default(1);
             

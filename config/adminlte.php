@@ -330,6 +330,28 @@ return [
             ],
         ],
         [
+            'text'    => 'Pedidos',
+            'icon'    => 'fas fa-fw fa-shopping-cart',
+            'submenu' => [
+                [
+                    'text' => 'Pedidos',
+                    'url'  => 'pedido',
+                    'icon'  => 'fas fa-fw fa-shopping-cart',
+                ],
+            ],
+        ],
+        [
+            'text'    => 'Mis pedidos',
+            'icon'    => 'fas fa-fw fa-receipt',
+            'submenu' => [
+                [
+                    'text' => 'Mis pedidos',
+                    'url'  => 'mispedidos',
+                    'icon'  => 'fas fa-fw fa-receipt',
+                ],
+            ],
+        ],
+        [
             'text'    => 'Menú e item',
             'icon'    => 'fas fa-fw fa-utensils', //fas fa-fw por defecto en la plantilla
             'submenu' => [

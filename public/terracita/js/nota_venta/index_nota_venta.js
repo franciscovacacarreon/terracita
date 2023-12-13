@@ -56,7 +56,7 @@ function detailFormatter(index, row) {
     let montoTotal = 0;
     var detalleHtml = `
         <div class="table-detail">
-            <h5 class="detail-heading">Detalles del catálogo menú</h5>
+            <h5 class="detail-heading">Detalles de venta</h5>
             <table class="table table-bordered detail-table">
                 <thead class="thead-light">
                     <tr>

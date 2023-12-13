@@ -48,7 +48,7 @@ $(document).on("click", ".agregar-carrito", function() {
     montoTotal(carrito);
 
     localStorage.setItem('carritomall', JSON.stringify(carrito));
-    alertify.success('Agregado al carrito');
+    // alertify.success('Agregado al carrito');
 });
 
 $(document).on("click", ".btn-plus-agregado", function(e) {
@@ -227,11 +227,11 @@ function iniciarSesion() {
 
                 console.log(cliente);
                 localStorage.setItem('clientemall', JSON.stringify(cliente));
-                alerta("Éxito", "Sesión iniciada correctamente");
+                alerta("Éxito", "Sesión iniciada correctamente", 1500);
                 location.href = location.href; 
 
             } else {
-                alerta("Error", "Credenciales incorrectas");
+                alerta("Error", "Credenciales incorrectas", 1500);
             }
         },
         error: function (data, textStatus, jqXHR, error) {

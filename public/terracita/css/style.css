@@ -181,7 +181,7 @@
 .alertify.ajs-maximized:not(.ajs-resizable) .ajs-content,
 .alertify.ajs-resizable .ajs-content {
     top: 58px;
-    bottom: 68px
+    bottom: 68px,
 }
 
 .alertify .ajs-footer {
@@ -202,8 +202,11 @@
 .alertify-notifier .ajs-message.ajs-success {
     color: #fff;
     background: rgba(91, 189, 114, .95);
-    text-shadow: -1px -1px 0 rgba(0, 0, 0, .5)
+    text-shadow: -1px -1px 0 rgba(0, 0, 0, .5);
+    left: 300px; /* Ajusta la posición izquierda según tus necesidades */
+    bottom: 10px; /* Ajusta la posición inferior según tus necesidades */
 }
+
 
 .alertify-notifier .ajs-message.ajs-error {
     color: #fff;

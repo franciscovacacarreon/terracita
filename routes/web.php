@@ -9,6 +9,7 @@ use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\ItemMenuController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\NotaVentaController;
+use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\RepartidorController;
 use App\Http\Controllers\RestauranteController;
 use App\Http\Controllers\RolController;
@@ -67,6 +68,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('nota-venta', [NotaVentaController::class, 'getIndex']);
     Route::get('nota-venta-create', [NotaVentaController::class, 'getCreate']);
     Route::get('nota-venta-comprobante-pdf/{id}', [NotaVentaController::class, 'getComprobantePdf']);
+    ///Fin venta///
+
+    ////Nota pedido////
+    Route::get('pedido', [PedidoController::class, 'getIndex']);
+    Route::get('pedido/detalle/{idPedido}', [PedidoController::class, 'getDetallePedido']);
+    Route::get('mispedidos', [PedidoController::class, 'getMisPedidos']);
     ///Fin venta///
 
     Route::get('restaurante-setting', [RestauranteController::class, 'getIndex']);
