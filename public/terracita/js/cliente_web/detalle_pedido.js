@@ -16,39 +16,8 @@ function cargarPedido() {
         type: "GET",
         dataType: "json",
         success: function (response) {
+            console.log(response);
             pedido = response.data;
-
-            cargarItemMenu();
-
-            hideLoader();
-        },
-        error: function (data, textStatus, jqXHR, error) {
-            console.log(data);
-            console.log(textStatus);
-            console.log(jqXHR);
-            console.log(error);
-
-            hideLoader();
-        }
-
-    });
-}
-
-function cargarItemMenu() {
-    const url = rutaApiRest + "item-menu";
-    $.ajax({
-        url: url,
-        type: "GET",
-        dataType: "json",
-        success: function (response) {
-            const itemsMenu = response.data;
-
-            //Construir el objeto de pedido con el detalle + itemMenu
-            pedido.detalle_pedido.forEach(element => {
-                element.item_menu = itemsMenu.find(item => item.id_item_menu == element.id_item_menu);
-            });
-            console.log(pedido);
-
             cargarDetallePedidio(pedido);
 
             hideLoader();

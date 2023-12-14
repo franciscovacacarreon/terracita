@@ -1,6 +1,9 @@
 let pedidos = [];
 let repartidores = [];
-let table = $("#tabla-pedido");
+let tablePendiente = $("#tabla-pedido-pendiente");
+let tableConfirmado = $("#tabla-pedido-confirmado");
+let tableEntregado = $("#tabla-pedido-entregado");
+let tableRechazado = $("#tabla-pedido-rechazado");
 
 $(document).ready(() => {
     cargarPedido();
@@ -10,71 +13,56 @@ $(document).ready(() => {
 $(document).on("click", ".confirmar", function () {
     const idPedido = $(this).attr("data-id");
     const pedido = pedidos.find(element => element.id_pedido == idPedido);
-    if (pedido.estado_pedido != "Confirmado") {
-        alertify.confirm("Confirmar", "¿Está seguro de confirmar el pedido?",
-            function () {
-                updatePedido(idPedido, "Confirmado");
-            },
-            function () {
-                alertify.error('Rechazado');
+
+    alertify.confirm("Confirmar", "¿Está seguro de confirmar el pedido?",
+        function () {
+            updatePedido(idPedido, "Confirmado");
+        },
+        function () {
+            alertify.error('Rechazado');
         });
-    } else {
-        const alerta = alertify.alert("Confirmado", "El pedido ya se encuentra confirmado");
-        setTimeout(function () {
-            alerta.close();
-        }, 1000);
-    }
+
 });
 
 $(document).on("click", ".repartidor", function () {
     const idPedido = $(this).attr("data-id");
     const pedido = pedidos.find(element => element.id_pedido == idPedido);
 
-    if (pedido.estado_pedido == "Pendiente") {
-        alertify.confirm("Confirmar", "Debe confirmar el pedido para asignar el repartidor, ¿Desea confirmarlo?",
-            function () {
-                updatePedido(idPedido, "Confirmado");
-            },
-            function () {
-                alertify.error('Rechazado');
-            });
-    } else {
-        if (pedido.estado_pedido == "Confirmado") {
-            $("#asignar-repartidor").attr("name", idPedido);
-            $("#modal-repartidor").modal('show');
-            cargarSelectRepartidor(repartidores, pedido.id_repartidor);
-        }
-    }
+    $("#asignar-repartidor").attr("name", idPedido);
+    $("#modal-repartidor").modal('show');
+    cargarSelectRepartidor(repartidores, pedido.id_repartidor);
 });
 
 
 $(document).on("click", "#asignar-repartidor", function () {
-    const idPedido = this.name
-    const pedido = pedidos.find(element => element.id_pedido == idPedido);
+    const idPedido = this.name;
     const idRepartidor = $("#id-repartidor").val();
     updatePedido(idPedido, "Confirmado", idRepartidor);
-    $("#modal-repartidor").modal('hide')
+    $("#modal-repartidor").modal('hide');
 });
 
 $(document).on("click", ".rechazar", function () {
     const idPedido = $(this).attr("data-id");
     const pedido = pedidos.find(element => element.id_pedido == idPedido);
-    if (pedido.estado_pedido != "Rechazado") {
-        alertify.confirm("Rechazar", "¿Está seguro de rechazar el pedido?",
-            function () {
-                updatePedido(idPedido, "Rechazado");
-            },
-            function () {
-                alertify.error('Rechazado');
-        });
-    } else {
-        const alerta = alertify.alert("Rechazado", "El pedido ya se encuentra rechazado");
-        setTimeout(function () {
-            alerta.close();
-        }, 1000);
-    }
+
+    $("#rachazar-pedido").attr("name", idPedido);
+    $("#modal-rechazar").modal('show');
 });
 
+$(document).on("click", "#rachazar-pedido", function () {
+   
+    const idPedido = this.name;
+    const descripcion = $("#descripcion").val();
+    alertify.confirm("Rechazar", "¿Está seguro de rechazar el pedido?",
+        function () {
+            updatePedido(idPedido, "Rechazado", null, descripcion);
+            $("#modal-rechazar").modal('hide');
+        },
+        function () {
+            alertify.error('Rechazado');
+        }
+    );
+});
 
 
 $(document).on("click", ".detalle", function () {
@@ -94,85 +82,105 @@ function cargarPedido() {
         dataType: "json",
         success: function (response) {
             pedidos = response.data;
-            const objectRow = [];
 
-            pedidos.forEach(element => {
+            const pedidosPendientes = construirObjeto(pedidos, "Pendiente");
+            const pedidosConfirmados = construirObjeto(pedidos, "Confirmado");
+            const pedidoEntregados = construirObjeto(pedidos, "Entregado");
+            const pedidoRechazados = construirObjeto(pedidos, "Rechazado");
 
-                const object = {};
-                object.id_pedido = element.id_pedido;
-                object.cliente = element.cliente.persona.nombre + " " + element.cliente.persona.paterno;
-                object.telefono = element.cliente.persona.telefono;
-                object.estado_pedido = element.estado_pedido;
-                object.repartidor = element.id_repartidor == null ? null : element.repartidor.persona.nombre + " " +
-                    element.repartidor.persona.paterno;
-                object.metodo_pago = element.tipo_pago.nombre;
-                object.monto = element.monto;
-                object.detalle_pedido = element.detalle_pedido;
-
-                object.acciones =
-                    `
-                        <a data-id="${object.id_pedido}" class="btn btn-primary btn-sm confirmar" title="Confirmar"><i class="fa fa-check"></i></a>
-                        <a data-id="${object.id_pedido}" class="btn btn-success btn-sm repartidor" title="Asignar repartidor"><i class="fas fa-motorcycle"></i></a>
-                        <a data-id="${object.id_pedido}" class="btn btn-danger btn-sm rechazar" title="Rechazar"><i class="fa fa-times"></i></a>
-                        <a data-id="${object.id_pedido}" class="btn btn-secondary btn-sm detalle" title="Detalles"><i class="fa fa-eye"></i></a>
-                        `;
-
-                objectRow.push(object);
-            });
-
-            cargarItemMenu(objectRow);
-            hideLoader();
-        },
-        error: function (data, textStatus, jqXHR, error) {
-            console.log(data);
-            console.log(textStatus);
-            console.log(jqXHR);
-            console.log(error);
-
-            hideLoader();
-        }
-
-    });
-}
-
-
-function cargarItemMenu(pedidos) {
-    const url = rutaApiRest + "item-menu";
-    $.ajax({
-        url: url,
-        type: "GET",
-        dataType: "json",
-        success: function (response) {
-            console.log(response);
-            const itemsMenu = response.data;
-
-            //Construir el objeto de pedidos con el detalle + itemMenu
-            pedidos.forEach(pedido => {
-                const detallePedido = pedido.detalle_pedido;
-                detallePedido.forEach(detalle => {
-                    detalle.item_menu = itemsMenu.find(item => item.id_item_menu == detalle.id_item_menu);
-                });
-            });
-
-
-            table.bootstrapTable('load', pedidos);
+            tablePendiente.bootstrapTable('load', pedidosPendientes);
+            tableConfirmado.bootstrapTable('load', pedidosConfirmados);
+            tableEntregado.bootstrapTable('load', pedidoEntregados);
+            tableRechazado.bootstrapTable('load', pedidoRechazados);
 
             console.log(pedidos);
+            hideLoader();
         },
         error: function (data, textStatus, jqXHR, error) {
             console.log(data);
             console.log(textStatus);
             console.log(jqXHR);
             console.log(error);
+
+            hideLoader();
         }
 
     });
 }
 
-function updatePedido(idPedido, estadoPedido, idRepartidor = null) {
+function construirObjeto(pedidos, estadoPedido) {
+    let acciones = {};
+    const pedidosObject = pedidos.filter(element => element.estado_pedido == estadoPedido);
+    const objectTable = [];
+
+    switch (estadoPedido) {
+        case "Pendiente":
+            acciones = {
+                confirmar: "",
+                repartidor: "d-none",
+                rechazar: "",
+                detalle: "",
+            }
+            break;
+        case "Confirmado":
+            acciones = {
+                confirmar: "d-none",
+                repartidor: "",
+                rechazar: "",
+                detalle: "",
+            }
+            break;
+        case "Entregado":
+            acciones = {
+                confirmar: "d-none",
+                repartidor: "d-none",
+                rechazar: "d-none",
+                detalle: "",
+            }
+            break;
+        case "Rechazado":
+            acciones = {
+                confirmar: "",
+                repartidor: "d-none",
+                rechazar: "d-none",
+                detalle: "",
+            }
+            break;
+        default:
+            break;
+    }
+
+    pedidosObject.forEach(element => {
+
+        const object = {};
+        object.id_pedido = element.id_pedido;
+        object.cliente = element.cliente.persona.nombre + " " + element.cliente.persona.paterno;
+        object.telefono = element.cliente.persona.telefono;
+        object.estado_pedido = element.estado_pedido;
+        object.descripcion = element.descripcion;
+        object.repartidor = element.id_repartidor == null ? null : element.repartidor.persona.nombre + " " +
+            element.repartidor.persona.paterno;
+        object.metodo_pago = element.tipo_pago.nombre;
+        object.monto = element.monto;
+        object.detalle_pedido = element.detalle_pedido;
+
+        object.acciones = `
+                        <a data-id="${object.id_pedido}" class="btn btn-primary btn-sm confirmar ${acciones.confirmar}" title="Confirmar"><i class="fa fa-check"></i></a>
+                        <a data-id="${object.id_pedido}" class="btn btn-success btn-sm repartidor ${acciones.repartidor}" title="Asignar repartidor"><i class="fas fa-motorcycle"></i></a>
+                        <a data-id="${object.id_pedido}" class="btn btn-danger btn-sm rechazar ${acciones.rechazar}" title="Rechazar"><i class="fa fa-times"></i></a>
+                        <a data-id="${object.id_pedido}" class="btn btn-secondary btn-sm detalle ${acciones.detalle}" title="Detalles"><i class="fa fa-eye"></i></a>
+                        `;
+
+        objectTable.push(object);
+    });
+    return objectTable;
+}
+
+function updatePedido(idPedido, estadoPedido, idRepartidor = null, descripcion = null) {
     const data = {};
     data.id_repartidor = idRepartidor;
     data.estado_pedido = estadoPedido;
+    data.descripcion = descripcion;
     datosEnviar = JSON.stringify(data);
     const url = rutaApiRest + "pedido/" + idPedido;
     console.log(datosEnviar);

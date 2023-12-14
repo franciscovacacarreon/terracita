@@ -425,6 +425,22 @@ return [
                 ],
             ],
         ],
+        [
+            'text'    => 'Correo',
+            'icon'    => 'fas fa-fw fa-envelope',
+            'submenu' => [
+                [
+                    'text' => 'Enviar',
+                    'icon' => 'fas fa-fw fa-paper-plane',
+                    'url'  => 'enviar',
+                ],
+                [
+                    'text' => 'Recibidos',
+                    'icon' => 'fas fa-fw fa-check-circle',
+                    'url'  => 'recibidos',
+                ],
+            ],
+        ],
         
     ],
 

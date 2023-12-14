@@ -121,5 +121,6 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers'], function
     Route::get('pedido-eliminados', [PedidoController::class, 'eliminados']);
     Route::get('pedido-restaurar/{pedido}', [PedidoController::class, 'restaurar']);
     Route::get('pedido-cliente/{idCliente}', [PedidoController::class, 'showPedidoCliente']);
+    Route::get('pedido-repartidor/{idRepartidor}', [PedidoController::class, 'showPedidoRepartidor']);
 
 });

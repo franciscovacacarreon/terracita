@@ -4,7 +4,6 @@ let table = $("#tabla-pedido");
 
 $(document).ready(() => {
     cargarPedido();
-    cargarClientesAsync();
 });
 
 $(document).on("click", ".Entregar", function () {
@@ -20,7 +19,7 @@ $(document).on("click", ".Entregar", function () {
                 alertify.error('Rechazado');
         });
     } else {
-        const alerta = alertify.alert("Confirmado", "El pedido ya se encuentra confirmado");
+        const alerta = alertify.alert("Confirmado", "El pedido ya se encuentra entregado");
         setTimeout(function () {
             alerta.close();
         }, 1000);
@@ -38,16 +37,15 @@ $(document).on("click", ".detalle", function () {
 
 function cargarPedido() {
     // showLoader();
-    const url = rutaApiRest + "pedido";
+    const url = rutaApiRest + "pedido-repartidor/" + user.id_persona;
     $.ajax({
         url: url,
         type: "GET",
         dataType: "json",
         success: function (response) {
-            pedidos = response.data;
+            const data = response.data;
             const objectRow = [];
-
-            pedidos = pedidos.filter(pedidoUser => pedidoUser.id_repartidor == user.id_persona);
+            pedidos = data.pedido;
 
             pedidos.forEach(element => {
 
@@ -71,50 +69,18 @@ function cargarPedido() {
                 objectRow.push(object);
             });
 
-            cargarItemMenu(objectRow);
-            hideLoader();
-        },
-        error: function (data, textStatus, jqXHR, error) {
-            console.log(data);
-            console.log(textStatus);
-            console.log(jqXHR);
-            console.log(error);
-
-            hideLoader();
-        }
-
-    });
-}
-
-
-function cargarItemMenu(pedidos) {
-    const url = rutaApiRest + "item-menu";
-    $.ajax({
-        url: url,
-        type: "GET",
-        dataType: "json",
-        success: function (response) {
-            console.log(response);
-            const itemsMenu = response.data;
-
-            //Construir el objeto de pedidos con el detalle + itemMenu
-            pedidos.forEach(pedido => {
-                const detallePedido = pedido.detalle_pedido;
-                detallePedido.forEach(detalle => {
-                    detalle.item_menu = itemsMenu.find(item => item.id_item_menu == detalle.id_item_menu);
-                });
-            });
-
-
-            table.bootstrapTable('load', pedidos);
-
+            table.bootstrapTable('load', objectRow);
             console.log(pedidos);
+
+            hideLoader();
         },
         error: function (data, textStatus, jqXHR, error) {
             console.log(data);
             console.log(textStatus);
             console.log(jqXHR);
             console.log(error);
+
+            hideLoader();
         }
 
     });
@@ -124,6 +90,7 @@ function updatePedido(idPedido, estadoPedido, idRepartidor = null) {
     const data = {};
     data.id_repartidor = idRepartidor;
     data.estado_pedido = estadoPedido;
+    data.descripcion = null;
     datosEnviar = JSON.stringify(data);
     const url = rutaApiRest + "pedido/" + idPedido;
     console.log(datosEnviar);
@@ -166,58 +133,7 @@ function updatePedido(idPedido, estadoPedido, idRepartidor = null) {
 }
 
 
-function cargarRepartidorPromise() {
-    return new Promise((resolve, reject) => {
-        const url = rutaApiRest + "repartidor";
-        $.ajax({
-            url: url,
-            type: "GET",
-            dataType: "json",
-            success: function (response) {
-                console.log(response);
-                const repartidores = response.data;
-                resolve(repartidores);
-            },
-            error: function (data, textStatus, jqXHR, error) {
-                console.log(data);
-                console.log(textStatus);
-                console.log(jqXHR);
-                console.log(error);
-                reject(error); // Rechaza la Promise en caso de error
-            }
-        });
-    });
-}
-
-async function cargarClientesAsync() {
-    try {
-        repartidores = await cargarRepartidorPromise();
-        cargarSelectRepartidor(repartidores);
-    } catch (error) {
-    }
-}
-
-function cargarSelectRepartidor(array, id = 0) {
-    const select = $("#id-repartidor");
-    select.empty();
-    array.forEach(element => {
-        let selected = "";
-        if (id == element.id_repartidor) {
-            selected = "selected";
-        }
-        select.append(
-            `<option value="${element.id_repartidor}" ${selected}>${element.persona.nombre + " " + element.persona.paterno}</option>`
-        );
-    });
-    select.select2({
-        width: '100%',
-        theme: "classic",
-        // maximumSelectionLength: 1
-    });
-}
-
-
-//detalle venta, para la tabla principal
+//detalle pedido, para la tabla principal
 function detailFormatter(index, row) {
     var detalleHtml = `
         <div class="table-detail">

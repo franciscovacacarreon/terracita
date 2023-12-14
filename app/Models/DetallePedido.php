@@ -29,4 +29,9 @@ class DetallePedido extends Model
     {
         return $this->belongsTo(MenuItemMenu::class, ['id_item_menu', 'id_menu']);
     }
+
+    public function itemMenu() 
+    {
+        return $this->belongsTo(ItemMenu::class, 'id_item_menu');
+    }
 }

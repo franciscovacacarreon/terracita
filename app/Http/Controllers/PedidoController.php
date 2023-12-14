@@ -12,6 +12,7 @@ use App\Models\DetallePedido;
 use App\Models\ItemMenu;
 use App\Models\MenuItemMenu;
 use App\Models\Persona;
+use App\Models\Repartidor;
 use App\Models\User;
 use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -45,16 +46,15 @@ class PedidoController extends Controller
     public function index()
     {
         $pedidos = Pedido::with([
-            'detallePedido',
+            'detallePedido.itemMenu.tipoMenu',
             'repartidor',
             'cliente',
             'tipoPago',
             'ubicacion',
-        ])
-            ->get();
+        ])->get();
 
+        //Ver la manera de mejorar esta parte, con las relaciones de laravel
         foreach ($pedidos as $pedido) {
-
             if ($pedido['repartidor'] != null) {
                 $idRepartidor = $pedido['repartidor']['id_repartidor'];
                 $personaRepartidor = Persona::findOrFail($idRepartidor);
@@ -75,7 +75,7 @@ class PedidoController extends Controller
         try {
             $datos = $request->json()->all();
 
-            //Insertar nota de venta
+            //Insertar pedido
             $pedido = Pedido::create([
                 'monto' => $datos['monto'],
                 'fecha' => $datos['fecha'],
@@ -138,7 +138,7 @@ class PedidoController extends Controller
     public function show(Pedido $pedido)
     {
         $pedido = $pedido->load(
-            'detallePedido',
+            'detallePedido.itemMenu.tipoMenu',
             'repartidor',
             'cliente',
             'tipoPago',
@@ -159,24 +159,23 @@ class PedidoController extends Controller
         return new PedidoResource($cliente);
     }
 
-
-    public function actualizarEstadoPedido(Pedido $pedido, $estado)
+    public function showPedidoRepartidor($idRepartidor)
     {
-        $pedido = $pedido->load(
-            'detallePedido',
-            'repartidor',
-            'cliente',
-            'tipoPago',
-            'ubicacion',
-        );
+        $repartidor = Repartidor::find($idRepartidor)
+                ->load([
+                    'pedido.cliente',
+                    'pedido.detallePedido.itemMenu.tipoMenu',
+                    'pedido.tipoPago'
+                ]);
 
-        $pedido['cliente']['persona'] = Persona::findOrFail($pedido['cliente']['id_cliente']);
-        if ($pedido['repartidor'] != null) {
+        //Corregir las relacioens en laravel para evitar esto (por la herencia)
+        foreach ($repartidor['pedido'] as $pedido) {
+            $pedido['cliente']['persona'] = Persona::findOrFail($pedido['cliente']['id_cliente']);
             $pedido['repartidor']['persona'] = Persona::findOrFail($pedido['repartidor']['id_repartidor']);
         }
-
-        return new PedidoResource($pedido);
+        return new PedidoResource($repartidor);
     }
+
 
     public function update(UpdatePedidoRequest $request, Pedido $pedido)
     {
@@ -196,6 +195,7 @@ class PedidoController extends Controller
                 $pedido->update([
                     'id_repartidor' => $datos['id_repartidor'],
                     'estado_pedido' => $datos['estado_pedido'],
+                    'descripcion' => $datos['descripcion'],
                 ]);
 
                 $response = [

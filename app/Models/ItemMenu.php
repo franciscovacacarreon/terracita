@@ -30,4 +30,9 @@ class ItemMenu extends Model
     {
         return $this->belongsToMany(Menu::class, 'menu_item_menu', 'id_item_menu', 'id_menu');
     }
+
+    public function detallePedido() 
+    {
+        $this->hasMany(DetallePedido::class, 'id_item_menu');
+    }
 }
