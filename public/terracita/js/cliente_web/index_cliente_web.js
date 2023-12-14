@@ -8,7 +8,9 @@ let descuentoCliente = 0;
 $(document).ready(() => {
     const carritomall = JSON.parse(localStorage.getItem('carritomall'));
     if (carritomall) {
+        carrito = carritomall;
         cargarCardItemMenuCarrito(carritomall);
+        montoTotal(carritomall);
     }  else {
         $("#total-item").text(0);
     }
@@ -99,9 +101,11 @@ $(document).on("click", ".btn-minus-agregado", function(e) {
     }
 });
 
-$(document).on("keyup", ".input-cantidad", function(e) {
+$(document).on("input", ".input-cantidad", function(e) {
     const id = this.id;
+    const itemAddCantidad = carrito.find(item => item.id_item_menu == id);
     const inputCantidad = $("#" + id);
+    const spanSubmonto = $("#submonto-" + id);
     const cantidad = parseInt(inputCantidad.val());
     const object = verificarCantidad(id, cantidad);
     
@@ -112,6 +116,10 @@ $(document).on("keyup", ".input-cantidad", function(e) {
         if (!object.verificar) {
             alerta("Item agotado", "No hay mas de la cantidad actual en el restaurante", 1500);
             inputCantidad.val(object.cantidad);
+        } else {
+            itemAddCantidad.cantidad = cantidad;
+            itemAddCantidad.sub_monto = cantidad * itemAddCantidad.precio;
+            spanSubmonto.text(itemAddCantidad.sub_monto);
         }
     }
 });
@@ -130,6 +138,7 @@ $(document).on("click", ".eliminar-item-add", function(e) {
 });
 
 $(document).on("click", "#proceder-pagar", () => {
+    localStorage.setItem('carritomall', JSON.stringify(carrito));
     cargarDatosCliente();
 });
 
@@ -233,6 +242,8 @@ function iniciarSesion() {
             } else {
                 alerta("Error", "Credenciales incorrectas", 1500);
             }
+
+            hideLoader();
         },
         error: function (data, textStatus, jqXHR, error) {
             console.log(data);
@@ -246,45 +257,50 @@ function iniciarSesion() {
     });
 }
 
-
 function cargarUlTipoMenu(tipMenu) {
     const ulTipoMenu = $("#ul-tipo-menu");
     ulTipoMenu.html("");
     ulTipoMenu.append(`<li class="active" data-filter="*">All</li>`);
     tipMenu.forEach(element => {
-        ulTipoMenu.append(`<li data-filter=".${element.nombre}">${element.nombre}</li>`);
+        ulTipoMenu.append(`<li data-filter="${element.nombre}">${element.nombre}</li>`);
+    });
+
+    // Agregar evento de clic para manejar el filtrado
+    ulTipoMenu.find('li').on('click', function() {
+        const filtro = $(this).data('filter');
+        cargarCardItemMenuFiltrado(filtro);
     });
 }
 
 function cargarCardItemMenu(itemMenu) {
     const carContenedor = $("#contenido-item-menu");
+    carContenedor.html("");
     itemMenu.forEach(item => {
         item.tipo_menu = tipoMenu.find(tipo => tipo.id_tipo_menu == item.id_tipo_menu);
         const cuerpo = `
-        <div class="col-sm-6 col-lg-4 all ${item.tipo_menu.nombre}">
-            <div class="box">
-                <div>
-                    <div class="img-box img-content">
-                        <img src="${rutaLocal + item.imagen}" alt="${item.nombre}">
-                    </div>
-                    <div class="detail-box">
-                        <h5>${item.nombre}</h5>
-                        <p>${item.descripcion}</p>
-                        <div class="options">
-                            <h6>$${item.precio}</h6>
-                            <button data-carrito="${item.id_item_menu}" class="btn btn-warning btn-sm agregar-carrito" href="#" style="color: white">
-                                <i class="fa fa-shopping-cart" aria-hidden="true"> Agregar al carrito</i>
-                            </button>
+            <div class="tarjeta-menu col-sm-6 col-lg-4" data-tipo-menu="${item.tipo_menu.nombre}">
+                <div class="box">
+                    <div>
+                        <div class="img-box img-content">
+                            <img src="${rutaLocal + item.imagen}" alt="${item.nombre}">
+                        </div>
+                        <div class="detail-box">
+                            <h5>${item.nombre}</h5>
+                            <p>${item.descripcion}</p>
+                            <div class="options">
+                                <h6>$${item.precio}</h6>
+                                <button data-carrito="${item.id_item_menu}" class="btn btn-warning btn-sm agregar-carrito" href="#" style="color: white">
+                                    <i class="fa fa-shopping-cart" aria-hidden="true"> Agregar al carrito</i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
         `;
         carContenedor.append(cuerpo);
     });
 }
-
 
 function cargarCardItemMenuCarrito(itemcarrito) {
     const carContenedor = $("#content-modal-carrito");
@@ -325,6 +341,22 @@ function cargarCardItemMenuCarrito(itemcarrito) {
     });
 
     $("#total-item").text(itemcarrito.length);
+}
+
+function cargarCardItemMenuFiltrado(filtro) {
+    const carContenedor = $("#contenido-item-menu");
+
+    // Mostrar todas las tarjetas
+    carContenedor.find('.tarjeta-menu').slideDown(1);
+
+    // Ocultar las tarjetas que no corresponden a la categoría seleccionada
+    if (filtro !== '*') {
+        carContenedor.find(`.tarjeta-menu:not([data-tipo-menu="${filtro}"])`).slideUp(1);
+    }
+
+    // Agregar la clase 'active' al tipo de menú seleccionado
+    $('#ul-tipo-menu li').removeClass('active');
+    $(`#ul-tipo-menu li[data-filter="${filtro}"]`).addClass('active');
 }
 
 function cargarDatosCliente() {

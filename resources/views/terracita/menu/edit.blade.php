@@ -92,7 +92,7 @@
 
 <div class="floating-btn">
     <button class="btn btn-primary" id="actualizar-menu" data-toggle="modal" data-target="#carritoModal">
-        <i class="fa fa-save"></i> Editar
+        <i class="fa fa-save"></i> Actualizar
     </button>
 </div>
 

@@ -27,6 +27,11 @@ class UserController extends Controller
         return view('terracita.user.index');
     }
 
+    public function getBienvenido ()
+    {
+        return view('terracita.user.bienvenido');
+    }
+
     #API REST
     public function index()
     {

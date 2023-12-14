@@ -132,9 +132,11 @@ $(document).on("click", ".btn-minus-agregado", function(e) {
 });
 
 //listener para el input cantidad controlar cantidades negativas
-$(document).on("keyup", ".input-cantidad", function(e) {
+$(document).on("input", ".input-cantidad", function(e) {
     const id = this.id;
+    const itemAddCantidad = itemsCarrito.find(item => item.id_item_menu == id);
     const inputCantidad = $("#" + id);
+    const spanSubmonto = $("#submonto-" + id);
     const cantidad = parseInt(inputCantidad.val());
     const object = verificarCantidad(id, cantidad);
     
@@ -145,6 +147,10 @@ $(document).on("keyup", ".input-cantidad", function(e) {
         if (!object.verificar) {
             alerta("Item agotado", "No hay mas de la cantidad actual en el restaurante", 1500);
             inputCantidad.val(object.cantidad);
+        } else {
+            itemAddCantidad.cantidad = cantidad;
+            itemAddCantidad.sub_monto = cantidad * itemAddCantidad.precio;
+            spanSubmonto.text(itemAddCantidad.sub_monto);
         }
     }
 });

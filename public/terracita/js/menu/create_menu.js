@@ -84,6 +84,19 @@ $(document).on("click", ".btn-minus-agregado", function(e) {
     }
 });
 
+$(document).on("input", ".input-cantidad", function(e) {
+    const id = this.id;
+    const itemAddCantidad = itemsCarrito.find(item => item.id_item_menu == id);
+    const inputCantidad = $("#" + id);
+    const cantidad = parseInt(inputCantidad.val());
+    if ( cantidad <= 0) {
+        alerta("Error", "No se permiten cantidades negativas", 1000);
+        inputCantidad.val(1);
+    } else {
+        itemAddCantidad.cantidad = cantidad;
+    }
+});
+
 //cargar las tarjetas de items
 function cargarCardItemsMenu(items) {
     const contenedorCards = $("#content-card-disponible");
@@ -120,7 +133,7 @@ function cargarItemMenuAgregado(items) {
                             <h3>${item.nombre}</h3>
                             <p>Precio: <span class="menu-card-price">Bs ${item.precio}</span></p>
                             <div class="input-group mb-3">
-                                <input type="number" class="form-control form-control-sm" value="${item.cantidad}" id="${item.id_item_menu}">
+                                <input type="number" class="form-control form-control-sm input-cantidad" value="${item.cantidad}" id="${item.id_item_menu}">
 
                                 <div class="input-group-append">
                                     <button type="button" class="btn btn-success btn-sm mx-1  btn-plus-agregado" name="${item.id_item_menu}">

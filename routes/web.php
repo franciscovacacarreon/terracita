@@ -58,6 +58,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('tipo-pago', [TipoPagoController::class, 'getIndex']);
     Route::get('vehiculo', [VehiculoController::class, 'getIndex']);
     Route::get('user', [UserController::class, 'getIndex']);
+    Route::get('bienvenido', [UserController::class, 'getBienvenido']);
 
     ////Menu////
     Route::get('menu', [MenuController::class, 'getIndex']);

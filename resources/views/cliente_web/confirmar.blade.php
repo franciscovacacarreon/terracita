@@ -62,8 +62,12 @@
                     <p class="font-weight-bold">Total: <span id="total"></span></p>
                 </ul>
                 <div>
-                    <button id="confirmar-pedido" class="btn btn-warning" style="width: 100%;">
+                    <button id="confirmar-pedido" class="btn btn-warning my-2" style="width: 100%;">
                         <i class="fas fa-credit-card" aria-hidden="true"></i> Confirmar pedido
+                    </button>
+                    
+                    <button id="seguir-comprando" class="btn btn-secondary" style="width: 100%;">
+                        <i class="fa fa-shopping-cart" aria-hidden="true"></i> Seguir comprando
                     </button>
                 </div>
             </div>
@@ -82,7 +86,6 @@
             width: 100%;
             height: 400px;
         }
-
         #ubicacion-actual-btn {
             position: absolute;
             bottom: 110px;

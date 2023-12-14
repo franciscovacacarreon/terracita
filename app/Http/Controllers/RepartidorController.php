@@ -21,7 +21,7 @@ class RepartidorController extends Controller
      {
         $usuarioAutenticado = Auth::user();
         $user = User::findOrFail($usuarioAutenticado->id);
-        if (!($user->hasPermissionTo('usuarios'))) {
+        if (!($user->hasPermissionTo('items'))) {
             return redirect()->to('rol-error');
         };
          return view('terracita.repartidor.index');

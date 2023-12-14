@@ -8,10 +8,15 @@
 
 @section('content')
 
-<div class="container-fluid" style="margin-top: 100px">
+<div class="container-fluid" style="">
     <div class="">
         <div class="row row_dash">
             <div class="col-lg-12">
+                <div class="col-4 m-3">
+                    <a href="{{asset('/pedido')}}" class="btn btn-info">
+                        <i class="fas fa-arrow-left"></i> Regresar 
+                    </a>
+                </div>
                 <div class="card">
                     <div class=" card-signin">
                         <div class="card-body">

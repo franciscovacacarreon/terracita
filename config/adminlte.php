@@ -294,11 +294,6 @@ return [
     'menu' => [
         // Navbar items:
         [
-            'text' => 'profile',
-            'url'  => 'user/profile', //ruta de jetstream
-            'icon' => 'fas fa-fw fa-user',
-        ],
-        [
             'type'         => 'fullscreen-widget',
             'topnav_right' => true, //topnav_user para que se coloque en el menu de usuario
         ],
@@ -385,7 +380,7 @@ return [
                     'text' => 'Clientes',
                     'icon' => 'fas fa-fw fa-user',
                     'url'  => 'cliente',
-                    'can'     => 'usuarios',
+                    'can'     => 'items', //si puede ver items es cajero (no hay tiempo de un nuevo permiso :,v)
                 ],
                 [
                     'text' => 'Empleados',
@@ -397,7 +392,7 @@ return [
                     'text' => 'Repartidores',
                     'icon' => 'fas fa-fw fa-motorcycle',
                     'url'  => 'repartidor',
-                    'can'     => 'usuarios',
+                    'can'     => 'items',
                 ],
             ],
         ],        

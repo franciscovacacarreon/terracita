@@ -145,7 +145,7 @@
     </section>
 
 
-  <div id="section-footer" hidden>
+  <div id="section-footer">
       <!-- about section -->
      <section class="about_section layout_padding" id="about">
       <div class="container  ">
@@ -160,18 +160,26 @@
             <div class="detail-box">
               <div class="heading_container">
                 <h2>
-                  We Are Feane
+                  Bienvenido a Mi Terracita
                 </h2>
-              </div>
-              <p>
-                There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration
-                in some form, by injected humour, or randomised words which don't look even slightly believable. If you
-                are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in
-                the middle of text. All
-              </p>
-              <a href="">
+                <p>
+                    En Mi Terracita, nos enorgullece ofrecer una experiencia culinaria única y acogedora.
+                    Nuestro restaurante está diseñado para transportarte a un lugar donde la buena comida y
+                    la hospitalidad excepcional se encuentran. Utilizamos ingredientes frescos y de la más
+                    alta calidad para crear platos deliciosos que satisfacen los paladares más exigentes.
+                </p>
+                <p>
+                    Nuestra misión es crear recuerdos a través de la comida, brindando momentos especiales y
+                    auténticos sabores en cada bocado. Ya sea que vengas a disfrutar de una comida en nuestro
+                    acogedor comedor o a ordenar para llevar, estamos comprometidos a hacer que tu experiencia
+                    sea inolvidable.
+                </p>
+                <p>
+                    ¡Gracias por elegir Mi Terracita! Esperamos tener el placer de servirte pronto.
+                </p>
+              {{-- <a href="">
                 Read More
-              </a>
+              </a> --}}
             </div>
           </div>
         </div>

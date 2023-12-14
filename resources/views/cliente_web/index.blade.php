@@ -3,7 +3,6 @@
 
 @section('contentweb')
 
-
 <div class="hero_area">
   {{-- Imagen de carrusel --}}
   <div class="bg-box">
@@ -90,8 +89,8 @@
   <!-- end slider section -->
 </div>
 
-<section class="food_section layout_padding-bottom mt-3" id="section-items">
-  <div class="container">
+<section class="food_section layout_padding-bottom mt-3 mb-3" id="section-items">
+    <div class="container">
     <div class="heading_container heading_center">
       <h2>
         Menú del día
@@ -107,19 +106,20 @@
         
       </div>
     </div>
-    <div class="btn-box">
+    {{-- <div class="btn-box">
       <a href="">
         View More
       </a>
+    </div> --}}
     </div>
-  </div>
+</section>
 
 
 {{-- modal carrito --}}
 <!-- Modal -->
-<div class="modal fade" id="carritoModal" tabindex="-1" role="dialog" aria-labelledby="carritoModalLabel" aria-hidden="true">
+<div class="modal fade custom-modal" id="carritoModal" tabindex="-1" role="dialog" aria-labelledby="carritoModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
+    <div class="modal-content custom-modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="carritoModalLabel"><i class="fas fa-receipt"></i> Detalle del carrito</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
@@ -127,13 +127,13 @@
         </button>
       </div>
       <div class="modal-body overflow-auto">
-        <p>Monto total: <span id="monto"></span></p>
+        <p class="text-white fs-6" style="font-size: 25px">Monto total Bs.: <span id="monto" class="text-white" style="font-size: 25px"></span></p>
         <div class="row container d-flex justify-content-center align-items-center" id="content-modal-carrito">
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-shopping-cart"></i> Seguir comprando</button>
-        <button type="button" class="btn btn-dark" id="proceder-pagar"><i class="fas fa-money-check"></i> Proceder a pagar</button>
+        <button type="button" class="btn btn-info" id="proceder-pagar"><i class="fas fa-money-check"></i> Proceder a pedir</button>
       </div>
     </div>
   </div>
@@ -244,19 +244,48 @@
 </div>
 {{-- end boton flotante --}}
 
-
-
-
-
 @endsection
 
 @section('clienteweb-css')
-    <style>
-        /* .img-content {
-          padding: 0px!important;
-        } */
-      
-    </style> 
+<style>
+ 
+  body {
+      background-image: url({{asset('/images/fondo_cliente3.jpg')}}); /* Reemplaza '/path/to/your/image.jpg' con la ruta real de tu imagen */
+      background-size: cover;
+      background-position: center center;
+      background-attachment: fixed; /* Para mantener la imagen fija mientras se desplaza */
+      color: white; /* Color de texto blanco u otro color que desees */
+  }
+
+  #contenido-item-menu{
+    /* style="position: relative; height: 100%!important;" */
+    height: 100%!important;
+  }
+
+    /* Estilos generales para el modal */
+  .custom-modal {
+    background: rgba(0, 0, 0, 0.5); /* Fondo oscuro */
+  }
+
+  /* Estilos específicos para el contenido del modal */
+  .custom-modal-content {
+    background-image: url({{asset('/images/fondo_cliente3.jpg')}}); /* Ruta de tu imagen de fondo */
+    background-size: cover;
+    background-position: center;
+    color: #fff; /* Color del texto */
+  }
+
+  /* Estilos adicionales para el contenido del modal si es necesario */
+  .custom-modal-content p {
+    /* Estilos para los párrafos dentro del modal */
+  }
+
+  .custom-modal-content button {
+    /* Estilos para los botones dentro del modal */
+  }
+
+
+</style>
 @endsection
 
 

@@ -14,6 +14,12 @@ $(document).on("click", "#ubicacion-actual-btn", () => {
     ubicacionActualReady();
 });
 
+$(document).on("click", "#seguir-comprando", () => {
+    const enlaceTemporal = document.createElement('a');
+    enlaceTemporal.href = rutaLocal + "cliente-web";
+    enlaceTemporal.click();
+});
+
 $(document).on("click", "#confirmar-pedido", () => {
     if (validar($("#direccion"))) {
         saveUbicacion();
