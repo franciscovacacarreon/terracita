@@ -75,8 +75,7 @@
                             data-search="true" 
                             data-show-export="true" 
                             data-show-export="true"
-                            data-pagination="true" 
-                            data-toolbar="#toolbar"
+                            data-pagination="true"
                             data-detail-view="true" 
                             data-detail-formatter="detailFormatter">
 

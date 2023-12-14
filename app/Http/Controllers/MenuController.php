@@ -8,9 +8,11 @@ use App\Http\Requests\UpdateMenuRequest;
 use App\Http\Resources\MenuCollection;
 use App\Http\Resources\MenuResource;
 use App\Models\MenuItemMenu;
+use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class MenuController extends Controller
@@ -18,15 +20,33 @@ class MenuController extends Controller
     #WEB
     public function getIndex()
     {
+        $usuarioAutenticado = Auth::user();
+        $user = User::findOrFail($usuarioAutenticado->id);
+        if (!($user->hasPermissionTo('items'))) {
+            return redirect()->to('rol-error');
+        };
+
         return view('terracita.menu.index');
     }
 
     public function getCreate()
     {
+        $usuarioAutenticado = Auth::user();
+        $user = User::findOrFail($usuarioAutenticado->id);
+        if (!($user->hasPermissionTo('items'))) {
+            return redirect()->to('rol-error');
+        };
+
         return view('terracita.menu.create');
     }
     public function getEdit() 
     {
+        $usuarioAutenticado = Auth::user();
+        $user = User::findOrFail($usuarioAutenticado->id);
+        if (!($user->hasPermissionTo('items'))) {
+            return redirect()->to('rol-error');
+        };
+
         return view('terracita.menu.edit');
     }
 

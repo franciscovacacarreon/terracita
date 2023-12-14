@@ -8,6 +8,7 @@ use App\Http\Requests\StoreTipoMenuRequest;
 use App\Http\Requests\UpdateTipoMenuRequest;
 use App\Http\Resources\TipoMenuCollection;
 use App\Http\Resources\TipoMenuResource;
+use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -20,6 +21,12 @@ class TipoMenuController extends Controller
     #WEB
     public function getIndex() {
         
+        $usuarioAutenticado = Auth::user();
+        $user = User::findOrFail($usuarioAutenticado->id);
+        if (!($user->hasPermissionTo('items'))) {
+            return redirect()->to('rol-error');
+        };
+
         return view('terracita.tipo_menu.index');
     }
 

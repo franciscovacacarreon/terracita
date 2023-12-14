@@ -28,12 +28,16 @@ class NotaVentaController extends Controller
 
     public function __construct()
     {
-        
     }
 
     #WEB
     public function getIndex()
-    {   
+    {
+        $usuarioAutenticado = Auth::user();
+        $user = User::findOrFail($usuarioAutenticado->id);
+        if (!($user->hasPermissionTo('ventas'))) {
+            return redirect()->to('rol-error');
+        };
         return view('terracita.nota_venta.index');
     }
 
@@ -41,20 +45,30 @@ class NotaVentaController extends Controller
     {
         $usuarioAutenticado = Auth::user();
         $user = User::findOrFail($usuarioAutenticado->id);
+        if (!($user->hasPermissionTo('ventas'))) {
+            return redirect()->to('rol-error');
+        };
+
         $user = $user->load('rol', 'persona');
         return view('terracita.nota_venta.create', ['user' => $user]);
     }
 
-    public function getEdit() 
+    public function getEdit()
     {
+        $usuarioAutenticado = Auth::user();
+        $user = User::findOrFail($usuarioAutenticado->id);
+        if (!($user->hasPermissionTo('ventas'))) {
+            return redirect()->to('rol-error');
+        };
+
         return view('terracita.nota_venta.edit');
     }
 
-    
+
     public function getComprobantePdf($id)
     {
         // URL de la página cuyo HTML deseas convertir a PDF
-        $url = asset('/nota-venta-comprobante/'.$id);
+        $url = asset('/nota-venta-comprobante/' . $id);
 
         // Obtener el contenido HTML de la página
         $html = file_get_contents($url);
@@ -77,7 +91,7 @@ class NotaVentaController extends Controller
         $dompdf->stream("documento.pdf", array("Attachment" => false));
     }
 
-    public function getComprobante($id) 
+    public function getComprobante($id)
     {
         $venta = NotaVenta::findOrFail($id)->load('cliente', 'empleado');
         $venta['detalle_venta'] = DetalleVenta::where('id_nota_venta', $venta['id_nota_venta'])->get();
@@ -102,20 +116,20 @@ class NotaVentaController extends Controller
     {
 
         $notaVentas = NotaVenta::with([
-                        'detalleVenta', 
-                        'empleado', 
-                        'cliente', 
-                        'tipoPago'
-                        ])
-                ->get();
+            'detalleVenta',
+            'empleado',
+            'cliente',
+            'tipoPago'
+        ])
+            ->get();
 
         foreach ($notaVentas as $notaVenta) {
             $idEmpleado = $notaVenta['empleado']['id_empleado'];
             $idCliente = $notaVenta['cliente']['id_cliente'];
             $personaEmpleado = Persona::findOrFail($idEmpleado);
             $personaCliente = Persona::findOrFail($idCliente);
-            $notaVenta['empleado']['persona'] = $personaEmpleado; 
-            $notaVenta['cliente']['persona'] = $personaCliente; 
+            $notaVenta['empleado']['persona'] = $personaEmpleado;
+            $notaVenta['cliente']['persona'] = $personaCliente;
         }
 
         return new NotaVentaCollection($notaVentas);
@@ -148,7 +162,7 @@ class NotaVentaController extends Controller
                     'cantidad' => $item['cantidad'],
                 ]);
 
-                
+
                 //actualizar cantidad en menu_item_menu con sql puro (porque es llave compuesta)
                 $menuItemMenu = MenuItemMenu::where('id_menu', $item['id_menu'])
                     ->where('id_item_menu', $item['id_item_menu'])
@@ -279,14 +293,14 @@ class NotaVentaController extends Controller
         return json_encode($response);
     }
 
-     //Sin uso
+    //Sin uso
     public function eliminados()
     {
         $data = NotaVenta::where('estado', 0);
         return new NotaVentaCollection($data->get());
     }
 
-     //Sin uso
+    //Sin uso
     public function restaurar(NotaVenta $notaVenta)
     {
         $response = [];

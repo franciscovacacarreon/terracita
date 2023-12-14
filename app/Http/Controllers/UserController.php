@@ -19,9 +19,11 @@ class UserController extends Controller
     #WEB
     public function getIndex()
     {
-        // $usuarioAutenticado = Auth::user();
-        // $user = User::findOrFail($usuarioAutenticado->id);
-        // return $user->load('rol', 'persona');
+        $usuarioAutenticado = Auth::user();
+        $user = User::findOrFail($usuarioAutenticado->id);
+        if (!($user->hasPermissionTo('usuarios'))) {
+            return redirect()->to('rol-error');
+        };
         return view('terracita.user.index');
     }
 

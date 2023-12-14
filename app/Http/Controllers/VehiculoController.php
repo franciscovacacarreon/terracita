@@ -7,8 +7,10 @@ use App\Http\Requests\StoreVehiculoRequest;
 use App\Http\Requests\UpdateVehiculoRequest;
 use App\Http\Resources\VehiculoCollection;
 use App\Http\Resources\VehiculoResource;
+use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class VehiculoController extends Controller
@@ -16,6 +18,11 @@ class VehiculoController extends Controller
     #WEB
     public function getIndex()
     {
+        $usuarioAutenticado = Auth::user();
+        $user = User::findOrFail($usuarioAutenticado->id);
+        if (!($user->hasPermissionTo('vehiculos'))) {
+            return redirect()->to('rol-error');
+        };
         return view('terracita.vehiculo.index');
     }
 

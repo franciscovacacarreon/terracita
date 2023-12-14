@@ -8,8 +8,10 @@ use App\Http\Requests\UpdateClienteRequest;
 use App\Http\Resources\ClienteCollection;
 use App\Http\Resources\ClienteResource;
 use App\Models\Persona;
+use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ClienteController extends Controller
@@ -17,6 +19,11 @@ class ClienteController extends Controller
     #WEB
     public function getIndex()
     {
+        $usuarioAutenticado = Auth::user();
+        $user = User::findOrFail($usuarioAutenticado->id);
+        if (!($user->hasPermissionTo('usuarios'))) {
+            return redirect()->to('rol-error');
+        };
         return view('terracita.cliente.index');
     }
 

@@ -7,8 +7,10 @@ use App\Http\Requests\StoreItemMenuRequest;
 use App\Http\Requests\UpdateItemMenuRequest;
 use App\Http\Resources\ItemMenuCollection;
 use App\Http\Resources\ItemMenuResource;
+use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ItemMenuController extends Controller
@@ -17,6 +19,12 @@ class ItemMenuController extends Controller
     #WEB
     public function getIndex()
     {
+        $usuarioAutenticado = Auth::user();
+        $user = User::findOrFail($usuarioAutenticado->id);
+        if (!($user->hasPermissionTo('items'))) {
+            return redirect()->to('rol-error');
+        };
+
         return view('terracita.item_menu.index');
     }
 

@@ -7,14 +7,21 @@ use App\Http\Requests\StoreTipoVehiculoRequest;
 use App\Http\Requests\UpdateTipoVehiculoRequest;
 use App\Http\Resources\TipoVehiculoCollection;
 use App\Http\Resources\TipoVehiculoResource;
+use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Auth;
 
 class TipoVehiculoController extends Controller
 {
     #WEB
     public function getIndex()
     {
+        $usuarioAutenticado = Auth::user();
+        $user = User::findOrFail($usuarioAutenticado->id);
+        if (!($user->hasPermissionTo('vehiculos'))) {
+            return redirect()->to('rol-error');
+        };
         return view('terracita.tipo_vehiculo.index');
     }
 

@@ -135,10 +135,6 @@ function cargarItemMenuAgregado(items) {
                                 </div>
                                 
                                 <div class="d-flex justify-content-between align-items-center my-1">
-                                    
-                                   <button type="button" class="btn btn-info btn-sm mx-1 ver-item-add" name="${item.id_item_menu}">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
                     
                                     <button class="btn btn-danger btn-sm mx-1 eliminar-item-add" name="${item.id_item_menu}">
                                         <i class="fas fa-trash"></i> Eliminar
@@ -196,6 +192,7 @@ function saveMenu() {
                 const alerta = alertify.alert("Correcto", "¡Súper, se insertó correctamente!");
                 setTimeout(function(){
                     alerta.close();
+                    redirect("menu");
                 }, 1000);
 
                 $("#nombre").val("");
@@ -246,5 +243,11 @@ function obtenerFechaActual() {
 
     var fechaFormateada = año + '-' + mes + '-' + dia;
     return fechaFormateada;
+}
+
+function redirect(rutaRelativa) {
+    const enlaceTemporal = document.createElement('a');
+    enlaceTemporal.href = rutaLocal + rutaRelativa;
+    enlaceTemporal.click();
 }
 

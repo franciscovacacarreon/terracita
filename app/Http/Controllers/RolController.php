@@ -13,6 +13,7 @@ use App\Models\Roles;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Jetstream\Rules\Role;
 
 class RolController extends Controller
@@ -20,7 +21,17 @@ class RolController extends Controller
     #WEB
     public function getIndex()
     {
+        $usuarioAutenticado = Auth::user();
+        $user = User::findOrFail($usuarioAutenticado->id);
+        if (!($user->hasPermissionTo('usuarios'))) {
+            return redirect()->to('rol-error');
+        };
         return view('terracita.rol.index');
+    }
+
+    public function getError()
+    {
+        return view('terracita.rol.error_rol');
     }
 
     #API REST

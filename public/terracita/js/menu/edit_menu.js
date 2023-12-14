@@ -223,7 +223,7 @@ function updateMenu() {
                 const alerta = alertify.alert("Correcto", "¡Súper, se actualizó correctamente!");
                 setTimeout(function(){
                     alerta.close();
-                    window.location.href = 'menu';
+                    redirect("menu");
                 }, 1000);
 
 
@@ -273,6 +273,7 @@ function saveMenu() {
                 const alerta = alertify.alert("Correcto", "¡Súper, se insertó correctamente!");
                 setTimeout(function(){
                     alerta.close();
+                    redirect("menu");
                 }, 1000);
 
                 $("#nombre").val("");
@@ -309,6 +310,12 @@ function obtenerFechaActual() {
 
     var fechaFormateada = año + '-' + mes + '-' + dia;
     return fechaFormateada;
+}
+
+function redirect(rutaRelativa) {
+    const enlaceTemporal = document.createElement('a');
+    enlaceTemporal.href = rutaLocal + rutaRelativa;
+    enlaceTemporal.click();
 }
 
 

@@ -7,8 +7,10 @@ use App\Http\Requests\StoreRepartidorRequest;
 use App\Http\Requests\UpdateRepartidorRequest;
 use App\Http\Resources\RepartidorResource;
 use App\Models\Persona;
+use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -17,6 +19,11 @@ class RepartidorController extends Controller
      #WEB
      public function getIndex()
      {
+        $usuarioAutenticado = Auth::user();
+        $user = User::findOrFail($usuarioAutenticado->id);
+        if (!($user->hasPermissionTo('usuarios'))) {
+            return redirect()->to('rol-error');
+        };
          return view('terracita.repartidor.index');
      }
  
