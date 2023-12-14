@@ -20,5 +20,13 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call(RolesSeeder::class);
+        $this->call(RolSeeder::class); //Porque y no da tiempo de camibarlo ;v
+        $this->call(PersonaSeeder::class);
+        $this->call(UserSeeder::class);
+        $this->call(EmpleadoSeeder::class);
+        $this->call(ClienteSeeder::class);
+        $this->call(TipoMenuSeeder::class);
+        $this->call(ItemMenuSeeder::class);
+
     }
 }

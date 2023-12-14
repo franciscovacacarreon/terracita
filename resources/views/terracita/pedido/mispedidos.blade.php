@@ -3,14 +3,6 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-    @php
-        $user = auth()->user()->load('rol');
-        if ($user['rol']['id_rol'] == 3) {
-            echo $user;
-        } else {
-            echo "no tienes permisos para acceder a esta vista";
-        }
-    @endphp
     <h1>Mis pedidos - {{$user['persona']['nombre'] . " " . $user['persona']['paterno']}}</h1>
 @stop
 

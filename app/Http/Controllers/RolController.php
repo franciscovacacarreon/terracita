@@ -7,8 +7,13 @@ use App\Http\Requests\StoreRolRequest;
 use App\Http\Requests\UpdateRolRequest;
 use App\Http\Resources\RolCollection;
 use App\Http\Resources\RolResource;
+use App\Models\Empleado;
+use App\Models\Repartidor;
+use App\Models\Roles;
+use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
+use Laravel\Jetstream\Rules\Role;
 
 class RolController extends Controller
 {
@@ -22,7 +27,7 @@ class RolController extends Controller
     public function index()
     {
         $roles = Rol::where('estado', 1);
-        return new RolCollection($roles->get());    
+        return new RolCollection($roles->get());
     }
 
     public function store(StoreRolRequest $request)
@@ -118,6 +123,42 @@ class RolController extends Controller
         } catch (\Exception $e) {
             $response = [
                 'message' => 'La error al resturar.',
+                'status' => 500,
+                'error' => $e
+            ];
+        }
+        return response()->json($response);
+    }
+
+    public function asignarRoles()
+    {
+
+        $response = [];
+        try {
+            $admin = User::find(1); //administrador
+            $admin->assignRole('Administrador');
+
+            $empleados = Empleado::all();
+            $repartidores = Repartidor::all();
+
+            foreach ($empleados as $empleado) {
+                $userEmpleado = User::where('id_persona', $empleado['id_empleado'])->first();
+                $userEmpleado->assignRole('Cajero');
+            }
+
+            foreach ($repartidores as $repartidor) {
+                $userRepartidor = User::where('id_persona', $repartidor['id_repartidor'])->first();
+                $userRepartidor->assignRole('Repartidor');
+            }
+
+            $response = [
+                'message' => 'Roles asignados correctamente.',
+                'status' => 200,
+                'msg' => 0
+            ];
+        } catch (\Exception $e) {
+            $response = [
+                'message' => 'La error al asignar roles.',
                 'status' => 500,
                 'error' => $e
             ];

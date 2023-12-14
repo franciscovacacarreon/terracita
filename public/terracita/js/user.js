@@ -221,6 +221,8 @@ function saveUser() {
 
                 cargarUser();
                 limpiarInput();
+
+                asignarRoles();
             } else {
                 alertify.alert(
                     "Error",
@@ -479,6 +481,25 @@ function cargarCliente() {
         dataType: "json",
         success: function (response) {
             clientes = response.data;
+        },
+        error: function (data, textStatus, jqXHR, error) {
+            console.log(data);
+            console.log(textStatus);
+            console.log(jqXHR);
+            console.log(error);
+        }
+
+    });
+}
+
+function asignarRoles() {
+    const url = rutaApiRest + "rol-asignar";
+    $.ajax({
+        url: url,
+        type: "GET",
+        dataType: "json",
+        success: function (response) {
+            console.log(response);
         },
         error: function (data, textStatus, jqXHR, error) {
             console.log(data);

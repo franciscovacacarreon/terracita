@@ -82,6 +82,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers'], function
     Route::apiResource('rol', RolController::class);
     Route::get('rol-eliminados', [RolController::class, 'eliminados']);
     Route::get('rol-restaurar/{rol}', [RolController::class, 'restaurar']);
+    Route::get('rol-asignar', [RolController::class, 'asignarRoles']);
 
     #Tipo Vehiculo
     Route::apiResource('tipo-vehiculo', TipoVehiculoController::class);
