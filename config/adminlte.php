@@ -307,7 +307,7 @@ return [
             'url'  => 'admin/blog',
             'can'  => 'manage-blog', //directiva can para verificar si tiene permisos
         ],
-        ['header' => 'Menú'],
+        ['header' => 'Ventas'],
         [
             'text'    => 'Ventas',
             'icon'    => 'fas fa-fw fa-tag',
@@ -329,6 +329,7 @@ return [
                 ],
             ],
         ],
+        ['header' => 'Pedidos'],
         [
             'text'    => 'Pedidos',
             'icon'    => 'fas fa-fw fa-shopping-cart',
@@ -338,12 +339,6 @@ return [
                     'url'  => 'pedido',
                     'icon'  => 'fas fa-fw fa-shopping-cart',
                 ],
-            ],
-        ],
-        [
-            'text'    => 'Mis pedidos',
-            'icon'    => 'fas fa-fw fa-receipt',
-            'submenu' => [
                 [
                     'text' => 'Mis pedidos',
                     'url'  => 'mispedidos',
@@ -351,6 +346,7 @@ return [
                 ],
             ],
         ],
+        ['header' => 'Items menú'],
         [
             'text'    => 'Menú e item',
             'icon'    => 'fas fa-fw fa-utensils', //fas fa-fw por defecto en la plantilla
@@ -372,6 +368,7 @@ return [
                 ],
             ],
         ],
+        ['header' => 'Personas y usuarios'],
         [
             'text'    => 'Personas',
             'icon'    => 'fas fa-fw fa-user-friends',
@@ -409,6 +406,7 @@ return [
                 ],
             ],
         ],
+        ['header' => 'Vehiculos'],
         [
             'text'    => 'Vehículos',
             'icon'    => 'fas fa-fw fa-car',
@@ -422,9 +420,11 @@ return [
                     'text' => 'Tipo Vehículos',
                     'icon' => 'fas fa-fw fa-car-side',
                     'url'  => 'tipo-vehiculo',
+                    'atributo' => 'hola'
                 ],
             ],
         ],
+        ['header' => 'Correo'],
         [
             'text'    => 'Correo',
             'icon'    => 'fas fa-fw fa-envelope',

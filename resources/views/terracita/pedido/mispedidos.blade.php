@@ -3,6 +3,14 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
+    @php
+        $user = auth()->user()->load('rol');
+        if ($user['rol']['id_rol'] == 3) {
+            echo $user;
+        } else {
+            echo "no tienes permisos para acceder a esta vista";
+        }
+    @endphp
     <h1>Mis pedidos - {{$user['persona']['nombre'] . " " . $user['persona']['paterno']}}</h1>
 @stop
 
@@ -17,7 +25,7 @@
         <ul class="nav nav-pills">
             <li class="nav-item"><a class="nav-link active" href="#pedido-tab"
                     data-toggle="tab"><i class="fas fa-user"></i>&nbsp;&nbsp;Ventas realizadas</a>
-            </li> 
+            </li>
         </ul>
     </div>
 </div> --}}
@@ -37,14 +45,14 @@
                     </div>
                     <table id="tabla-pedido"
                             data-toggle="table"
-                            data-show-print="true" 
-                            data-show-columns="true" 
-                            data-search="true" 
-                            data-show-export="true" 
+                            data-show-print="true"
+                            data-show-columns="true"
+                            data-search="true"
                             data-show-export="true"
-                            data-pagination="true" 
+                            data-show-export="true"
+                            data-pagination="true"
                             data-toolbar="#toolbar"
-                            data-detail-view="true" 
+                            data-detail-view="true"
                             data-detail-formatter="detailFormatter"
                             data-row-style="rowStyle">
 
@@ -97,7 +105,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-dark" data-bs-dismiss="modal">
-                <i class="fas fa-door-open"></i>    
+                <i class="fas fa-door-open"></i>
                 Close
             </button>
             <button id="asignar-repartidor" type="button" class="btn btn-success">
@@ -128,7 +136,7 @@
     <link rel="stylesheet" href="{{asset('/bootstrap/css/alertify.min.css')}}"/>
     <!-- Default theme -->
     <link rel="stylesheet" href="{{asset('/bootstrap/css/default.min.css')}}"/>
-    
+
 
 
 @stop
@@ -138,19 +146,19 @@
     <script>
         const user = <?=$user?>
     </script>
-   
+
     {{-- bootstrap table --}}
     <script src="{{asset('/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
     <script src="{{asset('/bootstrap/js/bootstrap-table.min.js')}}"></script>
-    
+
     {{-- para imprimir --}}
     <script src="{{asset('/bootstrap/js/bootstrap-table-print.min.js')}}"></script>
-    
+
     {{-- para exportar --}}
     <script src="{{asset('/bootstrap/js/tableExport.min.js')}}"></script>
     <script src="{{asset('/bootstrap/js/jspdf.min.js')}}"></script>
-    <script src="{{asset('/bootstrap/js/jspdf.plugin.autotable.js')}}"></script> 
-    <script src="{{asset('/bootstrap/js/bootstrap-table-export.min.js')}}"></script> 
+    <script src="{{asset('/bootstrap/js/jspdf.plugin.autotable.js')}}"></script>
+    <script src="{{asset('/bootstrap/js/bootstrap-table-export.min.js')}}"></script>
 
     {{-- alert --}}
     <script src="{{asset('/bootstrap/js/alertify.min.js')}}"></script>
