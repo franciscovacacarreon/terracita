@@ -135,20 +135,21 @@ class RolController extends Controller
 
         $response = [];
         try {
-            $admin = User::find(1); //administrador
-            $admin->assignRole('Administrador');
 
-            $empleados = Empleado::all();
-            $repartidores = Repartidor::all();
+            $admins = User::where('id_rol', 1)->get();
+            $empleados = User::where('id_rol', 2)->get();
+            $repartidores = User::where('id_rol', 3)->get();
+
+            foreach ($admins as $admin) {
+                $admin->assignRole('Administrador');
+            }
 
             foreach ($empleados as $empleado) {
-                $userEmpleado = User::where('id_persona', $empleado['id_empleado'])->first();
-                $userEmpleado->assignRole('Cajero');
+                $empleado->assignRole('Cajero');
             }
 
             foreach ($repartidores as $repartidor) {
-                $userRepartidor = User::where('id_persona', $repartidor['id_repartidor'])->first();
-                $userRepartidor->assignRole('Repartidor');
+                $repartidor->assignRole('Repartidor');
             }
 
             $response = [
