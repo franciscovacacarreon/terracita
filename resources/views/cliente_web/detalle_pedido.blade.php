@@ -94,9 +94,16 @@
                                             <div class="col-5">
                                                 <label for="estado_pedido" class="">Estado pedido:</label>
                                             </div>
-
                                             <div class="col-sm-7">
                                                 <p id="estado_pedido"></p>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row d-none" id="pedido-paypal">
+                                            <div class="col-5">
+                                                <label for="descripcion_pago" class="">Estado pago paypal:</label>
+                                            </div>
+                                            <div class="col-sm-7">
+                                                <p id="descripcion_pago"></p>
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -163,7 +170,7 @@
         </div>
     </div>
 </div>
-
+   
 @endsection
 
 @section('clienteweb-css')
@@ -172,7 +179,6 @@
             width: 100%;
             height: 300px;
         }
-
     </style>
 @endsection
 
@@ -184,7 +190,8 @@
     </script>
 
     <script>
-        const idPedido = <?=$idPedido?>
+        const idPedido = <?=$idPedido?>;
+        const mensaje = "{{isset($mensaje) ? $mensaje : ''}}";
     </script>
     <script src="{{asset('/terracita/js/cliente_web/detalle_pedido.js')}}"></script>
 

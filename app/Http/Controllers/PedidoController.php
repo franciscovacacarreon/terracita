@@ -225,6 +225,44 @@ class PedidoController extends Controller
         return $response;
     }
 
+    public function updatePaypal(UpdatePedidoRequest $request, Pedido $pedido)
+    {
+        $response = [];
+
+        try {
+
+            $datos = $request->json()->all();
+            if (!$pedido) {
+                $response = [
+                    'message' => 'Pedido no encontrado.',
+                    'status' => 404,
+                ];
+            } else {
+
+                // Actualizar pedido
+                $pedido->update([
+                    'descripcion_pago' => $datos['descripcion_pago'],
+                ]);
+
+                $response = [
+                    'message' => 'Registro actualizado correctamente.',
+                    'status' => 200,
+                    'data' => $pedido,
+                ];
+            }
+        } catch (\Exception $e) {
+
+            $response = [
+                'message' => 'Error al actualizar el registro.',
+                'status' => 500,
+                'error' => $e->getMessage(),
+            ];
+        }
+
+        return $response;
+    }
+
+
     //Sin uso
     public function destroy(Pedido $pedido)
     {

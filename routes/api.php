@@ -119,6 +119,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers'], function
     #pedidos
     Route::apiResource('pedido', PedidoController::class);
     Route::post('pedido/{pedido}', [PedidoController::class, 'update']); //Porque ocurrio un error al mandar datos por el formulario, por eso de tipo post
+    Route::post('pedido-paypal/{pedido}', [PedidoController::class, 'updatePaypal']); //Porque ocurrio un error al mandar datos por el formulario, por eso de tipo post
     Route::get('pedido-eliminados', [PedidoController::class, 'eliminados']);
     Route::get('pedido-restaurar/{pedido}', [PedidoController::class, 'restaurar']);
     Route::get('pedido-cliente/{idCliente}', [PedidoController::class, 'showPedidoCliente']);

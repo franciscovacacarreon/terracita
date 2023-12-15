@@ -34,6 +34,14 @@ class ClienteWebController extends Controller
         return view('cliente_web.detalle_pedido', ['idPedido' => $idPedido]);
     }
 
+    public function getDetallePedidoPaypal(Request $request, $idPedido, $mensaje)
+    {
+        return view('cliente_web.detalle_pedido', [
+                'idPedido' => $idPedido,
+                'mensaje' => $mensaje,
+            ]);
+    }
+
     public function getMisPedidos(Request $request, $idCliente)
     {
         return view('cliente_web.mis_pedidos', ['idCliente' => $idCliente]);
@@ -54,8 +62,8 @@ class ClienteWebController extends Controller
         $response = $provider->createOrder([
             'intent' => 'CAPTURE',
             'application_context' => [
-                "return_url" => asset("/cliente-web-detalle/$idPedido"),
-                "cancel_url" => asset('/cliente-web-paypal/cancel')
+                "return_url" => asset("/cliente-web-paypal/success/$idPedido/success"),
+                "cancel_url" => asset("/cliente-web-paypal/cancel/$idPedido/cancel")
             ],
             'purchase_units' => [
                 [
@@ -79,11 +87,11 @@ class ClienteWebController extends Controller
                 }
             }
         } else {
-            return redirect(asset('/cliente-web-paypal/cancel'));
+            return redirect(asset("/cliente-web-paypal/cancel/$idPedido/cancel"));
         }  
     }
 
-    public function success(Request $request)
+    public function success(Request $request, $idPedido)
     {
         $provider = new PayPalClient; 
         $provider->setApiCredentials(config('paypal')); 
@@ -93,16 +101,16 @@ class ClienteWebController extends Controller
         // dd($response);
 
         if (isset($response['status']) && $response['status'] == 'COMPLETED') {
-            return "Paypal success";
+            return redirect(asset("cliente-web-paypal-detalle-pedido/$idPedido/success"));
         } else {
-            return redirect(asset('/cliente-web-paypal/cancel'));
+            return redirect(asset("cliente-web-paypal-detalle-pedido/$idPedido/cancel"));
         }
     }
 
     /**
      * Display the specified resource.
      */
-    public function cancel()
+    public function cancel($idPedido, $mensaje)
     {
         return "Paypal is canceled";
     }

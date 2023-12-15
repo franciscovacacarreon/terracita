@@ -30,18 +30,24 @@ $(document).on("click", "#confirmar-pedido", () => {
 function paypal(idPedido) {
     const precio = $("#price").val();
     const url = rutaLocal + "cliente-web-paypal/payment/" + precio + "/"  + idPedido;
+    showLoader();
     $.ajax({
         url: url,
         type: "GET",
         success: function (response) {
             console.log(response)
-            window.open(response, "_blank")
+            hideLoader();
+            const enlaceTemporal = document.createElement('a');
+            enlaceTemporal.href = response;
+            enlaceTemporal.click();
         },
         error: function (data, textStatus, jqXHR, error) {
             console.log(data);
             console.log(textStatus);
             console.log(jqXHR);
             console.log(error);
+
+            hideLoader();
         }
 
     });
@@ -51,16 +57,16 @@ function paypal(idPedido) {
 function savePedido(idUbicacion) {
     let carritomall = JSON.parse(localStorage.getItem('carritomall'));
     const clienteMall = JSON.parse(localStorage.getItem('clientemall'));
-    ccarritomall = castearCarrito(carritomall);
+    carritomall = castearCarrito(carritomall);
     const data = {};
     const montos = montoTotal(carritomall, 0);
     data.monto = parseFloat(montos.monto);
     data.fecha = obtenerFechaActual();
     data.id_repartidor = null;
     data.id_cliente = clienteMall.id_cliente;
-    data.id_tipo_pago = 1; //Corregir
+    data.id_tipo_pago = metodoPago; 
     data.id_ubicacion = idUbicacion; 
-    data.estado_pedido = "Pendiente"; 
+    data.estado_pedido = "Pendiente";
     data.items_menu = carritomall;
     datosEnviar = JSON.stringify(data);
     const url = rutaApiRest + "pedido";
@@ -75,14 +81,18 @@ function savePedido(idUbicacion) {
             const status = response.status;
             if (status == 200) {
                 const data = response.data;
-                paypal(data.id_pedido);
-                // const alerta = alertify.alert("Correcto", "¡Súper, hiciste tu pedido correctamente!");
-                // setTimeout(function(){
-                //     alerta.close();
-                //     window.location.href = "cliente-web-detalle/" + data.id_pedido;
+                if (metodoPago == 1) {
+                 const alerta = alertify.alert("Correcto", "¡Súper, hiciste tu pedido correctamente!");
+                 setTimeout(function(){
+                     alerta.close();
+                    window.location.href = "cliente-web-detalle/" + data.id_pedido;
+                  }, 1000);
 
-                // }, 1000);
-
+                }
+                if (metodoPago == 2) {
+                    paypal(data.id_pedido);
+                }
+               
                 
                 localStorage.removeItem('carritomall');
 
