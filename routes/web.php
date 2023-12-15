@@ -87,6 +87,13 @@ Route::get('cliente-web-form', [ClienteWebController::class, 'getForm']);
 Route::get('cliente-web-confirmar', [ClienteWebController::class, 'getConfirmar']);
 Route::get('cliente-web-detalle/{idPedido}', [ClienteWebController::class, 'getDetallePedido']);
 Route::get('cliente-web-mis-pedidos/{idCliente}', [ClienteWebController::class, 'getMisPedidos']);
+Route::get('cliente-web-paypal', [ClienteWebController::class, 'getPaypal']);
+
+
+// Paypal
+Route::get('cliente-web-paypal/payment/{price}/{idPedido}', [ClienteWebController::class, 'payment']);
+Route::get('cliente-web-paypal/success', [ClienteWebController::class, 'success']);
+Route::get('cliente-web-paypal/cancel', [ClienteWebController::class, 'cancel']);
 
 //para generar el pdf
 Route::get('nota-venta-comprobante/{id}', [NotaVentaController::class, 'getComprobante']);

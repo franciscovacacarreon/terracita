@@ -1,5 +1,6 @@
 let map;
 let marker;
+let metodoPago = 1; //efectivo
 
 
 $(document).ready(function () {
@@ -25,6 +26,26 @@ $(document).on("click", "#confirmar-pedido", () => {
         saveUbicacion();
     }
 });
+
+function paypal(idPedido) {
+    const precio = $("#price").val();
+    const url = rutaLocal + "cliente-web-paypal/payment/" + precio + "/"  + idPedido;
+    $.ajax({
+        url: url,
+        type: "GET",
+        success: function (response) {
+            console.log(response)
+            window.open(response, "_blank")
+        },
+        error: function (data, textStatus, jqXHR, error) {
+            console.log(data);
+            console.log(textStatus);
+            console.log(jqXHR);
+            console.log(error);
+        }
+
+    });
+}
 
 
 function savePedido(idUbicacion) {
@@ -54,12 +75,13 @@ function savePedido(idUbicacion) {
             const status = response.status;
             if (status == 200) {
                 const data = response.data;
-                const alerta = alertify.alert("Correcto", "¡Súper, hiciste tu pedido correctamente!");
-                setTimeout(function(){
-                    alerta.close();
-                    window.location.href = "cliente-web-detalle/" + data.id_pedido;
+                paypal(data.id_pedido);
+                // const alerta = alertify.alert("Correcto", "¡Súper, hiciste tu pedido correctamente!");
+                // setTimeout(function(){
+                //     alerta.close();
+                //     window.location.href = "cliente-web-detalle/" + data.id_pedido;
 
-                }, 1000);
+                // }, 1000);
 
                 
                 localStorage.removeItem('carritomall');
@@ -138,6 +160,7 @@ function cargarDetalleProducto() {
         contenedor.append(cuerpo);
     });
     $("#total").text(total + " " + "Bs.");
+    $("#price").val(montoDolar(total));
 }
 
 function montoTotal(array, descuentoCliente) {
@@ -156,6 +179,11 @@ function montoTotal(array, descuentoCliente) {
     };
 }
 
+
+function montoDolar(monto) {
+    return (monto / 6.9).toFixed(2);
+}
+
 function castearCarrito(carrito) {
     carrito.forEach(element => {
         element.id_menu = element.pivot.id_menu;
@@ -172,6 +200,21 @@ function obtenerFechaActual() {
     var fechaFormateada = año + '-' + mes + '-' + dia;
     return fechaFormateada;
 }
+
+$("input[type='radio']").change(function () {
+    if ($(this).is(":checked")) {
+        var radioId = $(this).attr("id");
+        if (radioId == "pago-paypal") {
+            $("#price").removeClass("d-none");
+            $("#label-price").removeClass("d-none");
+            metodoPago = 2;
+        } else {
+            $("#price").addClass("d-none");
+            $("#label-price").addClass("d-none");
+            metodoPago = 1;
+        }
+    }
+});
 
 
 /// GOOGLE MAPS

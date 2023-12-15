@@ -61,6 +61,28 @@
                 <ul class="list d-flex justify-content-end">
                     <p class="font-weight-bold">Total: <span id="total"></span></p>
                 </ul>
+                <div class="my-2">
+                    <hr>
+                    <h4>Métodos de pago</h4>
+                    <div class="d-flex justify-content-start align-items-center my-2">
+                        <div class="form-check mx-2">
+                            <input class="form-check-input" type="radio"  name="flexRadioDefault" id="pago-efectivo" checked>
+                            <label class="form-check-label" for="flexRadioDefault2">
+                              Efectivo
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="pago-paypal">
+                            <label class="form-check-label" for="flexRadioDefault2">
+                                Paypal
+                              </label>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-start align-items-center">
+                        <label id="label-price" for="" class="form-label mx-1 d-none">Precio en dólares ($): </label>
+                        <input class="form-control col-4 d-none" type="text" id="price" name="price" disabled>
+                    </div>
+                </div>
                 <div>
                     <button id="confirmar-pedido" class="btn btn-warning my-2" style="width: 100%;">
                         <i class="fas fa-credit-card" aria-hidden="true"></i> Confirmar pedido

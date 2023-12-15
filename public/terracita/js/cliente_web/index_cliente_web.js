@@ -41,6 +41,8 @@ $(document).on("click", ".agregar-carrito", function() {
         item.sub_monto = item.precio * item.cantidad;
         carrito.push(item);
         cargarCardItemMenuCarrito(carrito);
+        alertify.set('notifier','position', 'bottom-left');
+        alertify.success("Agregado al carrito");
     } else {
         existeItem.cantidad += 1;
         existeItem.sub_monto = existeItem.precio * existeItem.cantidad;
