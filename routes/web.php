@@ -31,7 +31,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/admin', function () {
     return view('auth.login');
 });
 
@@ -46,7 +46,7 @@ Route::middleware([
 });
 
 // Rutas protegidas por middleware 'auth'
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('tipo-menu', [TipoMenuController::class, 'getIndex']);
     Route::get('item-menu', [ItemMenuController::class, 'getIndex']);
     Route::get('cliente', [ClienteController::class, 'getIndex']);
@@ -81,13 +81,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('restaurante-setting', [RestauranteController::class, 'getIndex']);
 });
 
-//Para el pedido (cliente web)
-Route::get('cliente-web', [ClienteWebController::class, 'getIndex']);
-Route::get('cliente-web-form', [ClienteWebController::class, 'getForm']);
-Route::get('cliente-web-confirmar', [ClienteWebController::class, 'getConfirmar']);
-Route::get('cliente-web-detalle/{idPedido}', [ClienteWebController::class, 'getDetallePedido']);
-Route::get('cliente-web-mis-pedidos/{idCliente}', [ClienteWebController::class, 'getMisPedidos']);
-Route::get('cliente-web-paypal', [ClienteWebController::class, 'getPaypal']);
+Route::get('/', [ClienteWebController::class, 'getIndex']);
+Route::get('form', [ClienteWebController::class, 'getForm']);
+Route::get('confirmar', [ClienteWebController::class, 'getConfirmar']);
+Route::get('detalle/{idPedido}', [ClienteWebController::class, 'getDetallePedido']);
+Route::get('mis-pedidos/{idCliente}', [ClienteWebController::class, 'getMisPedidos']);
+
+// Route::get('paypal', [ClienteWebController::class, 'getPaypal']);
 
 
 //para generar el pdf

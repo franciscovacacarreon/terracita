@@ -40,7 +40,7 @@ function cargarCardPedidos(pedidos) {
                 <div class="card-body">
                     <p class="card-text">Fecha y hora: <strong>${fechaHora.fecha + " - " + fechaHora.hora}</strong></p>
                     <p class="card-text">Total: <strong>$ ${element.monto}</strong></p>
-                    <a type="button" class="btn btn-warning" href="${rutaLocal + 'cliente-web-detalle/' + element.id_pedido}">
+                    <a type="button" class="btn btn-warning" href="${rutaLocal + 'detalle/' + element.id_pedido}">
                         <i class="fas fa-search"></i>
                         Ver Detalles
                     </a>

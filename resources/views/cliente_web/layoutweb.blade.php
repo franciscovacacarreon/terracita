@@ -56,7 +56,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav  mx-auto ">
             <li class="nav-item">
-              <a class="nav-link" href="{{asset('/cliente-web')}}">Home</span></a>
+              <a class="nav-link" href="{{asset('/')}}">Home</span></a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#section-items">Menú del día</a>
@@ -65,7 +65,7 @@
               <a class="nav-link" href="#about">Sobre nosotros</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{asset('/cliente-web-form')}}" id="registrarme-nav">Registrarme</a>
+              <a class="nav-link" href="{{asset('/form')}}" id="registrarme-nav">Registrarme</a>
             </li>
           </ul>
           <div class="dropdown" id="dropdwn-user">

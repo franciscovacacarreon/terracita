@@ -129,7 +129,7 @@ function saveUser(idCliente) {
             cliente.user = response.data; //response.data contiene el objeto user creado
 
             localStorage.setItem('clientemall', JSON.stringify(cliente));
-            window.location.href = "cliente-web";
+            window.location.href = rutaLocal;
         },
         error: function (data, textStatus, jqXHR, error) {
             console.log(data);

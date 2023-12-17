@@ -19,7 +19,7 @@ $(document).on("click", "#ubicacion-actual-btn", () => {
 
 $(document).on("click", "#seguir-comprando", () => {
     const enlaceTemporal = document.createElement('a');
-    enlaceTemporal.href = rutaLocal + "cliente-web";
+    enlaceTemporal.href = rutaLocal;
     enlaceTemporal.click();
 });
 
@@ -65,7 +65,7 @@ function savePedido(nro_transaccion = null, descripcion_pago = null) {
                 const data = response.data;
                 sweentAlert("top-end", "success", "Pedido realizado correctamente", 1500);
                 localStorage.removeItem('carritomall');
-                window.location.href = rutaLocal + "cliente-web-detalle/" + data.id_pedido;
+                window.location.href = rutaLocal + "detalle/" + data.id_pedido;
             } else {
                 sweentAlert("top-end", "error", "Ocurrió un problema al registrar tu pedido", 1500);
             }
@@ -410,5 +410,5 @@ paypal.Buttons({
         customClass: {
             title: 'my-custom-font-class'
           }
-      });
+    });
  }

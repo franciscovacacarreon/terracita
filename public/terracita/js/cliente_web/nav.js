@@ -14,7 +14,7 @@ $(document).on("click", "#mis-pedidos", function() {
         
         // Crear un enlace temporal
         const enlaceTemporal = document.createElement('a');
-        enlaceTemporal.href = rutaLocal + "cliente-web-mis-pedidos/" + clientemall.id_cliente;
+        enlaceTemporal.href = rutaLocal + "mis-pedidos/" + clientemall.id_cliente;
         enlaceTemporal.click();
     } else {
         alerta("Inicia sesión", "Debes iniciar sesión para ver tus pedidos", 2000);
@@ -24,6 +24,6 @@ $(document).on("click", "#mis-pedidos", function() {
 $(document).on("click", "#cerrar-sesion", function() {
     localStorage.removeItem('clientemall');
     const enlaceTemporal = document.createElement('a');
-    enlaceTemporal.href = rutaLocal + "cliente-web"
+    enlaceTemporal.href = rutaLocal;
     enlaceTemporal.click();
 });

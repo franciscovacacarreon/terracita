@@ -10,7 +10,7 @@
     <h1>Producto: </h1>
     <h3>Price: $20</h3>
 
-    <form action="{{asset('cliente-web-paypal/payment')}}" method="post">
+    <form action="{{asset('paypal/payment')}}" method="post">
         @csrf
         <input type="text" name="price" value="20">
         <button type="submit">Pagar</button>

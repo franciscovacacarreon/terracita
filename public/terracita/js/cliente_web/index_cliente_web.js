@@ -26,7 +26,7 @@ $(document).on("click", "#iniciar-sesion", function() {
 
 $(document).on("click", "#crear-cuenta", function() {
     const enlaceTemporal = document.createElement('a');
-    enlaceTemporal.href = rutaLocal + "cliente-web-form";
+    enlaceTemporal.href = rutaLocal + "form";
     enlaceTemporal.click();
 });
 
@@ -369,11 +369,11 @@ function cargarDatosCliente() {
     const clientemall = JSON.parse(localStorage.getItem('clientemall'));
     if (clientemall) {
         $("#nombre-usuario").text(clientemall.user.name);
-        window.location.href = 'cliente-web-confirmar';
+        window.location.href = 'confirmar';
     } else {
         alertify.confirm("Registrarse", "Necesitas registrarte para proceder a la compra",
         function() {
-            window.location.href = 'cliente-web-form';
+            window.location.href = 'form';
         },
         function() {
             alertify.error('Cancelado');
