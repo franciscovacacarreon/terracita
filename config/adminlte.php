@@ -309,19 +309,19 @@ return [
             'submenu' => [
                 [
                     'text' => 'Nueva venta',
-                    'url'  => 'nota-venta-create',
+                    'url'  => 'admin/nota-venta-create',
                     'icon'  => 'fas fa-fw fa-dollar-sign',
                     'can'     => 'ventas',
                 ],
                 [
                     'text' => 'Ventas',
-                    'url'  => 'nota-venta',
+                    'url'  => 'admin/nota-venta',
                     'icon'    => 'fas fa-fw fa-list-ul',
                     'can'     => 'ventas',
                 ],
                 [
-                    'text' => 'Tipos de pago',
-                    'url'  => 'tipo-pago',
+                    'text' => 'Métodos de pago',
+                    'url'  => 'admin/tipo-pago',
                     'icon'    => 'fas fa-fw fa-credit-card',
                     'can'     => 'ventas',
                 ],
@@ -334,13 +334,13 @@ return [
             'submenu' => [
                 [
                     'text' => 'Pedidos',
-                    'url'  => 'pedido',
+                    'url'  => 'admin/pedido',
                     'icon'  => 'fas fa-fw fa-shopping-cart',
                     'can'     => 'pedidos',
                 ],
                 [
                     'text' => 'Mis pedidos',
-                    'url'  => 'mispedidos',
+                    'url'  => 'admin/mispedidos',
                     'icon'  => 'fas fa-fw fa-receipt',
                     'can'     => 'mispedidos',
                 ],
@@ -353,19 +353,19 @@ return [
             'submenu' => [
                 [
                     'text' => 'Catalogo menú',
-                    'url'  => 'menu',
+                    'url'  => 'admin/menu',
                     'icon'    => 'fas fa-fw fa-book',
                     'can'     => 'items',
                 ],
                 [
                     'text' => 'Item menú',
-                    'url'  => 'item-menu',
+                    'url'  => 'admin/item-menu',
                     'icon'    => 'fas fa-fw fa-utensil-spoon',
                     'can'     => 'items',
                 ],
                 [
                     'text' => 'Tipo item menú',
-                    'url'  => 'tipo-menu',
+                    'url'  => 'admin/tipo-menu',
                     'icon'    => 'fas fa-fw fa-hamburger',
                     'can'     => 'items',
                 ],
@@ -379,19 +379,19 @@ return [
                 [
                     'text' => 'Clientes',
                     'icon' => 'fas fa-fw fa-user',
-                    'url'  => 'cliente',
+                    'url'  => 'admin/cliente',
                     'can'     => 'items', //si puede ver items es cajero (no hay tiempo de un nuevo permiso :,v)
                 ],
                 [
                     'text' => 'Empleados',
                     'icon' => 'fas fa-fw fa-briefcase',
-                    'url'  => 'empleado',
+                    'url'  => 'admin/empleado',
                     'can'     => 'usuarios',
                 ],
                 [
                     'text' => 'Repartidores',
                     'icon' => 'fas fa-fw fa-motorcycle',
-                    'url'  => 'repartidor',
+                    'url'  => 'admin/repartidor',
                     'can'     => 'items',
                 ],
             ],
@@ -403,13 +403,13 @@ return [
                 [
                     'text' => 'Usuarios',
                     'icon' => 'fas fa-fw fa-user',
-                    'url'  => 'user',
+                    'url'  => 'admin/user',
                     'can'     => 'usuarios',
                 ],
                 [
                     'text' => 'Roles',
                     'icon' => 'fas fa-fw fa-lock',
-                    'url'  => 'rol',
+                    'url'  => 'admin/rol',
                     'can'  => 'usuarios',
                 ],
             ],
@@ -422,13 +422,13 @@ return [
                 [
                     'text' => 'Vehículos',
                     'icon' => 'fas fa-fw fa-car',
-                    'url'  => 'vehiculo',
+                    'url'  => 'admin/vehiculo',
                     'can'  => 'vehiculos',
                 ],
                 [
                     'text' => 'Tipo Vehículos',
                     'icon' => 'fas fa-fw fa-car-side',
-                    'url'  => 'tipo-vehiculo',
+                    'url'  => 'admin/tipo-vehiculo',
                     'can'  => 'vehiculos',
                 ],
             ],
@@ -441,13 +441,13 @@ return [
                 [
                     'text' => 'Enviar',
                     'icon' => 'fas fa-fw fa-paper-plane',
-                    'url'  => 'enviar',
+                    'url'  => 'admin/enviar',
                     'can'  => 'correo',
                 ],
                 [
                     'text' => 'Recibidos',
                     'icon' => 'fas fa-fw fa-check-circle',
-                    'url'  => 'recibidos',
+                    'url'  => 'admin/recibidos',
                     'can'  => 'correo',
                 ],
             ],
