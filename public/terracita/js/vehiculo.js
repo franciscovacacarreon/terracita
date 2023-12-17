@@ -32,16 +32,16 @@ $("#actualizar-vehiculo").click(() => {
         validar($("#marca-edit")) && 
         validar($("#modelo-edit")) && 
         validar($("#color-edit"))) {
-        const id_vehiculo = $("#actualizar-vehiculo").attr('name');
-        updateVehiculo(id_vehiculo, idRepartidor);
+        const idVehiculo = $("#actualizar-vehiculo").attr('name');
+        updateVehiculo(idVehiculo, idRepartidor);
     }  
 });
 
 $(document).on("click", ".edit", function() {
-    const id_vehiculo = $(this).attr("data-edit");
+    const idVehiculoEdit = $(this).attr("data-edit");
 
     const vehiculoEdit = vehiculo.find((element) => {
-        return element.id_vehiculo == id_vehiculo;
+        return element.id_vehiculo == idVehiculoEdit;
     });
     
     $("#placa-edit").val(vehiculoEdit.placa);
@@ -51,17 +51,17 @@ $(document).on("click", ".edit", function() {
     $("#anio-edit").val(vehiculoEdit.anio);
     $("#imagen-edit").attr('src', vehiculoEdit.imagen);
     idRepartidor = vehiculoEdit.id_repartidor;
-    $("#actualizar-vehiculo").attr("name", id_vehiculo);
+    $("#actualizar-vehiculo").attr("name", idVehiculoEdit);
     $("#modal-edit-vehiculo").modal('show');
     vistaPreviaEdit();
     cargarSelect(tipoVehiculo, vehiculoEdit.id_tipo_vehiculo, $("#id-tipo-vehiculo-edit"));
 });
 
 $(document).on("click", ".delete", function() {
-    const id_vehiculo = $(this).attr("data-delete");
+    const idVehiculo = $(this).attr("data-delete");
     alertify.confirm("Eliminar", "¿Está seguro de eliminar este registro?",
     function() {
-        deleteVehiculo(id_vehiculo);
+        deleteVehiculo(idVehiculo);
     },
     function() {
         alertify.error('Cancelado');
@@ -99,10 +99,10 @@ $(document).on("click", ".guardar-repartidor", function() {
 });
 
 $(document).on("click", ".restore", function() {
-    const id_vehiculo = $(this).attr("data-restore");
+    const idVehiculo = $(this).attr("data-restore");
     alertify.confirm("Restaurar", "Se restaurará el registro",
     function() {
-        restoreVehiculo(id_vehiculo);
+        restoreVehiculo(idVehiculo);
     },
     function() {
         alertify.error('Cancelado');
