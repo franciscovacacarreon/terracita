@@ -1,8 +1,8 @@
-const rutaApiRest = "http://terracita.store/api/v1/";
-const rutaLocal = "http://terracita.store/";
+// const rutaApiRest = "http://terracita.store/api/v1/";
+// const rutaLocal = "http://terracita.store/";
 
-// const rutaApiRest = "http://localhost/terracita/public/api/v1/";
-// const rutaLocal = "http://localhost/terracita/public/";
+const rutaApiRest = "http://localhost/terracita/public/api/v1/";
+const rutaLocal = "http://localhost/terracita/public/";
 
 let spinner;
 
