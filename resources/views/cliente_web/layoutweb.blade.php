@@ -10,6 +10,7 @@
   <meta name="author" content="" />
   <link rel="shortcut icon" href="{{asset('/feane/images/favicon.png')}}" type="">
   <link rel="stylesheet" href="{{asset('/bootstrap/css/alertify.min.css')}}"/>
+  <link rel="stylesheet" href="{{asset('/terracita/css/style_web.css')}}"/>
 
   {{-- personalizado --}}
   <link rel="stylesheet" href="{{asset('/terracita/css/style.css')}}"/>
@@ -29,41 +30,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
    <!-- jQery -->
    <script src="{{asset('/feane/js/jquery-3.4.1.min.js')}}"></script>
-
-  <style>
-      .floating-cart-button {
-          FONT-WEIGHT: 900;
-          position: fixed;
-          bottom: 20px;
-          right: 20px;
-          padding: 10px;
-          border-radius: 20px;
-          z-index: 9999;
-          background-color: #1b1717;
-          text-align: center;
-          text-decoration: none;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-          width: 200px;
-      }
-
-      .floating-cart-button i {
-        font-size: 30px; 
-      }
-
-      .header_section {
-        position: fixed;
-        width: 100%;
-        top: 0;
-        background-color: #1a1616; 
-        z-index: 1000; 
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
-     }
-
-      .content-section {
-        padding-top: 80px; /* Ajusta esto según la altura de tu encabezado */
-      }
-
-  </style>
 
     @yield('clienteweb-css')
 
@@ -153,7 +119,7 @@
         <div class="row">
           <div class="col-md-6 ">
             <div class="img-box">
-              <img src="images/about-img.png" alt="">
+              {{-- <img src="images/about-img.png" alt=""> --}}
             </div>
           </div>
           <div class="col-md-6">
@@ -211,7 +177,7 @@
                 </p>
               </div>
               <div class="img-box">
-                <img src="images/client1.jpg" alt="" class="box-img">
+                {{-- <img src="images/client1.jpg" alt="" class="box-img"> --}}
               </div>
             </div>
           </div>
@@ -319,6 +285,7 @@
 
   {{-- alert --}}
   <script src="{{asset('/bootstrap/js/alertify.min.js')}}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <script src="{{asset('/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 
@@ -327,12 +294,6 @@
   {{-- parametros --}}
   <script src="{{asset('/terracita/js/parametros.js')}}"></script>
   <script src="{{asset('/terracita/js/cliente_web/nav.js')}}"></script>
-
-  
-  {{-- leaflet --}}
-  {{-- <script src="{{asset('/bootstrap/js/leaflet.js')}}"></script>
-  <script src="{{asset('/bootstrap/js/Control.Geocoder.js')}}"></script>
-  <script src="{{asset('/bootstrap/js/leaflet-search.src.js')}}"></script> --}}
 
   @yield('clienteweb-js')
 </body>

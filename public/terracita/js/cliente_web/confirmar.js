@@ -1,11 +1,13 @@
 let map;
 let marker;
 let metodoPago = 1; //efectivo
+let total = 0;
 
 
 $(document).ready(function () {
     cargarDatosCliente();
-    cargarDetalleProducto();
+    cargarDetalleProducto();    
+    initMap();
 
     $("#registrarme-nav").addClass("d-none");
     $("#nav-carrito-search").addClass("d-none");
@@ -23,38 +25,13 @@ $(document).on("click", "#seguir-comprando", () => {
 
 $(document).on("click", "#confirmar-pedido", () => {
     if (validar($("#direccion"))) {
-        saveUbicacion();
+        savePedido();
     }
 });
 
-function paypal(idPedido) {
-    const precio = $("#price").val();
-    const url = rutaLocal + "cliente-web-paypal/payment/" + precio + "/"  + idPedido;
-    showLoader();
-    $.ajax({
-        url: url,
-        type: "GET",
-        success: function (response) {
-            console.log(response)
-            hideLoader();
-            const enlaceTemporal = document.createElement('a');
-            enlaceTemporal.href = response;
-            enlaceTemporal.click();
-        },
-        error: function (data, textStatus, jqXHR, error) {
-            console.log(data);
-            console.log(textStatus);
-            console.log(jqXHR);
-            console.log(error);
-
-            hideLoader();
-        }
-
-    });
-}
 
 
-function savePedido(idUbicacion) {
+function savePedido(nro_transaccion = null, descripcion_pago = null) {
     let carritomall = JSON.parse(localStorage.getItem('carritomall'));
     const clienteMall = JSON.parse(localStorage.getItem('clientemall'));
     carritomall = castearCarrito(carritomall);
@@ -65,10 +42,15 @@ function savePedido(idUbicacion) {
     data.id_repartidor = null;
     data.id_cliente = clienteMall.id_cliente;
     data.id_tipo_pago = metodoPago; 
-    data.id_ubicacion = idUbicacion; 
     data.estado_pedido = "Pendiente";
+    data.nro_transaccion = nro_transaccion;
+    data.descripcion_pago = descripcion_pago;
+    data.latitud = $("#latitud").val();
+    data.longitud = $("#longitud").val();
+    data.referencia = $("#direccion").val();
     data.items_menu = carritomall;
-    datosEnviar = JSON.stringify(data);
+    
+    const datosEnviar = JSON.stringify(data);
     const url = rutaApiRest + "pedido";
     // console.log(datosEnviar);
     showLoader();
@@ -81,26 +63,11 @@ function savePedido(idUbicacion) {
             const status = response.status;
             if (status == 200) {
                 const data = response.data;
-                if (metodoPago == 1) {
-                 const alerta = alertify.alert("Correcto", "¡Súper, hiciste tu pedido correctamente!");
-                 setTimeout(function(){
-                     alerta.close();
-                    window.location.href = "cliente-web-detalle/" + data.id_pedido;
-                  }, 1000);
-
-                }
-                if (metodoPago == 2) {
-                    paypal(data.id_pedido);
-                }
-               
-                
+                sweentAlert("top-end", "success", "Pedido realizado correctamente", 1500);
                 localStorage.removeItem('carritomall');
-
+                window.location.href = rutaLocal + "cliente-web-detalle/" + data.id_pedido;
             } else {
-                alertify.alert(
-                    "Error",
-                    "Error, ocurrio un problema!"
-                );
+                sweentAlert("top-end", "error", "Ocurrió un problema al registrar tu pedido", 1500);
             }
             
             hideLoader();
@@ -117,30 +84,6 @@ function savePedido(idUbicacion) {
     });
 }
 
-function saveUbicacion() {
-    const data = {};
-    data.latitud = $("#latitud").val();
-    data.longitud = $("#longitud").val();
-    data.referencia = $("#direccion").val();
-    const url = rutaApiRest + "ubicacion";
-    $.ajax({
-        url: url,
-        type: "POST",
-        dataType: "json",
-        data: data,
-        success: function (response) {
-            console.log(response);
-            savePedido(response.msg.id_ubicacion);
-        },
-        error: function (data, textStatus, jqXHR, error) {
-            console.log(data);
-            console.log(textStatus);
-            console.log(jqXHR);
-            console.log(error);
-        }
-
-    });
-}
 
 function cargarDatosCliente() {
     const clientemall = JSON.parse(localStorage.getItem('clientemall'));
@@ -159,7 +102,7 @@ function cargarDetalleProducto() {
         <div class="col-6 text-right"><strong>Subtotal</strong></div>
     `;
     contenedor.append(cabecera);
-    let total = 0;
+    total = 0;
     carritomall.forEach(element => {
         total += element.sub_monto;
         const cuerpo = `
@@ -170,7 +113,7 @@ function cargarDetalleProducto() {
         contenedor.append(cuerpo);
     });
     $("#total").text(total + " " + "Bs.");
-    $("#price").val(montoDolar(total));
+    $("#price").text("$ " + montoDolar(total));
 }
 
 function montoTotal(array, descuentoCliente) {
@@ -217,10 +160,18 @@ $("input[type='radio']").change(function () {
         if (radioId == "pago-paypal") {
             $("#price").removeClass("d-none");
             $("#label-price").removeClass("d-none");
+            $("#paypal-button-container").removeClass("d-none");
+
+            $("#container-button-confirmar").addClass("d-none");
+
+
             metodoPago = 2;
         } else {
             $("#price").addClass("d-none");
             $("#label-price").addClass("d-none");
+            $("#paypal-button-container").addClass("d-none");
+
+            $("#container-button-confirmar").removeClass("d-none");
             metodoPago = 1;
         }
     }
@@ -415,3 +366,49 @@ function ubicacionActualReady() {
             console.log("Error al obtener la ubicación:", error);
     });
 }
+
+paypal.Buttons({
+    style: {
+      layout: 'vertical',
+      color: 'blue',
+      shape: 'rect',
+      label: 'pay',
+    },
+    createOrder: function(data, actions) {
+      return actions.order.create({
+        purchase_units: [{
+          amount: {
+            value: montoDolar(total) // valor de compra
+          }
+        }]
+      });
+    },
+    onApprove: function(data, actions) {
+      return actions.order.capture().then(function(details) {
+        console.log(details);
+        if (details.status == "COMPLETED") {
+            savePedido(details.id, "Completado");
+        }
+      });
+    },
+    onCancel: function(data) {
+      sweentAlert("top-end", "error", "Pago cancelado", 1500);
+    },
+    onError: function(err) {
+      console.error(err);
+      sweentAlert("top-end", "error", "Error al procesar el pago. Por favor, intenta nuevamente.", 1500);
+    }
+  }).render('#paypal-button-container');
+
+ function sweentAlert(posicion, estado, mensaje, duracion) {
+    Swal.fire({
+        position: posicion,
+        icon: estado,
+        title: mensaje,
+        showConfirmButton: false,
+        timer: duracion,
+        customClass: {
+            title: 'my-custom-font-class'
+          }
+      });
+ }

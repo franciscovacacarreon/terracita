@@ -13,6 +13,7 @@ use App\Models\ItemMenu;
 use App\Models\MenuItemMenu;
 use App\Models\Persona;
 use App\Models\Repartidor;
+use App\Models\Ubicacion;
 use App\Models\User;
 use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -84,6 +85,15 @@ class PedidoController extends Controller
         try {
             $datos = $request->json()->all();
 
+            //Insertar ubicacion
+            $ubicacion = Ubicacion::create([
+                'latitud' => $datos['latitud'],
+                'longitud' => $datos['longitud'],
+                'referencia' => $datos['referencia'],
+            ]);
+
+            $idUbicacion = $ubicacion->id_ubicacion;
+
             //Insertar pedido
             $pedido = Pedido::create([
                 'monto' => $datos['monto'],
@@ -92,7 +102,9 @@ class PedidoController extends Controller
                 'id_cliente' => $datos['id_cliente'],
                 'id_tipo_pago' => $datos['id_tipo_pago'],
                 'estado_pedido' => $datos['estado_pedido'],
-                'id_ubicacion' => $datos['id_ubicacion'],
+                'nro_transaccion' => $datos['nro_transaccion'],
+                'descripcion_pago' => $datos['descripcion_pago'],
+                'id_ubicacion' => $idUbicacion,
             ]);
 
             //insertar detalle pedido
@@ -241,6 +253,7 @@ class PedidoController extends Controller
 
                 // Actualizar pedido
                 $pedido->update([
+                    'nro_transaccion' => $datos['nro_transaccion'],
                     'descripcion_pago' => $datos['descripcion_pago'],
                 ]);
 

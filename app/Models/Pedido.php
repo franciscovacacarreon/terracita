@@ -14,6 +14,7 @@ class Pedido extends Model
         'fecha',
         'monto',
         'descripcion',
+        'nro_transaccion',
         'descripcion_pago',
         'estado_pedido',
         'id_ubicacion',

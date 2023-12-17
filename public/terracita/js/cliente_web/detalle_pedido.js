@@ -6,10 +6,6 @@ let table = $("#tabla-pedido");
 $(document).ready(() => {
     cargarPedido();
     cargarInformacionCliente();
-
-    if (mensaje != '') {
-        updatePaypalDetalle();
-    }
 });
 
 function cargarPedido() {
@@ -49,6 +45,12 @@ function cargarDetallePedidio(pedido) {
     $("#estado_pedido").text(pedido.estado_pedido);
     $("#monto").text(pedido.monto);
 
+    if (pedido.nro_transaccion != null) {
+        $("#pedido-paypal").removeClass("d-none");
+        $("#nro_transaccion").text(pedido.nro_transaccion);
+        $("#descripcion_pago").text(pedido.descripcion_pago);
+    }
+
     initMap(pedido);
     cargarTablaDetalle(pedido.detalle_pedido);
 }
@@ -58,7 +60,7 @@ function cargarTablaDetalle(detallePedido) {
     detallePedido.forEach(element => {
         const cuerpo = `
             <tr>
-                <td>${element.id_item_menu}</td>
+                <!-- <td>${element.id_item_menu}</td> -->
                 <td>${element.item_menu.nombre}</td>
                 <td>${element.cantidad}</td>
                 <td>${element.item_menu.precio}</td>
@@ -75,41 +77,6 @@ function cargarInformacionCliente() {
     if (clientemall) {
         $("#nombre-usuario").text(clientemall.user.name);
     }
-}
-
-function updatePaypalDetalle() {
-    const url = rutaApiRest + "pedido-paypal/" + idPedido; //idPedido viene de la vista detalle_pedido
-    const data = {
-        descripcion_pago: mensaje
-    };
-    const datosEnviar = JSON.stringify(data);
-    $.ajax({
-        url: url,
-        type: "POST",
-        dataType: "json",
-        data: datosEnviar,
-        success: function (response) {
-            console.log(response);
-            let msg = "";
-            if (mensaje == "success") {
-                msg = "Pagado";
-            } else {
-                if (mensaje == "cancel") {
-                    msg == "Error"
-                }
-            }
-            $("#pedido-paypal").removeClass("d-none");
-            $("#descripcion_pago").text(msg);
-
-        },
-        error: function (data, textStatus, jqXHR, error) {
-            console.log(data);
-            console.log(textStatus);
-            console.log(jqXHR);
-            console.log(error);
-        }
-
-    });
 }
 
 function initMap(pedido) {

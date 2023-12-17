@@ -247,47 +247,22 @@
 @endsection
 
 @section('clienteweb-css')
-<style>
- 
-  body {
-      background-image: url({{asset('/images/fondo_cliente3.jpg')}}); /* Reemplaza '/path/to/your/image.jpg' con la ruta real de tu imagen */
+  <style>
+    body {
+        background-image: url({{asset('/images/fondo_cliente3.jpg')}}); /* Reemplaza '/path/to/your/image.jpg' con la ruta real de tu imagen */
+        background-size: cover;
+        background-position: center center;
+        background-attachment: fixed; /* Para mantener la imagen fija mientras se desplaza */
+        color: white; /* Color de texto blanco u otro color que desees */
+    }
+    .custom-modal-content {
+      background-image: url({{asset('/images/fondo_cliente3.jpg')}}); /* Ruta de tu imagen de fondo */
       background-size: cover;
-      background-position: center center;
-      background-attachment: fixed; /* Para mantener la imagen fija mientras se desplaza */
-      color: white; /* Color de texto blanco u otro color que desees */
-  }
-
-  #contenido-item-menu{
-    /* style="position: relative; height: 100%!important;" */
-    height: 100%!important;
-  }
-
-    /* Estilos generales para el modal */
-  .custom-modal {
-    background: rgba(0, 0, 0, 0.5); /* Fondo oscuro */
-  }
-
-  /* Estilos específicos para el contenido del modal */
-  .custom-modal-content {
-    background-image: url({{asset('/images/fondo_cliente3.jpg')}}); /* Ruta de tu imagen de fondo */
-    background-size: cover;
-    background-position: center;
-    color: #fff; /* Color del texto */
-  }
-
-  /* Estilos adicionales para el contenido del modal si es necesario */
-  .custom-modal-content p {
-    /* Estilos para los párrafos dentro del modal */
-  }
-
-  .custom-modal-content button {
-    /* Estilos para los botones dentro del modal */
-  }
-
-
-</style>
+      background-position: center;
+      color: #fff; /* Color del texto */
+    }
+  </style>
 @endsection
-
 
 @section('clienteweb-js')
   <script src="{{asset('/terracita/js/cliente_web/index_cliente_web.js')}}"></script>

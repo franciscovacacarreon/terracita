@@ -140,8 +140,12 @@ $(document).on("click", ".eliminar-item-add", function(e) {
 });
 
 $(document).on("click", "#proceder-pagar", () => {
-    localStorage.setItem('carritomall', JSON.stringify(carrito));
-    cargarDatosCliente();
+    if (carrito.length > 0) {
+        localStorage.setItem('carritomall', JSON.stringify(carrito));
+        cargarDatosCliente();
+    } else {
+        alerta("Carrito vacío", "No tienes ningún producto en el carrito para realizar el pedido", 1500);
+    }
 });
 
 

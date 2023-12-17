@@ -57,14 +57,6 @@
               </div> --}}
           </div>
         </div>
-        <div class="col-md-6">
-          <div class="map_container ">
-            <input type="text" hidden id="latitud">
-            <input type="text" hidden id="longitud">
-            <div id="map" style="height: 350px;"></div>
-          <div>
-          </div>
-        </div>
       </div>
     </div>
 </section>
@@ -73,34 +65,7 @@
 @endsection
 
 @section('clienteweb-css')
-  <style>
-      .heading_container {
-          text-align: center;
-          margin-bottom: 30px;
-      }
-
-      .form_container {
-          background-color: #f8f9fa;
-          padding: 20px;
-          border-radius: 10px;
-          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-          margin-bottom: 20px;
-      }
-
-      .btn_box {
-          margin-top: 20px;
-      }
-
-      .map_container {
-          margin-top: 20px;
-      }
-
-      #map {
-          width: 100%;
-          height: 350px;
-          border-radius: 10px;
-      }
-  </style>
+  
 @endsection
 
   @section('clienteweb-js')

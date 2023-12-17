@@ -102,11 +102,24 @@
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-5">
-                                                <label for="estado_pedido" class="">Estado pedido:</label>
+                                                <label for="estado_pedido" class="">Estado de entrega del pedido:</label>
                                             </div>
-
                                             <div class="col-sm-7">
                                                 <p id="estado_pedido"></p>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row d-none" id="pedido-paypal">
+                                            <div class="col-5">
+                                                <label for="nro_transaccion" class="">Nro transacción:</label>
+                                            </div>
+                                            <div class="col-sm-7">
+                                                <p id="nro_transaccion"></p>
+                                            </div>
+                                            <div class="col-5">
+                                                <label for="descripcion_pago" class="">Estado pago paypal:</label>
+                                            </div>
+                                            <div class="col-sm-7">
+                                                <p id="descripcion_pago"></p>
                                             </div>
                                         </div>
                                         <div class="form-group row">

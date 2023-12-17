@@ -16,6 +16,7 @@ return new class extends Migration
             $table->date('fecha');
             $table->decimal('monto', 10, 2);
             $table->string('descripcion', 255)->nullable();
+            $table->string('nro_transaccion', 255)->nullable();
             $table->string('descripcion_pago', 255)->nullable();
             $table->string('estado_pedido', 30);
             $table->tinyInteger('estado')->default(1);
