@@ -16,6 +16,7 @@ class Vehiculo extends Model
         'modelo',
         'color',
         'anio',
+        'id_repartidor',
         'id_tipo_vehiculo',
         'estado'
     ];
@@ -25,5 +26,10 @@ class Vehiculo extends Model
     public function tipoVehiculo()
     {
         return $this->belongsTo(TipoVehiculo::class, 'id_tipo_vehiculo');
+    }
+
+    public function repartidor()
+    {
+        return $this->belongsTo(Repartidor::class, 'id_repartidor');
     }
 }

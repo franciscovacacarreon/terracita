@@ -1,12 +1,17 @@
 let vehiculo = [];
-let tipoVehiculo = [];
 let vehiculoEliminados = [];
+let tipoVehiculo = [];
+let repartidores = [];
 let table = $("#tabla-vehiculo");
 let tableEliminados = $("#tabla-vehiculo-eliminados");
+let tableRepartidor = $("#tabla-repartidor");
+let idVehiculo = 0;
+let idRepartidor = 0;
 
 $(document).ready(() => {
     cargarVehiculo();
     cargarTipoVehiculo();
+    cargarRepartidores();
 });
 
 $("#btn-nuevo-vehiculo").click(() => {
@@ -28,7 +33,7 @@ $("#actualizar-vehiculo").click(() => {
         validar($("#modelo-edit")) && 
         validar($("#color-edit"))) {
         const id_vehiculo = $("#actualizar-vehiculo").attr('name');
-        updateVehiculo(id_vehiculo);
+        updateVehiculo(id_vehiculo, idRepartidor);
     }  
 });
 
@@ -45,6 +50,7 @@ $(document).on("click", ".edit", function() {
     $("#color-edit").val(vehiculoEdit.color);
     $("#anio-edit").val(vehiculoEdit.anio);
     $("#imagen-edit").attr('src', vehiculoEdit.imagen);
+    idRepartidor = vehiculoEdit.id_repartidor;
     $("#actualizar-vehiculo").attr("name", id_vehiculo);
     $("#modal-edit-vehiculo").modal('show');
     vistaPreviaEdit();
@@ -62,6 +68,35 @@ $(document).on("click", ".delete", function() {
     });
 });
 
+$(document).on("click", ".asignar", function() {
+    idVehiculo = $(this).attr("data-id");
+
+    const vehiculoEdit = vehiculo.find((element) => {
+        return element.id_vehiculo == idVehiculo;
+    });
+    
+    $("#placa-edit").val(vehiculoEdit.placa);
+    $("#marca-edit").val(vehiculoEdit.marca);
+    $("#modelo-edit").val(vehiculoEdit.modelo);
+    $("#color-edit").val(vehiculoEdit.color);
+    $("#anio-edit").val(vehiculoEdit.anio);
+    $("#imagen-edit").attr('src', vehiculoEdit.imagen);
+    vistaPreviaEdit();
+    cargarSelect(tipoVehiculo, vehiculoEdit.id_tipo_vehiculo, $("#id-tipo-vehiculo-edit"));
+    $("#modal-repartidor").modal('show');
+});
+
+$(document).on("click", ".guardar-repartidor", function() {
+    const idRepartidor = $(this).attr("data-id");
+    alertify.confirm("Asignar", "¿Está seguro de asignar este conductor al vehículo?",
+    function() {
+        updateVehiculo(idVehiculo, idRepartidor);
+        $("#modal-repartidor").modal('hide');
+    },
+    function() {
+        alertify.error('Cancelado');
+    });
+});
 
 $(document).on("click", ".restore", function() {
     const id_vehiculo = $(this).attr("data-restore");
@@ -110,9 +145,11 @@ function cargarTablaVehiculo(vehiculo, eliminados = false, table) {
         object.anio = element.anio;
         object.tipo_vehiculo = element.tipo_vehiculo.nombre;
         object.imagen_td = `<img src="${ rutaLocal + element.imagen}" class="imagen">`;
-
+        object.repartidor = element.repartidor == null ? "" : element.repartidor.persona.nombre + " " + element.repartidor.persona.paterno;
         const accionRestarurar = `<a data-restore="${element.id_vehiculo}" class="btn btn-info btn-sm restore" title="Resturar"><i class="bi bi-arrow-bar-up"></i></a>`;
-        const accionIndex = `<a data-edit="${element.id_vehiculo}" class="btn btn-warning btn-sm edit" title="Editar"><i class="fa fa-edit"></i></a>
+        const accionIndex = `
+                            <a data-id="${element.id_vehiculo}" class="btn btn-success btn-sm asignar" title="Asignar repartidor"><i class="fa fa-motorcycle"></i></a>
+                            <a data-edit="${element.id_vehiculo}" class="btn btn-warning btn-sm edit" title="Editar"><i class="fa fa-edit"></i></a>
                              <a data-delete="${element.id_vehiculo}" class="btn btn-danger btn-sm delete" title="Borrar"><i class="fa fa-trash"></i></a>`;
         
         object.acciones = eliminados == true ? accionRestarurar : accionIndex;
@@ -178,7 +215,7 @@ function saveVehiculo() {
 }
 
 
-function updateVehiculo(id) {
+function updateVehiculo(id, idRepartidor = 0) {
     const formData = new FormData();
 
     formData.append('nombre', $("#nombre-edit").val());
@@ -187,6 +224,7 @@ function updateVehiculo(id) {
     formData.append('modelo', $("#modelo-edit").val());
     formData.append('color', $("#color-edit").val());
     formData.append('anio', $("#anio-edit").val());
+    formData.append('id_repartidor', idRepartidor);
     formData.append('id_tipo_vehiculo', $("#id-tipo-vehiculo-edit").val());
 
     const imagenInput = $("#imagen-edit")[0];
@@ -369,6 +407,52 @@ function cargarTipoVehiculo() {
     });
 }
 
+function cargarRepartidores() {
+    const url = rutaApiRest + "repartidor";
+    $.ajax({
+        url: url,
+        type: "GET",
+        dataType: "json",
+        success: function (response) {
+            repartidores = response.data;
+            const select = $("#id-repartidor");
+            cargarTablaRepartidor(repartidores, false, tableRepartidor);
+        },
+        error: function (data, textStatus, jqXHR, error) {
+            console.log(data);
+            console.log(textStatus);
+            console.log(jqXHR);
+            console.log(error);
+        }
+
+    });
+}
+
+
+function cargarTablaRepartidor(repartidores, eliminados = false, table) {
+    const repartidorPersona = [];
+    repartidores.forEach(repartidor => {
+        const object = {};
+        const persona = repartidor.persona;
+        object.id_repartidor = repartidor.id_repartidor;
+        object.licencia_conducir = repartidor.licencia_conducir;
+        object.compras_realizadas = repartidor.compras_realizadas;
+        object.nombre = persona.nombre;
+        object.paterno = persona.paterno;
+        object.materno = persona.materno;
+        object.telefono = persona.telefono;
+        object.correo = persona.correo;
+        object.imagen_td = `<img src="${ rutaLocal + persona.imagen}" class="imagen">`;
+        object.acciones = `
+                            <a data-id="${repartidor.id_repartidor}" class="btn btn-info btn-sm guardar-repartidor" title="Asignar"><i class="fa fa-save"></i></a>`;
+                        
+        repartidorPersona.push(object);
+    });
+
+    tableRepartidor.bootstrapTable('load', repartidorPersona);
+}
+
+
 function cargarSelect(array, id = 0, select) {
     select.select2({width: '100%', theme: "classic"});
     select.empty();
@@ -382,6 +466,7 @@ function cargarSelect(array, id = 0, select) {
           );
     });
 }
+
 
 function mostrarVistaPrevia() {
     const inputImagen = document.getElementById('imagen');
@@ -436,4 +521,3 @@ function vistaPreviaEdit() {
         
     }
 }
-

@@ -57,7 +57,8 @@
                                 <th data-sortable="true" data-field="anio">Año</th>
                                 <th data-sortable="true" data-field="tipo_vehiculo">Tipo de Vehiculo</th>
                                 <th data-sortable="true" data-width="200" data-field="imagen_td">Imagen</th>
-                                <th data-sortable="true" data-width="100" data-field="acciones">Acción</th>
+                                <th data-sortable="true" data-width="200" data-field="repartidor">Conductor</th>
+                                <th data-sortable="true" data-width="200" data-field="acciones">Acción</th>
                             </tr>
                         </thead>
                     </table>
@@ -86,6 +87,7 @@
                                 <th data-sortable="true" data-field="anio">Año</th>
                                 <th data-sortable="true" data-field="tipo_vehiculo">Tipo de Vehiculo</th>
                                 <th data-sortable="true" data-width="200" data-field="imagen_td">Imagen</th>
+                                <th data-sortable="true" data-width="200" data-field="repartidor">Conductor</th>
                                 <th data-sortable="true" data-width="100" data-field="acciones">Acción</th>
                             </tr>
                         </thead>
@@ -176,7 +178,6 @@
 
 
   <!-- modal edit vehiculo-->
-
   <div class="modal fade" id="modal-edit-vehiculo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
       <div class="modal-content">
@@ -248,6 +249,49 @@
             <button id="actualizar-vehiculo" type="button" class="btn btn-success">
                 <i class="far fa-save"></i> Actualizar
             </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{-- Modal repartidor --}}
+  <div class="modal fade" id="modal-repartidor" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Asignar repartidor</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-lg-12 col-sm-12">
+                    <table 
+                        class="table-bordered table-hover table-striped"
+                        id="tabla-repartidor" data-show-export="false" data-search="true"
+                        data-show-print="false" data-toggle="table"
+                        data-height="100%" data-only-info-pagination="false"
+                        data-pagination="true" data-show-columns="true">
+                        <thead>
+                            <tr>
+                                <th data-sortable="true" data-field="nombre">Nombre</th>
+                                <th data-sortable="true" data-field="paterno">Paterno</th>
+                                <th data-sortable="true" data-field="telefono">Telefono</th>
+                                <th data-sortable="true" data-field="licencia_conducir">Nro. Licencia</th>
+                                <th data-sortable="true" data-width="100" data-field="acciones">Acción</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {{-- <div class="modal-footer">
+            <button type="button" class="btn btn-dark" data-bs-dismiss="modal">
+                <i class="fas fa-door-open"></i>    
+                Close
+            </button>
+            <button id="guardar-repartidor" type="button" class="btn btn-success">
+                <i class="far fa-save"></i> Asignar
+            </button> --}}
         </div>
       </div>
     </div>

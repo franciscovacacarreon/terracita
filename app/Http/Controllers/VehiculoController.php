@@ -7,6 +7,7 @@ use App\Http\Requests\StoreVehiculoRequest;
 use App\Http\Requests\UpdateVehiculoRequest;
 use App\Http\Resources\VehiculoCollection;
 use App\Http\Resources\VehiculoResource;
+use App\Models\Persona;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
@@ -29,8 +30,16 @@ class VehiculoController extends Controller
     #API REST
     public function index()
     {
-        $data = Vehiculo::where('estado', 1)->with('tipoVehiculo'); //Acceder a la relación de uno a muchos con tipo vehiculo
-        return new VehiculoCollection($data->get());
+        $datas = Vehiculo::where('estado', 1)
+                    ->with(['tipoVehiculo', 'repartidor'])
+                    ->get();
+
+        foreach ($datas as $data) {
+            if ($data['repartidor'] != null) {
+                $data['repartidor']['persona'] = Persona::findOrFail($data['id_repartidor']);
+            }
+        }
+        return new VehiculoCollection($datas);
     }
 
     public function store(StoreVehiculoRequest $request)
@@ -111,6 +120,7 @@ class VehiculoController extends Controller
                     'modelo' => $request->get('modelo'),
                     'color' => $request->get('color'),
                     'anio' => $request->get('anio'),
+                    'id_repartidor' => (int)($request->get('id_repartidor')) == 0 ? null : (int)($request->get('id_repartidor')),
                     'id_tipo_vehiculo' => (int)($request->get('id_tipo_vehiculo')),
                 ]);
 
@@ -118,6 +128,52 @@ class VehiculoController extends Controller
                 $destinationPath = 'images/vehiculo/';
                 $nombre_campo = 'imagen';
                 $this->uploadImage($request, $vehiculo, $nombre_campo, $destinationPath);
+
+                DB::commit();
+
+                $response = [
+                    'message' => 'Registro actualizado correctamente.',
+                    'status' => 200,
+                    'data' => $vehiculo,
+                ];
+            }
+        } catch (QueryException | ModelNotFoundException $e) {
+            DB::rollBack();
+            $response = [
+                'message' => 'Error al actualizar el registro.',
+                'status' => 500,
+                'error' => $e->getMessage(),
+            ];
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $response = [
+                'message' => 'Error general al actualizar el registro.',
+                'status' => 500,
+                'error' => $e->getMessage(),
+            ];
+        }
+
+        return response()->json($response);
+    }
+
+    public function updateRepartidor(UpdateVehiculoRequest $request, Vehiculo $vehiculo)
+    {
+        $response = [];
+
+        try {
+
+            if (!$vehiculo) {
+                $response = [
+                    'message' => 'Vehiculo no encontrado.',
+                    'status' => 404,
+                ];
+            } else {
+
+                DB::beginTransaction();
+
+                $vehiculo->update([
+                    'id_repartidor' => (int)($request->get('id_repartidor')),
+                ]);
 
                 DB::commit();
 
@@ -175,8 +231,16 @@ class VehiculoController extends Controller
 
     public function eliminados()
     {
-        $data = Vehiculo::where('estado', 0)->with('tipoVehiculo'); //Acceder a la relación de uno a muchos con tipo menu
-        return new VehiculoCollection($data->get());
+        $datas = Vehiculo::where('estado', 0)
+                    ->with(['tipoVehiculo', 'repartidor'])
+                    ->get();
+
+        foreach ($datas as $data) {
+            if ($data['repartidor'] != null) {
+                $data['repartidor']['persona'] = Persona::findOrFail($data['id_repartidor']);
+            }
+        }
+        return new VehiculoCollection($datas);
     }
 
     public function restaurar(Vehiculo $vehiculo)

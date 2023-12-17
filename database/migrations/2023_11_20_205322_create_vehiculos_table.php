@@ -20,8 +20,10 @@ return new class extends Migration
             $table->integer('anio')->nullable();
             $table->string('imagen', 250)->nullable();
             $table->tinyInteger('estado')->default(1);
+            $table->unsignedBigInteger('id_repartidor')->nullable();
             $table->unsignedBigInteger('id_tipo_vehiculo');
 
+            $table->foreign('id_repartidor')->references('id_repartidor')->on('repartidor');
             $table->foreign('id_tipo_vehiculo')->references('id_tipo_vehiculo')->on('tipo_vehiculo');
 
             $table->timestamps();

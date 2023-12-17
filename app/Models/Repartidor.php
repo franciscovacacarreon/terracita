@@ -22,4 +22,9 @@ class Repartidor extends Model
     {
         return $this->hasMany(Pedido::class, 'id_repartidor');
     }
+
+    public function vehiculo()
+    {
+        return $this->hasMany(Vehiculo::class, 'id_repartidor');
+    }
 }
