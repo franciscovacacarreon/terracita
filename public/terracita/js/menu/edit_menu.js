@@ -236,7 +236,7 @@ function updateMenu() {
                 const alerta = alertify.alert("Correcto", "¡Súper, se actualizó correctamente!");
                 setTimeout(function(){
                     alerta.close();
-                    redirect("menu");
+                    redirect("admin/menu");
                 }, 1000);
 
 
@@ -286,7 +286,7 @@ function saveMenu() {
                 const alerta = alertify.alert("Correcto", "¡Súper, se insertó correctamente!");
                 setTimeout(function(){
                     alerta.close();
-                    redirect("menu");
+                    redirect("admin/menu");
                 }, 1000);
 
                 $("#nombre").val("");

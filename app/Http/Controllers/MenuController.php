@@ -23,7 +23,7 @@ class MenuController extends Controller
         $usuarioAutenticado = Auth::user();
         $user = User::findOrFail($usuarioAutenticado->id);
         if (!($user->hasPermissionTo('items'))) {
-            return redirect()->to('rol-error');
+            return redirect()->to('admin/rol-error');
         };
 
         return view('terracita.menu.index');
@@ -34,7 +34,7 @@ class MenuController extends Controller
         $usuarioAutenticado = Auth::user();
         $user = User::findOrFail($usuarioAutenticado->id);
         if (!($user->hasPermissionTo('items'))) {
-            return redirect()->to('rol-error');
+            return redirect()->to('admin/rol-error');
         };
 
         return view('terracita.menu.create');
@@ -44,7 +44,7 @@ class MenuController extends Controller
         $usuarioAutenticado = Auth::user();
         $user = User::findOrFail($usuarioAutenticado->id);
         if (!($user->hasPermissionTo('items'))) {
-            return redirect()->to('rol-error');
+            return redirect()->to('admin/rol-error');
         };
 
         return view('terracita.menu.edit');

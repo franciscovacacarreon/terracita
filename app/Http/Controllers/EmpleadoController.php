@@ -24,7 +24,7 @@ class EmpleadoController extends Controller
         $usuarioAutenticado = Auth::user();
         $user = User::findOrFail($usuarioAutenticado->id);
         if (!($user->hasPermissionTo('usuarios'))) {
-            return redirect()->to('rol-error');
+            return redirect()->to('admin/rol-error');
         };
         return view('terracita.empleado.index');
     }

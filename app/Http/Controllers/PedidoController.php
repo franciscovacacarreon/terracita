@@ -30,7 +30,7 @@ class PedidoController extends Controller
         $usuarioAutenticado = Auth::user();
         $user = User::findOrFail($usuarioAutenticado->id);
         if (!($user->hasPermissionTo('pedidos'))) {
-            return redirect()->to('rol-error');
+            return redirect()->to('admin/rol-error');
         };
         return view('terracita.pedido.index');
     }
@@ -45,7 +45,7 @@ class PedidoController extends Controller
         $usuarioAutenticado = Auth::user();
         $user = User::findOrFail($usuarioAutenticado->id);
         if (!($user->hasPermissionTo('mispedidos'))) {
-            return redirect()->to('rol-error');
+            return redirect()->to('admin/rol-error');
         };
 
         $user = $user->load('rol', 'persona');

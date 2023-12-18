@@ -11,7 +11,7 @@
 <div class="card">
     <div class="row">
         <div class="col-4 m-3">
-            <a href="{{asset('/menu')}}" class="btn btn-infor">
+            <a href="{{asset('admin/menu')}}" class="btn btn-infor">
                 <i class="fas fa-arrow-left"></i> Regresar 
             </a>
         </div>

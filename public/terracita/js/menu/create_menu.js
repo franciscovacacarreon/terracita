@@ -205,7 +205,7 @@ function saveMenu() {
                 const alerta = alertify.alert("Correcto", "¡Súper, se insertó correctamente!");
                 setTimeout(function(){
                     alerta.close();
-                    redirect("menu");
+                    redirect("admin/menu");
                 }, 1000);
 
                 $("#nombre").val("");

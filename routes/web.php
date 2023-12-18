@@ -53,7 +53,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('empleado', [EmpleadoController::class, 'getIndex']);
     Route::get('repartidor', [RepartidorController::class, 'getIndex']);
     Route::get('rol', [RolController::class, 'getIndex']);
-    Route::get('rol-error', [RolController::class, 'getError']);
+    Route::get('admin/rol-error', [RolController::class, 'getError']);
     Route::get('tipo-vehiculo', [TipoVehiculoController::class, 'getIndex']);
     Route::get('tipo-pago', [TipoPagoController::class, 'getIndex']);
     Route::get('vehiculo', [VehiculoController::class, 'getIndex']);

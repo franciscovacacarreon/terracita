@@ -34,7 +34,7 @@
             <div class="row">
                 <div class="col-lg-12 col-sm-12">
                     <div id="toolbar">
-                        <a id="btn-nuevo-nota-venta" href="{{asset('/nota-venta-create')}}" class="btn btn-success">
+                        <a id="btn-nuevo-nota-venta" href="{{asset('admin/nota-venta-create')}}" class="btn btn-success">
                             <i class="fas fa-plus"></i> Nuevo
                         </a>
                     </div>

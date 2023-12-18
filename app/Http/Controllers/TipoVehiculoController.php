@@ -20,7 +20,7 @@ class TipoVehiculoController extends Controller
         $usuarioAutenticado = Auth::user();
         $user = User::findOrFail($usuarioAutenticado->id);
         if (!($user->hasPermissionTo('vehiculos'))) {
-            return redirect()->to('rol-error');
+            return redirect()->to('admin/rol-error');
         };
         return view('terracita.tipo_vehiculo.index');
     }

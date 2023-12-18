@@ -36,7 +36,7 @@ class NotaVentaController extends Controller
         $usuarioAutenticado = Auth::user();
         $user = User::findOrFail($usuarioAutenticado->id);
         if (!($user->hasPermissionTo('ventas'))) {
-            return redirect()->to('rol-error');
+            return redirect()->to('admin/rol-error');
         };
         return view('terracita.nota_venta.index');
     }
@@ -46,7 +46,7 @@ class NotaVentaController extends Controller
         $usuarioAutenticado = Auth::user();
         $user = User::findOrFail($usuarioAutenticado->id);
         if (!($user->hasPermissionTo('ventas'))) {
-            return redirect()->to('rol-error');
+            return redirect()->to('admin/rol-error');
         };
 
         $user = $user->load('rol', 'persona');
@@ -58,7 +58,7 @@ class NotaVentaController extends Controller
         $usuarioAutenticado = Auth::user();
         $user = User::findOrFail($usuarioAutenticado->id);
         if (!($user->hasPermissionTo('ventas'))) {
-            return redirect()->to('rol-error');
+            return redirect()->to('admin/rol-error');
         };
 
         return view('terracita.nota_venta.edit');

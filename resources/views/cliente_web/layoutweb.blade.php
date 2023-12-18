@@ -116,38 +116,35 @@
      <section class="about_section layout_padding" id="about">
       <div class="container  ">
   
-        <div class="row">
-          <div class="col-md-6 ">
-            <div class="img-box">
-              {{-- <img src="images/about-img.png" alt=""> --}}
-            </div>
+       <div class="d-flex justify-content-center">
+          <div class="col-md-6">
+              <h2>Envíanos un mensaje</h2>
+              <input type="text" class="form-control my-2" id="asunto"  placeholder="Asunto">
+              <textarea name="" class="form-control" id="descripcion-mensaje" cols="30" rows="5" placeholder="Escribte tu mensaje"></textarea>
           </div>
           <div class="col-md-6">
             <div class="detail-box">
-              <div class="heading_container">
-                <h2>
-                  Bienvenido a Mi Terracita
-                </h2>
-                <p>
-                    En Mi Terracita, nos enorgullece ofrecer una experiencia culinaria única y acogedora.
-                    Nuestro restaurante está diseñado para transportarte a un lugar donde la buena comida y
-                    la hospitalidad excepcional se encuentran. Utilizamos ingredientes frescos y de la más
-                    alta calidad para crear platos deliciosos que satisfacen los paladares más exigentes.
-                </p>
-                <p>
-                    Nuestra misión es crear recuerdos a través de la comida, brindando momentos especiales y
-                    auténticos sabores en cada bocado. Ya sea que vengas a disfrutar de una comida en nuestro
-                    acogedor comedor o a ordenar para llevar, estamos comprometidos a hacer que tu experiencia
-                    sea inolvidable.
-                </p>
-                <p>
-                    ¡Gracias por elegir Mi Terracita! Esperamos tener el placer de servirte pronto.
-                </p>
-              {{-- <a href="">
-                Read More
-              </a> --}}
+                <div class="heading_container">
+                    <h2>
+                      Bienvenido a Mi Terracita
+                    </h2>
+                    <p>
+                        En Mi Terracita, nos enorgullece ofrecer una experiencia culinaria única y acogedora.
+                        Nuestro restaurante está diseñado para transportarte a un lugar donde la buena comida y
+                        la hospitalidad excepcional se encuentran. Utilizamos ingredientes frescos y de la más
+                        alta calidad para crear platos deliciosos que satisfacen los paladares más exigentes.
+                    </p>
+                    <p>
+                        Nuestra misión es crear recuerdos a través de la comida, brindando momentos especiales y
+                        auténticos sabores en cada bocado. Ya sea que vengas a disfrutar de una comida en nuestro
+                        acogedor comedor o a ordenar para llevar, estamos comprometidos a hacer que tu experiencia
+                        sea inolvidable.
+                    </p>
+                    <p>
+                        ¡Gracias por elegir Mi Terracita! Esperamos tener el placer de servirte pronto.
+                    </p>
+                </div>
             </div>
-          </div>
         </div>
       </div>
     </section>

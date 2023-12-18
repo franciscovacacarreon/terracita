@@ -68,7 +68,7 @@ $(document).on("click", "#rachazar-pedido", function () {
 $(document).on("click", ".detalle", function () {
     const idPedido = $(this).attr("data-id");
     const enlaceTemporal = document.createElement('a');
-    enlaceTemporal.href = rutaLocal + "pedido/detalle/" + idPedido;
+    enlaceTemporal.href = rutaLocal + "admin/pedido/detalle/" + idPedido;
     enlaceTemporal.click();
 });
 
