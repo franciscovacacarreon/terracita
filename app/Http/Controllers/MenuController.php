@@ -53,7 +53,10 @@ class MenuController extends Controller
     #API REST
     public function index()
     {
-        $menus = Menu::where('estado', 1)->with('itemMenus')->get();
+        $menus = Menu::where('estado', 1)
+                    ->with('itemMenus')
+                    ->orderBy('created_at', 'desc')
+                    ->get();
         return new MenuCollection($menus);
     }
 
@@ -62,6 +65,7 @@ class MenuController extends Controller
         $menus = Menu::where('fecha', $fecha)
                     ->where('estado', 1)
                     ->with('itemMenus')
+                    ->orderBy('created_at', 'desc')
                     ->get();
         return new MenuCollection($menus);
     }

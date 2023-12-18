@@ -455,6 +455,25 @@ return [
                 ],
             ],
         ],
+        ['header' => 'Reportes'],
+        [
+            'text'    => 'Reportes',
+            'icon'    => 'fas fa-fw fa-file-alt',
+            'submenu' => [
+                [
+                    'text' => 'Reporte de ventas',
+                    'icon' => 'fas fa-fw fa-file-alt',
+                    'url'  => 'admin/reporte-venta',
+                    'can'  => 'items',
+                ],
+                [
+                    'text' => 'Reporte de pedidos',
+                    'icon' => 'fas fa-fw fa-file-alt',
+                    'url'  => 'admin/reporte-pedido',
+                    'can'  => 'items',
+                ],
+            ],
+        ],
         ['header' => 'Configuración'],
         [
             'text'    => 'Restaurante',

@@ -9,6 +9,7 @@ use App\Http\Controllers\NotaVentaController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\RepartidorController;
+use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\RestauranteController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\TipoMenuController;
@@ -127,8 +128,10 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers'], function
     Route::get('pedido-repartidor/{idRepartidor}', [PedidoController::class, 'showPedidoRepartidor']);
 
     #configuracion restaurante
-    #Item menú
     Route::apiResource('restaurante', RestauranteController::class);
     Route::post('restaurante/{restaurante}', [RestauranteController::class, 'update']);
+
+    #reportes
+    Route::post('reporte-pedido', [ReporteController::class, 'getReportePedido']);
 
 });

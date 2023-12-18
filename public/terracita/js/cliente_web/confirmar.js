@@ -8,6 +8,7 @@ $(document).ready(function () {
     cargarDatosCliente();
     cargarDetalleProducto();    
     initMap();
+    ubicacionActualReady();
 
     $("#registrarme-nav").addClass("d-none");
     $("#nav-carrito-search").addClass("d-none");

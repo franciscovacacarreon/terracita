@@ -11,51 +11,57 @@ $(document).ready(() => {
         carrito = carritomall;
         cargarCardItemMenuCarrito(carritomall);
         montoTotal(carritomall);
-    }  else {
+    } else {
         $("#total-item").text(0);
     }
-    
+
 
     cargarTipoMenu();
     cargarInformacionCliente();
 })
 
-$(document).on("click", "#iniciar-sesion", function() {
+$(document).on("click", "#iniciar-sesion", function () {
     iniciarSesion();
 });
 
-$(document).on("click", "#crear-cuenta", function() {
+$(document).on("click", "#crear-cuenta", function () {
     const enlaceTemporal = document.createElement('a');
     enlaceTemporal.href = rutaLocal + "form";
     enlaceTemporal.click();
 });
 
-$(document).on("click", ".agregar-carrito", function() {
+$(document).on("click", ".agregar-carrito", function () {
     const idItem = $(this).attr("data-carrito");
 
     const existeItem = carrito.find(element => element.id_item_menu == idItem);
 
-    if (existeItem == undefined) {
-        const item = itemMenu.find(element => element.id_item_menu == idItem);
-        item.cantidad = item.cantidad == null ? 1 : item.cantidad + 1;
-        item.sub_monto = item.precio * item.cantidad;
-        carrito.push(item);
-        cargarCardItemMenuCarrito(carrito);
-        alertify.set('notifier','position', 'bottom-left');
-        alertify.success("Agregado al carrito");
-    } else {
-        existeItem.cantidad += 1;
-        existeItem.sub_monto = existeItem.precio * existeItem.cantidad;
-        cargarCardItemMenuCarrito(carrito);
-    }
-    
-    montoTotal(carrito);
+    const object = verificarCantidad(idItem, 1); //cantidad 1, en caso que sea 0
 
-    localStorage.setItem('carritomall', JSON.stringify(carrito));
+    // if (object.verificar) {
+        if (existeItem == undefined) {
+            const item = itemMenu.find(element => element.id_item_menu == idItem);
+            item.cantidad = item.cantidad == null ? 1 : item.cantidad + 1;
+            item.sub_monto = item.precio * item.cantidad;
+            carrito.push(item);
+            cargarCardItemMenuCarrito(carrito);
+            alertify.set('notifier', 'position', 'bottom-left');
+            alertify.success("Agregado al carrito");
+        } else {
+            existeItem.cantidad += 1;
+            existeItem.sub_monto = existeItem.precio * existeItem.cantidad;
+            cargarCardItemMenuCarrito(carrito);
+        }
+
+        montoTotal(carrito);
+
+        localStorage.setItem('carritomall', JSON.stringify(carrito));
+    // } else {
+    //     alerta("Producto agotado", "No hay mas de la cantidad actual en el restaurante", 1500);
+    // }
     // alertify.success('Agregado al carrito');
 });
 
-$(document).on("click", ".btn-plus-agregado", function(e) {
+$(document).on("click", ".btn-plus-agregado", function (e) {
     const idItemMenu = this.name;
     const itemAddCantidad = carrito.find(item => item.id_item_menu == idItemMenu);
     const inputCantidad = $("#" + idItemMenu);
@@ -68,28 +74,28 @@ $(document).on("click", ".btn-plus-agregado", function(e) {
         console.log("cantidad menor a stock");
         itemAddCantidad.cantidad = cantidad;
         itemAddCantidad.sub_monto = cantidad * itemAddCantidad.precio;
-        
+
         inputCantidad.val(cantidad);
         spanSubmonto.text(itemAddCantidad.sub_monto);
 
         montoTotal(carrito);
-        
+
         localStorage.setItem('carritomall', JSON.stringify(carrito));
 
     } else {
-        alerta("Item agotado", "No hay mas de la cantidad actual en el restaurante", 1500);
+        alerta("Producto agotado", "No hay mas de la cantidad actual en el restaurante", 1500);
     }
 });
 
 
-$(document).on("click", ".btn-minus-agregado", function(e) {
+$(document).on("click", ".btn-minus-agregado", function (e) {
     const idItemMenu = this.name;
     const itemAddCantidad = carrito.find(item => item.id_item_menu == idItemMenu);
     const inputCantidad = $("#" + idItemMenu);
     const spanSubmonto = $("#submonto-" + idItemMenu);
     const cantidadActualInput = inputCantidad.val();
     let cantidad = parseInt(cantidadActualInput);
-    if (cantidad > 1){
+    if (cantidad > 1) {
         cantidad -= 1;
         itemAddCantidad.cantidad = cantidad;
         itemAddCantidad.sub_monto = cantidad * itemAddCantidad.precio;
@@ -103,15 +109,15 @@ $(document).on("click", ".btn-minus-agregado", function(e) {
     }
 });
 
-$(document).on("input", ".input-cantidad", function(e) {
+$(document).on("input", ".input-cantidad", function (e) {
     const id = this.id;
     const itemAddCantidad = carrito.find(item => item.id_item_menu == id);
     const inputCantidad = $("#" + id);
     const spanSubmonto = $("#submonto-" + id);
     const cantidad = parseInt(inputCantidad.val());
     const object = verificarCantidad(id, cantidad);
-    
-    if ( cantidad <= 0) {
+
+    if (cantidad <= 0) {
         alerta("Error", "No se permiten cantidades negativas", 1000);
         inputCantidad.val(1);
     } else {
@@ -127,7 +133,7 @@ $(document).on("input", ".input-cantidad", function(e) {
 });
 
 //boton del card para eliminar item
-$(document).on("click", ".eliminar-item-add", function(e) {
+$(document).on("click", ".eliminar-item-add", function (e) {
     const idItemMenu = this.name;
     const newItemTemp = carrito.filter(deleteItem => deleteItem.id_item_menu != idItemMenu);
     carrito = newItemTemp;
@@ -215,7 +221,7 @@ function iniciarSesion() {
     };
     const dataEnviar = JSON.stringify(data);
     const url = rutaApiRest + "user-inicio-sesion";
-    
+
     console.log(dataEnviar);
     $.ajax({
         url: url,
@@ -243,7 +249,7 @@ function iniciarSesion() {
                 console.log(cliente);
                 localStorage.setItem('clientemall', JSON.stringify(cliente));
                 alerta("Éxito", "Sesión iniciada correctamente", 1500);
-                location.href = location.href; 
+                location.href = location.href;
 
             } else {
                 alerta("Error", "Credenciales incorrectas", 1500);
@@ -272,7 +278,7 @@ function cargarUlTipoMenu(tipMenu) {
     });
 
     // Agregar evento de clic para manejar el filtrado
-    ulTipoMenu.find('li').on('click', function() {
+    ulTipoMenu.find('li').on('click', function () {
         const filtro = $(this).data('filter');
         cargarCardItemMenuFiltrado(filtro);
     });
@@ -312,7 +318,7 @@ function cargarCardItemMenuCarrito(itemcarrito) {
     const carContenedor = $("#content-modal-carrito");
     carContenedor.html("");
     itemcarrito.forEach(item => {
-        const cuerpo  = `
+        const cuerpo = `
         <div class="p-1">
             <div class="card card-sm menu-card buscar-agregado" style="width: 10rem;">
                 <img src="${rutaLocal + item.imagen}" alt="${item.nombre}">
@@ -372,12 +378,12 @@ function cargarDatosCliente() {
         window.location.href = 'confirmar';
     } else {
         alertify.confirm("Registrarse", "Necesitas registrarte para proceder a la compra",
-        function() {
-            window.location.href = 'form';
-        },
-        function() {
-            alertify.error('Cancelado');
-        });
+            function () {
+                window.location.href = 'form';
+            },
+            function () {
+                alertify.error('Cancelado');
+            });
     }
 }
 
@@ -399,7 +405,7 @@ function cargarInformacionCliente() {
 
 
 function iniciarSesión() {
-    
+
 }
 
 function verificarCantidad(idItem, cantidad) {
@@ -432,12 +438,12 @@ function montoTotal(array) {
 
     return {
         monto: monto,
-        monto_descuento: montoDescuento 
+        monto_descuento: montoDescuento
     };
 }
 
 function calcularMontoConDescuento(montoTotal, porcentajeDescuento) {
-    
+
     const descuento = montoTotal * (porcentajeDescuento / 100);
     const montoConDescuento = montoTotal - descuento;
 
@@ -458,7 +464,7 @@ function obtenerFechaActual() {
 
 function alerta(titulo, mensaje, duracion) {
     const alerta = alertify.alert(titulo, mensaje);
-    setTimeout(function(){
+    setTimeout(function () {
         alerta.close();
     }, duracion);
 }
@@ -470,7 +476,7 @@ function previewImage(event) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
 
-        reader.onload = function(e) {
+        reader.onload = function (e) {
             document.getElementById('preview').src = e.target.result;
         }
 

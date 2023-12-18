@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PedidoController extends Controller
 {
@@ -122,7 +123,7 @@ class PedidoController extends Controller
 
 
                 //actualizar cantidad en menu_item_menu con sql puro (porque es llave compuesta)
-                /* $menuItemMenu = MenuItemMenu::where('id_menu', $item['id_menu'])
+                $menuItemMenu = MenuItemMenu::where('id_menu', $item['id_menu'])
                     ->where('id_item_menu', $item['id_item_menu'])
                     ->first();
 
@@ -136,7 +137,7 @@ class PedidoController extends Controller
                     $cantidad,
                     $item['id_menu'],
                     $item['id_item_menu'],
-                ]); */
+                ]); 
             }
 
             $response = [
