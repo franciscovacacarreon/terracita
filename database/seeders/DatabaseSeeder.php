@@ -29,5 +29,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ItemMenuSeeder::class);
         $this->call(TipoPagoSeeder::class);
 
+        /*php artisan db:seed --class=PersonaSeeder */
+
     }
 }

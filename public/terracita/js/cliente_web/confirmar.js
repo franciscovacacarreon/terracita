@@ -24,8 +24,14 @@ $(document).on("click", "#seguir-comprando", () => {
 });
 
 $(document).on("click", "#confirmar-pedido", () => {
-    if (validar($("#direccion"))) {
+    if (validar($("#direccion")) && 
+        validar($("#latitud")) &&
+        validar($("#longitud"))) {
         savePedido();
+    } else {
+        if (!validar($("#latitud"))  ||  !validar($("#latitud"))) {
+            sweentAlert("top-end", "error", "Necesitas marcar tu ubicación en el mapa.", 1500);
+        }
     }
 });
 
@@ -182,8 +188,8 @@ $("input[type='radio']").change(function () {
 function initMap() {
     const latitud = -17.7962;
     const longitud = -63.1814;
-    $("#latitud").val(latitud);
-    $("#longitud").val(longitud);
+    // $("#latitud").val(latitud);
+    // $("#longitud").val(longitud);
     var myLatLng = { lat: latitud, lng: longitud };
     var mapOptions = {
       center: myLatLng,
