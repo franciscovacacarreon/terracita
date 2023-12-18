@@ -65,7 +65,15 @@
 @endsection
 
 @section('clienteweb-css')
-  
+  <style>
+    body {
+        background-image: url({{asset('/images/fondo_cliente3.jpg')}}); /* Reemplaza '/path/to/your/image.jpg' con la ruta real de tu imagen */
+        background-size: cover;
+        background-position: center center;
+        background-attachment: fixed; /* Para mantener la imagen fija mientras se desplaza */
+        color: white; /* Color de texto blanco u otro color que desees */
+    }
+  </style>
 @endsection
 
   @section('clienteweb-js')

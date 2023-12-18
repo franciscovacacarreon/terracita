@@ -111,14 +111,14 @@
 @endsection
 
 @section('clienteweb-css')
- 
+
 @endsection
 
 @section('clienteweb-js')
 
     <script src="https://www.paypal.com/sdk/js?client-id=AVpuY0jR5A-wyJxSOpV6so4LyCtk_meUEt10lreqz0V4UK69Gc0v08mB5SMer_L3nWyT_pP3ErLRrUpV&components=buttons&currency=USD"></script>
 
-        <!-- Maps -->
+    <!-- Maps -->
     <script async defer
       src="{{asset('/bootstrap/js/googlemaps.js')}}"
       type="text/javascript"></script>
