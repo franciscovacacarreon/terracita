@@ -78,7 +78,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('mispedidos', [PedidoController::class, 'getMisPedidos']);
     ///Fin venta///
 
-    Route::get('restaurante-setting', [RestauranteController::class, 'getIndex']);
+    Route::get('restaurante', [RestauranteController::class, 'getIndex']);
 });
 
 Route::get('/', [ClienteWebController::class, 'getIndex']);

@@ -10,60 +10,76 @@
 
 <div class="container mt-5">
     <div class="row">
-        <div class="col-lg-12 col-sm-12">
-            <div class="card">
-                <div class="card-header bg-primary text-white">
-                    <h3 class="card-title">Información del Restaurante</h3>
-                </div>
-                <div class="card-body">
-                    <!-- Aquí incluir el código para mostrar/permitir editar la información del restaurante -->
-                    <form>
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <strong>ID:</strong> <span id="restaurantId" class="fw-bold">123</span>
-                            </li>
-                            <li class="list-group-item">
-                                <strong>Nombre:</strong> <input type="text" id="restaurantName" class="form-control" value="Nombre del Restaurante">
-                            </li>
-                            <li class="list-group-item">
-                                <strong>Dirección:</strong> <input type="text" id="restaurantAddress" class="form-control" value="Dirección del Restaurante">
-                            </li>
-                            <li class="list-group-item">
-                                <strong>Teléfono:</strong> <input type="tel" id="restaurantPhone" class="form-control" value="123-456-7890">
-                            </li>
-                            <li class="list-group-item">
-                                <strong>Correo:</strong> <input type="email" id="restaurantEmail" class="form-control" value="correo@restaurante.com">
-                            </li>
-                            <li class="list-group-item">
-                                <strong>Horario Apertura:</strong> <input type="text" id="openingHours" class="form-control" value="09:00 AM">
-                            </li>
-                            <li class="list-group-item">
-                                <strong>Horario Cierre:</strong> <input type="text" id="closingHours" class="form-control" value="08:00 PM">
-                            </li>
-                            <li class="list-group-item">
-                                <strong>Descripción:</strong> <textarea id="restaurantDescription" class="form-control">Descripción del restaurante</textarea>
-                            </li>
-                            <li class="list-group-item">
-                                    <label for="imagen" class="col-sm-4 col-form-label">Imagen:</label>
-                                    <div class="col-sm-8">
-                                        <div class="input-group">
-                                            <div class="custom-file">
-                                                <input type="file" class="custom-file-input" id="imagen" accept="image/*" onchange="mostrarVistaPrevia()">
-                                                <label class="custom-file-label" for="imagen">Seleccionar imagen</label>
-                                            </div>
-                                        </div>
-                                        <div class="mt-3">
-                                            <img id="vista-previa" src="#" alt="Vista previa de la imagen" style="max-width: 100%; max-height: 200px; display: none;">
-                                        </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <button type="button" onclick="guardarCambios()" class="btn btn-primary mt-3">Guardar Cambios</button>
-                    </form>
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="telefono" class="form-label">Teléfono</label>
+                <input type="tel" class="form-control" id="telefono" name="telefono" required>
+            </div>
+            
+
+            <div class="mb-3">
+                <label for="direccion" class="form-label">Dirección</label>
+                <input type="text" class="form-control" id="direccion" name="direccion" required>
+            </div>
+
+            <div id="map-container">
+                <div id="map"></div>
+                <button id="ubicacion-actual-btn" type="button" title="Ubicación actual">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <i class="fa fa-map-marker"></i>
+                    </div>
+                </button>
+                <input type="text" name="" id="latitud" class="d-none">
+                <input type="text" name="" id="longitud" class="d-none">
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            {{-- <div class="mb-3">
+                <label for="horario_apertura" class="form-label">Horario de Apertura</label>
+                <input type="time" class="form-control" id="horario_apertura" name="horario_apertura" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="horario_cierre" class="form-label">Horario de Cierre</label>
+                <input type="time" class="form-control" id="horario_cierre" name="horario_cierre" required>
+            </div> --}}
+            
+
+            <div class="mb-3">
+                <label for="correo" class="form-label">Correo</label>
+                <input type="email" class="form-control" id="correo" name="correo" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="descripcion" class="form-label">Descripción</label>
+                <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required></textarea>
+            </div>
+
+            <div class="form-group row">
+                <label for="imagen" class="col-sm-4 col-form-label">Imagen:</label>
+                <div class="col-sm-8">
+                    <div class="input-group">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="imagen" accept="image/*" onchange="mostrarVistaPrevia()">
+                            <label class="custom-file-label" for="imagen">Seleccionar imagen</label>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <img id="vista-previa" src="#" alt="Vista previa de la imagen" style="max-width: 100%; max-height: 200px; display: none;">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <button type="button" id="guardar-restaurante" class="btn btn-primary my-3">Guardar</button>
+
 </div>
 
 @stop
@@ -104,7 +120,12 @@
     {{-- loader --}}
     <script src="{{asset('/bootstrap/js/spin.min.js')}}"></script>
 
+    {{-- Google maps --}}
+    <script async defer
+      src="{{asset('/bootstrap/js/googlemaps.js')}}"
+      type="text/javascript"></script>
+
 
     <script src="{{asset('/terracita/js/parametros.js')}}"></script>
-    <script src="{{asset('/terracita/js/cliente.js')}}"></script>
+    <script src="{{asset('/terracita/js/restaurante.js')}}"></script>
 @stop

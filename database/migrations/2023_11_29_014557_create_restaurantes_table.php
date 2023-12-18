@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('direccion');
             $table->string('telefono');
             $table->string('correo');
-            $table->time('horario_apertura');
-            $table->time('horario_cierre');
+            $table->time('horario_apertura')->nullable();
+            $table->time('horario_cierre')->nullable();
             $table->text('descripcion');
             $table->string('imagen')->nullable();
             $table->string('latitud')->nullable();

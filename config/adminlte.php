@@ -452,7 +452,19 @@ return [
                 ],
             ],
         ],
-        
+        ['header' => 'Configuración'],
+        [
+            'text'    => 'Restaurante',
+            'icon'    => 'fas fa-fw fa-cogs',
+            'submenu' => [
+                [
+                    'text' => 'Restaurante',
+                    'icon' => 'fas fa-fw fa-cogs',
+                    'url'  => 'admin/restaurante',
+                    'can'  => 'usuarios',
+                ],
+            ],
+        ],
     ],
 
     /*
