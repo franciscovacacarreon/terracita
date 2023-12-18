@@ -441,14 +441,17 @@ return [
                 [
                     'text' => 'Enviar',
                     'icon' => 'fas fa-fw fa-paper-plane',
-                    'url'  => 'admin/enviar',
-                    'can'  => 'correo',
+                    'url'  => 'admin/correo-enviar',
+                ],
+                [
+                    'text' => 'Enviados',
+                    'icon' => 'fas fa-fw fa-envelope',
+                    'url'  => 'admin/correo-enviados',
                 ],
                 [
                     'text' => 'Recibidos',
                     'icon' => 'fas fa-fw fa-check-circle',
-                    'url'  => 'admin/recibidos',
-                    'can'  => 'correo',
+                    'url'  => 'admin/correo-recibidos',
                 ],
             ],
         ],

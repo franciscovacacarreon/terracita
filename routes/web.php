@@ -5,6 +5,7 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ClienteWeb;
 use App\Http\Controllers\ClienteWebController;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\CorreoController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\ItemMenuController;
 use App\Http\Controllers\MenuController;
@@ -78,9 +79,15 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('mispedidos', [PedidoController::class, 'getMisPedidos']);
     ///Fin venta///
 
+    //Datos del restaurante
     Route::get('restaurante', [RestauranteController::class, 'getIndex']);
+    
+    ////Correo////
+    Route::get('correo-enviar', [CorreoController::class, 'getEnviar']);
+    
 });
 
+//Cliente web
 Route::get('/', [ClienteWebController::class, 'getIndex']);
 Route::get('form', [ClienteWebController::class, 'getForm']);
 Route::get('confirmar', [ClienteWebController::class, 'getConfirmar']);
@@ -88,7 +95,6 @@ Route::get('detalle/{idPedido}', [ClienteWebController::class, 'getDetallePedido
 Route::get('mis-pedidos/{idCliente}', [ClienteWebController::class, 'getMisPedidos']);
 
 // Route::get('paypal', [ClienteWebController::class, 'getPaypal']);
-
 
 //para generar el pdf
 Route::get('nota-venta-comprobante/{id}', [NotaVentaController::class, 'getComprobante']);

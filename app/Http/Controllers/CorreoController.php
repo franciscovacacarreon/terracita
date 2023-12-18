@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 
 class CorreoController extends Controller
 {
-    public function getIndex() 
+    public function getEnviar() 
     {
-        return view("terracita.correo.index");
+        return view("terracita.correo.enviar");
     }
 
     public function getEnviados() 
