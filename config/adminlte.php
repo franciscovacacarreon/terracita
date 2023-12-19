@@ -455,6 +455,7 @@ return [
                 ],
             ],
         ],
+        /*
         ['header' => 'Reportes'],
         [
             'text'    => 'Reportes',
@@ -486,7 +487,7 @@ return [
                     'can'  => 'usuarios',
                 ],
             ],
-        ],
+        ],*/
     ],
 
     /*
