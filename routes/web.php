@@ -21,6 +21,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehiculoController;
 use Illuminate\Support\Facades\Route;
 
+use App\Mail\CorreoTerracita;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -85,6 +87,11 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     ////Correo////
     Route::get('correo-enviar', [CorreoController::class, 'getEnviar']);
     Route::get('correo-enviar-mesaje', [CorreoController::class, 'getEnviarMensaje']);
+    Route::get('correo-enviar-mesaje-contactanos', function (){
+        Mail::to('francisco@gmail.com')->send(new CorreoTerracita);
+
+        return "Mensaje enviado";
+    });
     
 });
 

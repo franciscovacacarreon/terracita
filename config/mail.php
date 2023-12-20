@@ -40,10 +40,19 @@ return [
             'host' => env('MAIL_HOST', '192.168.43.146'),
             'port' => env('MAIL_PORT', 587),
             'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-            'username' => env('fran'),
+            'username' => env('ricardo'),
             'password' => env('123'),
             'timeout' => null,
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
+
+             // Agrega la configuración 'stream' aquí
+            'stream' => [
+                'ssl' => [
+                    'allow_self_signed' => true,
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                ],
+            ],
         ],
 
         'ses' => [

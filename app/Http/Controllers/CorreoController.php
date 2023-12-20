@@ -10,17 +10,17 @@ use PHPMailer\PHPMailer\Exception;
 
 class CorreoController extends Controller
 {
-    public function getEnviar() 
+    public function getEnviar()
     {
         return view("terracita.correo.enviar");
     }
 
-    public function getEnviados() 
+    public function getEnviados()
     {
         return view("terracita.correo.enviados");
     }
 
-    public function getRecibidos() 
+    public function getRecibidos()
     {
         return view("terracita.correo.recibidos");
     }
@@ -43,14 +43,17 @@ class CorreoController extends Controller
             $mail->isSMTP();
             $mail->Host = '192.168.43.146';
             $mail->SMTPAuth = true;
-            $mail->Username = 'fran';
+            $mail->Username = 'ricardo@terracita.com';
             $mail->Password = '123';
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->SMTPSecure = 'tls';
+            // $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
 
+            echo "mensaje".$mail->Password;
+
             // Configuración del remitente y destinatario
-            $remitenteEmail = 'francisco@terracita.com';
-            $destinatarioEmail = 'ricardo@terracita.com';
+            $remitenteEmail = 'ricardo@terracita.com';
+            $destinatarioEmail = 'francisco@terracita.com';
             $mail->setFrom($remitenteEmail, $destinatarioEmail);
             $mail->addAddress($destinatarioEmail);
 
@@ -62,9 +65,14 @@ class CorreoController extends Controller
             // Enviar el correo
             $mail->send();
 
-            return "Correo enviado correctamente de $remitenteNombre ($remitenteEmail) a $destinatarioEmail";
+            return "Correo enviado correctamente de $remitenteEmail ($remitenteEmail) a $destinatarioEmail";
         } catch (Exception $e) {
             return "Error al enviar el correo: {$e->getMessage()}";
         }
+    }
+
+    public function getEnviarMensaje1()
+    {
+
     }
 }
