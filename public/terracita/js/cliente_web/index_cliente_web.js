@@ -25,9 +25,10 @@ $(document).on("click", "#iniciar-sesion", function () {
 });
 
 $(document).on("click", "#crear-cuenta", function () {
-    const enlaceTemporal = document.createElement('a');
-    enlaceTemporal.href = rutaLocal + "form";
-    enlaceTemporal.click();
+    window.location.href = "form";
+    // const enlaceTemporal = document.createElement('a');
+    // enlaceTemporal.href = rutaLocal + "form";
+    // enlaceTemporal.click();
 });
 
 $(document).on("click", ".agregar-carrito", function () {

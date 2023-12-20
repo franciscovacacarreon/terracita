@@ -84,6 +84,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     
     ////Correo////
     Route::get('correo-enviar', [CorreoController::class, 'getEnviar']);
+    Route::get('correo-enviar-mesaje', [CorreoController::class, 'getEnviarMensaje']);
     
 });
 

@@ -45,7 +45,7 @@
                             <textarea class="form-control" id="mensaje" name="mensaje" rows="5" required></textarea>
                         </div>
         
-                        <button type="submit" class="btn btn-primary">Enviar Mensaje</button>
+                        <a href="{{asset('/admin/correo-enviar-mesaje')}}"class="btn btn-primary">Enviar Mensaje</a>
                 </div>
             </div>
         </div>
