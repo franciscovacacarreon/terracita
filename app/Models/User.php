@@ -31,6 +31,7 @@ class User extends Authenticatable
         'name', 
         'email', 
         'password',
+        'password_zentyal',
         'profile_photo_path',
         'id_rol',
         'id_persona',

@@ -7,9 +7,13 @@ use Illuminate\Support\Facades\Mail;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class CorreoController extends Controller
 {
+    protected $host = '192.168.43.146';
+
     public function getEnviar()
     {
         return view("terracita.correo.enviar");
@@ -26,8 +30,9 @@ class CorreoController extends Controller
     }
 
     #servidor de correo
-    public function getEnviarMensaje()
+    public function postEnviarMensaje(Request $request)
     {
+
         $mail = new PHPMailer(true);
         $mail->SMTPOptions = [
             'ssl' => [
@@ -37,42 +42,45 @@ class CorreoController extends Controller
             ],
         ];
 
+
+        $usuarioAutenticado = Auth::user();
+        $user = User::findOrFail($usuarioAutenticado->id);
+        $userId = $user->id;
+        
+        $emailRemitente = $user->email;
+        $password = $user->password_zentyal;
+
+        $nombreRemitente = $request->get('nombre');
+        $emailReceptor = $request->get('email_receptor');
+        $asunto = $request->get('asunto');
+        $mensaje = $request->get('mensaje');
+
         try {
             // Configuración del servidor SMTP
             $mail->SMTPDebug = SMTP::DEBUG_SERVER;
             $mail->isSMTP();
-            $mail->Host = '192.168.43.146';
+            $mail->Host = $this->host;
             $mail->SMTPAuth = true;
-            $mail->Username = 'ricardo@terracita.com';
-            $mail->Password = '123';
-            $mail->SMTPSecure = 'tls';
-            // $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Username = $emailRemitente;
+            $mail->Password = $password;
+            // $mail->SMTPSecure = 'tls';
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
 
-            echo "mensaje".$mail->Password;
-
-            // Configuración del remitente y destinatario
-            $remitenteEmail = 'ricardo@terracita.com';
-            $destinatarioEmail = 'francisco@terracita.com';
-            $mail->setFrom($remitenteEmail, $destinatarioEmail);
-            $mail->addAddress($destinatarioEmail);
+            $mail->setFrom($emailRemitente, $emailReceptor);
+            $mail->addAddress($emailReceptor);
 
             // Contenido del correo
             $mail->isHTML(true);
-            $mail->Subject = 'Prueba correo laravel';
-            $mail->Body = 'Esta es una prueba de envio de correo';
+            $mail->Subject = $asunto;
+            $mail->Body = $mensaje;
 
             // Enviar el correo
             $mail->send();
 
-            return "Correo enviado correctamente de $remitenteEmail ($remitenteEmail) a $destinatarioEmail";
+            return "Correo enviado correctamente de $nombreRemitente ($emailRemitente) a $emailReceptor";
         } catch (Exception $e) {
             return "Error al enviar el correo: {$e->getMessage()}";
         }
-    }
-
-    public function getEnviarMensaje1()
-    {
-
     }
 }

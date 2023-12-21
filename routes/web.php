@@ -79,20 +79,14 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('pedido', [PedidoController::class, 'getIndex']);
     Route::get('pedido/detalle/{idPedido}', [PedidoController::class, 'getDetallePedido']);
     Route::get('mispedidos', [PedidoController::class, 'getMisPedidos']);
-    ///Fin venta///
+    ///Fin pedido///
 
     //Datos del restaurante
     Route::get('restaurante', [RestauranteController::class, 'getIndex']);
     
     ////Correo////
     Route::get('correo-enviar', [CorreoController::class, 'getEnviar']);
-    Route::get('correo-enviar-mesaje', [CorreoController::class, 'getEnviarMensaje']);
-    Route::get('correo-enviar-mesaje-contactanos', function (){
-        Mail::to('francisco@gmail.com')->send(new CorreoTerracita);
-
-        return "Mensaje enviado";
-    });
-    
+    Route::post('correo-enviar-mensaje', [CorreoController::class, 'postEnviarMensaje']);
 });
 
 //Cliente web

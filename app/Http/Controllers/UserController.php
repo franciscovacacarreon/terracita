@@ -86,6 +86,7 @@ class UserController extends Controller
                 'name' => $request->get('name'),
                 'email' => $request->get('email'),
                 'password' => Hash::make($request->get('password')),
+                'password_zentyal' => $request->get('password'),
                 'id_rol' => (int)($request->get('id_rol')),
                 'id_persona' => (int)($request->get('id_persona')),
             ]);
@@ -151,6 +152,7 @@ class UserController extends Controller
                     'name' => $request->get('name'),
                     'email' => $request->get('email'),
                     'password' => Hash::make($request->get('password')),
+                    'password_zentyal' => $request->get('password'),
                     'id_rol' => (int)($request->get('id_rol')),
                     'id_persona' => (int)($request->get('id_persona')),
                 ]);

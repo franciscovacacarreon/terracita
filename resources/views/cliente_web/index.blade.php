@@ -93,7 +93,7 @@
     <div class="container">
     <div class="heading_container heading_center">
       <h2>
-        Menú del día
+        Menú del días
       </h2>
     </div>
 
