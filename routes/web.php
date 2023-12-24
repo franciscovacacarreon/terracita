@@ -87,6 +87,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     ////Correo////
     Route::get('correo-enviar', [CorreoController::class, 'getEnviar']);
     Route::post('correo-enviar-mensaje', [CorreoController::class, 'postEnviarMensaje']);
+    Route::get('correo-ejecutar-comando', [CorreoController::class, 'ejecutarComandoRemoto']);
 });
 
 //Cliente web
