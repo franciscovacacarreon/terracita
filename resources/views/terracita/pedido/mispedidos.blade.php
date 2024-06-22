@@ -11,17 +11,6 @@
 {{-- Loader --}}
 <div id="loader-container"></div>
 
-<!-- BAARRA DE NAVEGACION -->
-{{-- <div class="card">
-    <div class="card-header p-2">
-        <ul class="nav nav-pills">
-            <li class="nav-item"><a class="nav-link active" href="#pedido-tab"
-                    data-toggle="tab"><i class="fas fa-user"></i>&nbsp;&nbsp;Ventas realizadas</a>
-            </li>
-        </ul>
-    </div>
-</div> --}}
-
 
 <div class="card-body">
 
@@ -30,11 +19,6 @@
         <div class="active tab-pane" id="pedido-tab">
             <div class="row">
                 <div class="col-lg-12 col-sm-12">
-                    <div id="toolbar">
-                        {{-- <a id="btn-nuevo-pedido" href="{{asset('/pedido-create')}}" class="btn btn-success">
-                            <i class="fas fa-plus"></i> Nuevo
-                        </a> --}}
-                    </div>
                     <table id="tabla-pedido"
                             data-toggle="table"
                             data-show-print="true"
@@ -86,11 +70,6 @@
                             <select  name="id-repartidor" id="id-repartidor" class="form-control">
                             </select>
                         </div>
-                        {{-- <div class="col-4">
-                            <button class="btn btn-sm btn-info" id="btn-search-repartidor">
-                                <i class="fa fa-search"></i>
-                            </button>
-                        </div> --}}
                     </div>
                 </div>
             </div>

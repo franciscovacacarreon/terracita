@@ -742,7 +742,6 @@ class ComposerStaticInitccf6caff3fe3c4043a3758cf4c1171ca
         'App\\Http\\Resources\\UserResource' => __DIR__ . '/../..' . '/app/Http/Resources/UserResource.php',
         'App\\Http\\Resources\\VehiculoCollection' => __DIR__ . '/../..' . '/app/Http/Resources/VehiculoCollection.php',
         'App\\Http\\Resources\\VehiculoResource' => __DIR__ . '/../..' . '/app/Http/Resources/VehiculoResource.php',
-        'App\\Mail\\CorreoTerracita' => __DIR__ . '/../..' . '/app/Mail/CorreoTerracita.php',
         'App\\Models\\Cliente' => __DIR__ . '/../..' . '/app/Models/Cliente.php',
         'App\\Models\\DetallePedido' => __DIR__ . '/../..' . '/app/Models/DetallePedido.php',
         'App\\Models\\DetalleVenta' => __DIR__ . '/../..' . '/app/Models/DetalleVenta.php',

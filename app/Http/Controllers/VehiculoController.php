@@ -60,8 +60,8 @@ class VehiculoController extends Controller
 
 
             $destinationPath = 'images/vehiculo/';
-            $nombre_campo = 'imagen';
-            $this->uploadImage($request, $vehiculo, $nombre_campo, $destinationPath);
+            $nombreCampo = 'imagen';
+            $this->uploadImage($request, $vehiculo, $nombreCampo, $destinationPath);
 
             DB::commit();
 
@@ -126,8 +126,8 @@ class VehiculoController extends Controller
 
                 //Falta eliminar la imagen anterior
                 $destinationPath = 'images/vehiculo/';
-                $nombre_campo = 'imagen';
-                $this->uploadImage($request, $vehiculo, $nombre_campo, $destinationPath);
+                $nombreCampo = 'imagen';
+                $this->uploadImage($request, $vehiculo, $nombreCampo, $destinationPath);
 
                 DB::commit();
 

@@ -169,9 +169,6 @@
     <link rel="stylesheet" href="{{asset('/bootstrap/css/alertify.min.css')}}"/>
     <!-- Default theme -->
     <link rel="stylesheet" href="{{asset('/bootstrap/css/default.min.css')}}"/>
-    
-
-
 @stop
 
 @section('js')

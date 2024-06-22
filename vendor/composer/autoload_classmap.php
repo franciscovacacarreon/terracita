@@ -130,7 +130,6 @@ return array(
     'App\\Http\\Resources\\UserResource' => $baseDir . '/app/Http/Resources/UserResource.php',
     'App\\Http\\Resources\\VehiculoCollection' => $baseDir . '/app/Http/Resources/VehiculoCollection.php',
     'App\\Http\\Resources\\VehiculoResource' => $baseDir . '/app/Http/Resources/VehiculoResource.php',
-    'App\\Mail\\CorreoTerracita' => $baseDir . '/app/Mail/CorreoTerracita.php',
     'App\\Models\\Cliente' => $baseDir . '/app/Models/Cliente.php',
     'App\\Models\\DetallePedido' => $baseDir . '/app/Models/DetallePedido.php',
     'App\\Models\\DetalleVenta' => $baseDir . '/app/Models/DetalleVenta.php',

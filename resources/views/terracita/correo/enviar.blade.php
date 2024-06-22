@@ -22,13 +22,13 @@
                 <div class="card-body">
                         <form action="{{asset('/admin/correo-enviar-mensaje')}}" method="post">
                             @csrf 
-                            <div class="form-group">
-                                <label for="asunto">Asunto:</label>
+                            <div class="form-group d-flex justify-content-center align-items-center">
+                                <label for="asunto" class="form-label col-3">Asunto:</label>
                                 <input type="text" class="form-control" id="asunto" name="asunto" required>
                             </div>
             
-                            <div class="form-group">
-                                <label for="nombre">Nombre:</label>
+                            <div class="form-group d-flex justify-content-center align-items-center">
+                                <label for="nombre" class="form-label col-3">Nombre:</label>
                                 <input type="text" class="form-control" id="nombre" name="nombre" required>
                             </div>
             
@@ -37,13 +37,13 @@
                                 <input type="email" class="form-control" id="email_remitent" name="correo_remitente" required>
                             </div> -->
             
-                            <div class="form-group">
-                                <label for="email_receptor">Correo Destinatario:</label>
+                            <div class="form-group d-flex justify-content-center align-items-center">
+                                <label for="email_receptor" class="form-label col-3">Correo Destinatario:</label>
                                 <input type="email" class="form-control" id="email_receptor" name="email_receptor" required>
                             </div>
             
                             <div class="form-group">
-                                <label for="mensaje">Mensaje:</label>
+                                <label for="mensaje" class="form-label col-3">Mensaje:</label>
                                 <textarea class="form-control" id="mensaje" name="mensaje" rows="5" required></textarea>
                             </div>
             

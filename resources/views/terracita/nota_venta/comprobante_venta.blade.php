@@ -120,7 +120,6 @@
     <div class="contenedor">
         <div id="pdf2">
             <div class="centrar-tex">
-                {{-- <img class="imagenLogo" src="https://development.controlfacilito.com/imagenes/159/empresa1591654396654.png" alt=""> --}}
             </div>
             <h6 class="centrar-tex">Nota de Venta</h6>
             <h6 id="" class="centrar-tex texto-mayuscula">Mi Terracita</h6>
